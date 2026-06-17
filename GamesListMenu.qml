@@ -71,6 +71,7 @@ FocusScope {
         property var subMenuModel: []
         property int subMenuIndex: 0
 	    property int place: 0
+        property int placeCollection: 0
         property int subplace: 0
 
         required property var gamesListModel
@@ -92,6 +93,24 @@ FocusScope {
             // A weird issue where when you launch a game it spams auto repeat when Pegasus loads back
             if (event.isAutoRepeat) {
                 return
+            }
+
+            if (event.key == Qt.Key_Up && subMenuEnable) {
+		        event.accepted = true;
+ 
+                gamesListLoader.item.currentIndex = gamesListModelLoader.item.count - 1
+
+		
+                return;
+            }
+
+            if (event.key == Qt.Key_Down && subMenuEnable) {
+		        event.accepted = true;
+ 
+                gamesListLoader.item.currentIndex = 0
+
+		
+                return;
             }
 
             if (event.key == Qt.Key_Left && subMenuEnable) {
@@ -259,14 +278,22 @@ FocusScope {
             /////////////
             if (api.keys.isPrevPage(event)) {
                 event.accepted = true;
+
+                //go to favs from other collection
                 if(collectionsMenuLoader.item.listView.currentIndex != 0){
                     viewcreated = false
                     pagecreated = true
                     favFilter = true
                     recentFilter = false
+
+
                     if(gamesListLoader.item.currentIndex >= 0 && setplace){
                         place = gamesListLoader.item.currentIndex
+                    
                     }
+
+                    placeCollection = collectionsMenuLoader.item.listView.currentIndex
+
                     collectionsMenuLoader.item.listView.currentIndex = 0
 
                     gamesMediaLoader.active = false
@@ -285,7 +312,44 @@ FocusScope {
                     if(themeSettings.soundsmenu){
                         navSound.play();
                     }
-                }    
+
+                //go from favs to other collection
+                }else{
+                    viewcreated = false
+                    pagecreated = true
+                    favFilter = false
+                    
+                    if(placeCollection == 1 && themeSettings.lastPlayedDays > 0){
+                        recentFilter = true
+                    }else{
+                        recentFilter = false
+                    }
+
+                    if(gamesListLoader.item.currentIndex >= 0 && setplace){
+                        place = gamesListLoader.item.currentIndex
+                    
+                    }
+
+                    collectionsMenuLoader.item.listView.currentIndex = placeCollection
+
+                    gamesMediaLoader.active = false
+                    gamesMediaLoader.active = true
+                    
+                    gamesListLoader.item.currentIndex = place;
+
+                    if(place > gamesListModelLoader.item.count -1) {
+                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
+                event.accepted = true;
+
+                        setplace = false
+                    }
+                
+                    viewcreated = true
+                    if(themeSettings.soundsmenu){
+                        navSound.play();
+                    }
+
+                }   
 	            return
             
             }
