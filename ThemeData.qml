@@ -55,6 +55,18 @@ Item {
 
 
     property var colorTheme: {
+    //don't include ending ff
+    //primary - text
+    //secondary - none
+    //light - secondary text, selected item
+    //dark - settings left side background
+        "Test": {
+            background: "#302442",
+            primary: "#7ebcde",
+            secondary: "#ffffffff",
+            light: "#7ebcde",
+            dark: "#302442",
+        },
         "Green": {
             background: "#181810",
             primary: "#6bd425",
@@ -86,14 +98,14 @@ Item {
         "Vampire": {
             background: "#242631",
             primary: "#a576ce",
-            secondary: "#a576ce",
+            secondary: "#622795ff",
             light: "#7c52a0",
-            dark: "#242631",
+            dark: "#151619ff",
         },
          "Black": {
             background: "#000000",
             primary: "#e9ecef",
-            secondary: "#e9ecef",
+            secondary: "#8e8e8eff",
             light: "#6c757d",
             dark: "#000000",
         },

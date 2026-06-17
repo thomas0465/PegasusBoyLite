@@ -31,6 +31,7 @@ FocusScope {
 
         // anchors.left: parent.left
         // anchors.leftMargin: parent.width * 0.06
+    
 
         anchors.fill: parent
 
@@ -70,6 +71,7 @@ FocusScope {
 
         // Keys.onLeftPressed: subMenuListView.decrementCurrentIndex
         // Keys.onRightPressed: subMenuListView.incrementCurrentIndex
+   
 
 
         TextMetrics {

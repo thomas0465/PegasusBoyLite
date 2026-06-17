@@ -40,6 +40,7 @@ Item {
                         { "value": "Blue" },
                         { "value": "Purple" },
             			{ "value": "Vampire" },
+                        { "value": "Test"}
                     ]
                 },
 
