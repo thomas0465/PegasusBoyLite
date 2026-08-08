@@ -95,24 +95,20 @@ FocusScope {
                 return
             }
 
-            if (event.key == Qt.Key_Up && subMenuEnable) {
+            //wrap from top to bottom
+            if (event.key == Qt.Key_Up && subMenuEnable && themeSettings.listwrap) {
 		        event.accepted = true;
- 
                 gamesListLoader.item.currentIndex = gamesListModelLoader.item.count - 1
-
-		
                 return;
             }
 
-            if (event.key == Qt.Key_Down && subMenuEnable) {
+            if (event.key == Qt.Key_Down && subMenuEnable && themeSettings.listwrap) {
 		        event.accepted = true;
- 
                 gamesListLoader.item.currentIndex = 0
-
-		
                 return;
             }
 
+            //change collections
             if (event.key == Qt.Key_Left && subMenuEnable) {
 		        event.accepted = true;
                 if (collectionsMenuLoader.item.listView.currentIndex - 1 >= 0) {

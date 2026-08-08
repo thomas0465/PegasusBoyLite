@@ -3,6 +3,7 @@ import QtQuick 2.15
 import "../../Logger.js" as Logger
 
 Item {
+    // Important: Also add variable to ThemeSettings in root folder
 
     // Each settings needs a type and value
     // The rendering and options available depend on
@@ -12,7 +13,7 @@ Item {
     //   - list
     //   - bool
     //   - range (min, max, step)
-    // TODO Change this to a list model
+
     property var settingsModel: [
         {
             "name": "General",
@@ -70,14 +71,14 @@ Item {
                     "id": "lastPlayedDays",
                     "description": "How many days to show games on the recent list. Select 0 to disable (may require restart)",
                     "type": "list",
-                    "default": "30",
+                    "default": "0",
                     "options": [
                         { "value": "0" },
-			{ "value": "1" },
+		                { "value": "1" },
                         { "value": "3" },
                         { "value": "7" },
                         { "value": "14" },
- 			{ "value": "30" },
+ 			            { "value": "30" },
                     ]
                 },
 
@@ -88,7 +89,7 @@ Item {
                     "type": "list",
                     "default": "Title Screen",
                     "options": [
-			{ "value": "Title Screen" },
+			            { "value": "Title Screen" },
                         { "value": "Box Art" },
                     ]
                 },
@@ -97,7 +98,7 @@ Item {
                     "id": "collectionShortNames",
                     "description": "Use collection short names",
                     "type": "bool",
-                    "default": "Disable",
+                    "default": "Enable",
                 },
 
                 {
@@ -123,12 +124,19 @@ Item {
                     "type": "bool",
                     "default": "Disable",
                 },
+                {
+                   "name": "Main List Wrap Around",
+                   "id": "listwrap",
+                   "description": "Press up at the top of the Main List to go to the bottom, and vice versa",
+                   "type": "bool",
+                   "default": "Enable",
+                },
                {
                    "name": "Word Wrap",
                    "id": "wordwrap",
                    "description": "Wrap long game names in the Main List",
                    "type": "bool",
-                   "default": "Disable",
+                   "default": "Enable",
                 },
 
             ]
@@ -136,17 +144,6 @@ Item {
         {
             "name": "Layout",
             "settings": [
-
-                {
-		    "name": "Sub-Menu Font Size",
-                    "id": "menusize",
-                    "description": "The font size for the Sub-Menu",
-                    "type": "range",
-                    "default": "16",
-                    "min": 10,
-                    "max": 25,
-                    "step": 1,
-                },
 
                 {
 		    "name": "Height Adjust",
@@ -178,6 +175,16 @@ Item {
                     "min": 35,
                     "max": 65,
                     "step": 5,
+                },
+                {
+		            "name": "Sub-Menu Font Size",
+                    "id": "menusize",
+                    "description": "The font size for the Sub-Menu",
+                    "type": "range",
+                    "default": "16",
+                    "min": 10,
+                    "max": 25,
+                    "step": 1,
                 },
                 {
                     "name": "Sub-Menu - Columns",
@@ -319,7 +326,68 @@ Item {
                     "max": 240,
                     "step": 1,
 
-                }
+                },
+                {
+                    "name": "Scanlines - Opacity",
+                    "id": "shaderScanlinesOpacity",
+                    "description": "The Opacity of the scanlines",
+                    "type": "range",
+                    "default": "5",
+                    "min": 1,
+                    "max": 10,
+                    "step": 1,
+                },
+                {
+                    "name": "Scanlines - Highlight",
+                    "id": "shaderScanlinesGlow",
+                    "description": "Add glow to make scanlines visible on dark colors",
+                    "type": "range",
+                    "default": "15",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                },
+                                {
+                    "name": "Scanlines - Curve",
+                    "id": "shaderScanlinesCurve",
+                    "description": "Curve the scanlines with the curvature",
+                    "type": "bool",
+                    "default": "Disable",
+                },  
+                {
+                    "name": "Aberration - Enable",
+                    "id": "shaderAberrationEnable",
+                    "description": "Enable the chromatic aberration shader",
+                    "type": "bool",
+                    "default": "Enable",
+                },                
+                {
+                    "name": "Aberration - Amount",
+                    "id": "shaderAberrationAmount",
+                    "description": "The amount of chromatic aberration",
+                    "type": "range",
+                    "default": "10",
+                    "min": 1,
+                    "max": 50,
+                    "step": 1,
+                },
+                {
+                    "name": "Glow - Enable",
+                    "id": "shaderGlowEnable",
+                    "description": "Enable the glow shader",
+                    "type": "bool",
+                    "default": "Enable",
+                },                 
+                {
+                    "name": "Glow - Amount",
+                    "id": "shaderGlowAmount",
+                    "description": "The amount of glow",
+                    "type": "range",
+                    "default": "6",
+                    "min": 1,
+                    "max": 20,
+                    "step": 1,
+                },          
             ]
         }
     ]

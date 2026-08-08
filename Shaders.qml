@@ -35,6 +35,8 @@ Item {
         property real phase: 0.5
         property real lines_black: 0.3
         property real lines_white: 1.0
+        property real scanlinesOpacity: themeSettings.shaderScanlinesOpacity/10
+        property real scanlineGlow: themeSettings.shaderScanlinesGlow/100
         property real mask: 0.0
         property real mask_weight: 0.5
         //property real imageSize: 180.0
@@ -44,27 +46,19 @@ Item {
 
         property real curvature: 0.03
 
-        // property real GLOW_FALLOFF: 0.35
-        // property int TAPS: 4
-        property real gammaInput: 2.4
-        property real gammaOutput: 2.2
+        // CRT chromatic aberration: splits R/G/B apart radially from center,
+        // strongest toward the edges.
+        property bool aberrationEnable: themeSettings.shaderAberrationEnable
+        property real aberrationAmount: themeSettings.shaderAberrationAmount/100000
+        //0.0001
+
+        // CRT glow: chromatic-aberration bloom + film grain.
+        property bool glowEnable: themeSettings.shaderGlowEnable
+        property real glowAmount: themeSettings.shaderGlowAmount/10 //0.6
+        property real glowRadius: 10.0
+        property real glowAberration: 0.4
 
 
-
-
-
-        // vertexShader: "
-        //     uniform highp mat4 qt_Matrix;
-        //     attribute highp vec4 qt_Vertex;
-        //     attribute highp vec2 qt_MultiTexCoord0;
-        //     varying highp vec2 texCoord;
-
-        //     void main() {
-        //         texCoord = qt_MultiTexCoord0;
-        //         gl_Position = qt_Matrix * qt_Vertex;
-        //     }
-
-        // "
 
         fragmentShader: themeSettings.shaderEnable ? fragmentShaderString : ""
 
@@ -86,6 +80,8 @@ Item {
             uniform lowp float phase;
             uniform lowp float lines_black;
             uniform lowp float lines_white;
+            uniform lowp float scanlinesOpacity;
+            uniform lowp float scanlineGlow;
             uniform lowp float mask;
             uniform lowp float mask_weight;
             uniform lowp float imageSize;
@@ -95,6 +91,16 @@ Item {
             uniform lowp float curvature;
             uniform lowp float curvatureX;
             uniform lowp float curvatureY;
+            " : "") +
+
+            (glowEnable ? "
+            uniform lowp float glowAmount;
+            uniform lowp float glowRadius;
+            uniform lowp float glowAberration;
+            " : "") +
+
+            (aberrationEnable ? "
+            uniform lowp float aberrationAmount;
             " : "") +
 
             "
@@ -134,6 +140,44 @@ Item {
 
                 return coord;
             }
+            " : "")  +
+
+            (glowEnable ? "
+            // Samples one color channel (via a one-hot mask, since GLSL ES 1.00
+            // can't index a vector by a non-constant int) across 3 concentric,
+            // rotated rings so glow has continuous radial coverage instead of
+            // a hollow ring at one fixed distance.
+            float sampleGlowChannel(vec2 uv, vec2 texel, float radius, vec3 channelMask)
+            {
+                float total = 0.0;
+                float weightSum = 0.0;
+
+                float w1 = 0.8;
+                vec2 r1 = texel * radius * 0.35;
+                total += dot(texture2D(source, uv + vec2( r1.x,  0.0)).rgb, channelMask) * w1;
+                total += dot(texture2D(source, uv + vec2(-r1.x,  0.0)).rgb, channelMask) * w1;
+                total += dot(texture2D(source, uv + vec2( 0.0,  r1.y)).rgb, channelMask) * w1;
+                total += dot(texture2D(source, uv + vec2( 0.0, -r1.y)).rgb, channelMask) * w1;
+                weightSum += 4.0 * w1;
+
+                float w2 = 0.5;
+                vec2 r2 = texel * radius * 0.7;
+                total += dot(texture2D(source, uv + vec2( r2.x * 0.707,  r2.y * 0.707)).rgb, channelMask) * w2;
+                total += dot(texture2D(source, uv + vec2(-r2.x * 0.707,  r2.y * 0.707)).rgb, channelMask) * w2;
+                total += dot(texture2D(source, uv + vec2(-r2.x * 0.707, -r2.y * 0.707)).rgb, channelMask) * w2;
+                total += dot(texture2D(source, uv + vec2( r2.x * 0.707, -r2.y * 0.707)).rgb, channelMask) * w2;
+                weightSum += 4.0 * w2;
+
+                float w3 = 0.25;
+                vec2 r3 = texel * radius;
+                total += dot(texture2D(source, uv + vec2( r3.x * 0.924,  r3.y * 0.383)).rgb, channelMask) * w3;
+                total += dot(texture2D(source, uv + vec2(-r3.x * 0.383,  r3.y * 0.924)).rgb, channelMask) * w3;
+                total += dot(texture2D(source, uv + vec2(-r3.x * 0.924, -r3.y * 0.383)).rgb, channelMask) * w3;
+                total += dot(texture2D(source, uv + vec2( r3.x * 0.383, -r3.y * 0.924)).rgb, channelMask) * w3;
+                weightSum += 4.0 * w3;
+
+                return total / weightSum;
+            }
             " : "") +
 
             "
@@ -156,17 +200,42 @@ Item {
                 " : "") +
 
                 "
-                vec3 color = texture2D(source, texCoord).rgb;
+                " +
 
-                
+                (aberrationEnable ? "
+                // Chromatic aberration driven by local brightness gradient:
+                // fringes color at bright/dark boundaries (text edges, icon
+                // outlines) rather than by distance from screen center.
+                vec2 caTexel = sourceSize.zw;
+                vec3 lumaMask = vec3(0.299, 0.587, 0.114);
+                float lumaR_ = dot(texture2D(source, texCoord + vec2(caTexel.x, 0.0)).rgb, lumaMask);
+                float lumaL_ = dot(texture2D(source, texCoord - vec2(caTexel.x, 0.0)).rgb, lumaMask);
+                float lumaU_ = dot(texture2D(source, texCoord + vec2(0.0, caTexel.y)).rgb, lumaMask);
+                float lumaD_ = dot(texture2D(source, texCoord - vec2(0.0, caTexel.y)).rgb, lumaMask);
+
+                vec2 lumaGradient = vec2(lumaR_ - lumaL_, lumaU_ - lumaD_);
+                float gradientMag = length(lumaGradient);
+                vec2 gradientDir = gradientMag > 0.0001 ? lumaGradient / gradientMag : vec2(0.0, 0.0);
+
+                // Offset scales with edge contrast, points from bright toward dark
+                vec2 caOffset = gradientDir * gradientMag * aberrationAmount * 4.0;
+
+                vec3 color;
+                color.r = texture2D(source, texCoord - caOffset).r;
+                color.g = texture2D(source, texCoord).g;
+                color.b = texture2D(source, texCoord + caOffset).b;
+                " : "
+                vec3 color = texture2D(source, texCoord).rgb;
+                ") +
+
+                "
                 " +
 
                 (themeSettings.shaderScanlinesEnable ? "
                 // Generate scanlines
                 float scale = imageSize;
                 //float angle = (qt_TexCoord0.y * originalSize.w) * omega * scale + phase;
-                float angle = (qt_TexCoord0.y) * omega * scale + phase;
-
+                float angle = (" + (themeSettings.shaderScanlinesCurve ? "texCoord.y" : "qt_TexCoord0.y") + ") * omega * scale + phase;
                 float lines;
                 lines = sin(angle);
                 lines *= amp;
@@ -180,14 +249,48 @@ Item {
 
                 color += clamp(color * 0.4, 0.0, 0.5);
 
-                color *= lines;
+                // Normalized 0..1: 0 at the dark troughs between scan rows,
+                // 1 at the bright scan rows themselves.
+                float linesNorm = clamp((lines - lines_black) / max(lines_white - lines_black, 0.0001), 0.0, 1.0);
+
+                // Multiplicative part darkens/lightens existing content as before;
+                // additive part is a small lift on bright rows only, so scanlines
+                // stay visible even where the underlying pixel is pure black.
+                vec3 scanlineResult = color * lines + vec3(scanlineGlow) * linesNorm;
+
+                color = mix(color, scanlineResult, scanlinesOpacity);
                 " : "") +
                 "
 
                 //color += clamp(color * 0.4, 0.0, 0.5);
                 //color *= vec3(1.3333);
                 //color = clamp(color * )
+                " +
 
+                (glowEnable ? "
+                // CRT glow: each color channel blooms at a slightly different
+                // radius, producing the rainbow-fringed halo you see around
+                // bright edges on a real tube.
+                vec2 glowTexel = sourceSize.zw;
+                float rR = glowRadius * (1.0 + glowAberration);
+                float rG = glowRadius;
+                float rB = glowRadius * (1.0 + glowAberration * 0.5);
+
+                float glowR = sampleGlowChannel(texCoord, glowTexel, rR, vec3(1.0, 0.0, 0.0));
+                float glowG = sampleGlowChannel(texCoord, glowTexel, rG, vec3(0.0, 1.0, 0.0));
+                float glowB = sampleGlowChannel(texCoord, glowTexel, rB, vec3(0.0, 0.0, 1.0));
+
+                vec3 glow = vec3(glowR, glowG, glowB);
+                float glowLuma = dot(glow, vec3(0.299, 0.587, 0.114));
+                float pixelLuma = dot(color, vec3(0.299, 0.587, 0.114));
+
+                float spillGate = smoothstep(0.0, 0.6, glowLuma);
+                float darkGate = 1.0 - smoothstep(-0.1, 0.8, pixelLuma);
+
+                color += glow * glowAmount * spillGate * darkGate;
+                " : "") +
+
+                "
                 gl_FragColor = vec4(color.rgb, 1.0);
 
             }"

@@ -22,34 +22,44 @@ Item {
         "subMenuColumns",
         "subMenuWidth",
         "subMenuHeight",
-	"subMenuMargin",
-	"subMenuEmptyHeight",
+        "subMenuMargin",
+        "subMenuEmptyHeight",
         "language",
         "collectionAllGames",
         "collectionShortNames",
+        
         "shaderEnable",
         "shaderCurvatureEnable",
-	"shaderCurvatureAmount",
+        "shaderCurvatureAmount",
         "shaderScanlinesEnable",
         "shaderScanlinesImageSize",
+        "shaderScanlinesOpacity",
+        "shaderScanlinesGlow",
+        "shaderScanlinesCurve",
+        "shaderAberrationEnable",
+        "shaderAberrationAmount",
+        "shaderGlowEnable",
+        "shaderGlowAmount",
+
         "menuIndex_main",
         "menuIndex_subMenu",
         "menuIndex_subMenu_name",
         "menuIndex_gamesList",
         "menuIndex_gamesList_name",
         "gamesFavoritesOnTop",
-	"showClock",
-	"showBattery",
+        "showClock",
+        "showBattery",
         "gamesListCounter",
         "soundslist",
-	"soundsmenu",
-	"wordwrap",
-	"collectionscroll",
-	"footerfontsize",
-	"menusize",
+        "soundsmenu",
+        "wordwrap",
+        "listwrap",
+        "collectionscroll",
+        "footerfontsize",
+        "menusize",
         "primaryAsset",
-	"menuadjust",
-	"replacePar"
+        "menuadjust",
+        "replacePar"
     ]
 
 
@@ -67,7 +77,7 @@ Item {
     property string menuIndex_gamesList_name: ""
 
     // User configurable settings
-    property string lastPlayedDays: "30"
+    property string lastPlayedDays: "0"
 
     property int itemListRows: 9
     property int itemListWidth: 40
@@ -79,7 +89,7 @@ Item {
     property int subMenuEmptyHeight: 6
 
     property bool collectionAllGames: false
-    property bool collectionShortNames: false
+    property bool collectionShortNames: true
     property bool gamesFavoritesOnTop: false
 
     property bool showClock: true
@@ -93,11 +103,19 @@ Item {
     property int shaderCurvatureAmount: 100
     property bool shaderScanlinesEnable: true
     property int shaderScanlinesImageSize: 180
+    property int shaderScanlinesOpacity: 5
+    property int shaderScanlinesGlow: 15
+    property bool shaderScanlinesCurve: false
+    property bool shaderAberrationEnable: true
+    property int shaderAberrationAmount: 10
+    property bool shaderGlowEnable: true
+    property int shaderGlowAmount: 6
 
     property bool soundslist:true
     property bool soundsmenu:true
 
-    property bool wordwrap:false
+    property bool wordwrap:true
+    property bool listwrap:true
     property bool collectionscroll: true
     property int footerfontsize: 20
 

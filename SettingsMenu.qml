@@ -70,6 +70,9 @@ FocusScope {
             property bool settingsOptionsActive: false
 
             Keys.onPressed: {
+
+
+
                 if (event.key == Qt.Key_Left &&  !settingsOptionsActive) {
                     event.accepted = true;
 			viewcreated = false;
