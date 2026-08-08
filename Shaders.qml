@@ -165,7 +165,7 @@ Item {
                 // Generate scanlines
                 float scale = imageSize;
                 //float angle = (qt_TexCoord0.y * originalSize.w) * omega * scale + phase;
-                float angle = (texCoord.y) * omega * scale + phase;
+                float angle = (qt_TexCoord0.y) * omega * scale + phase;
 
                 float lines;
                 lines = sin(angle);
