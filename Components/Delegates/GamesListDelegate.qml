@@ -66,7 +66,7 @@ Item {
                 //fontSizeMode: Text.HorizontalFit
                 // minimumPixelSize: 8
                 // font.pixelSize: 72
-                font.pixelSize: parent.height * 0.4
+                font.pixelSize: parent.height * 0.4 + ( themeSettings.mainFontSize - 20)
 
 		//fontSizeMode: Text.HorizontalFit
 

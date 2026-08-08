@@ -252,7 +252,7 @@ Component.onCompleted: viewcreated = true;
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;
-                anchors.bottomMargin: 1.5
+                anchors.bottomMargin: 1.5 + themeSettings.footeroffset
 
                 opacity: (themeSettings.showClock) ? 1 : 0
                 font.family: themeSettings.font.customFont
@@ -280,7 +280,7 @@ Component.onCompleted: viewcreated = true;
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;
-                anchors.bottomMargin: 1.5
+                anchors.bottomMargin: 1.5 + themeSettings.footeroffset
 
                 opacity: (themeSettings.showBattery) ? 1 : 0
                 font.family: themeSettings.font.customFont

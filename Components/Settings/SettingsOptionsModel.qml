@@ -44,26 +44,6 @@ Item {
                         { "value": "Test"}
                     ]
                 },
-                                {
-                    "name": "Font",
-                    "id": "fontInput",
-                    "description": "Text Font",
-                    "type": "list",
-                    "default": "Hack-Regular",
-                    "options": [
-                        { "value": "alagard" },
-                        { "value": "ari-bold" },
-                        { "value": "ari-condensed" },
-                        { "value": "dogica" },
-                        { "value": "Hack-Regular" },
-                        { "value": "Lemonmilk-Regular" },
-                        { "value": "Roboto-Regular" },
-                        { "value": "SuperMario85" },
-                        { "value": "SuperPixel" },
-                        { "value": "VCR_OSD" },
-                        { "value": "None" }
-                    ]
-                },
 
                 {
                     "name": "Sounds - Menu",
@@ -165,14 +145,36 @@ Item {
             "name": "Layout",
             "settings": [
 
-                {
-		    "name": "Height Adjust",
-                    "id": "menuadjust",
-                    "description": "Adjust the screen to be closer to the top of the screen",
+                
+                                {
+                    "name": "Font",
+                    "id": "fontInput",
+                    "description": "Text Font",
+                    "type": "list",
+                    "default": "Hack-Regular",
+                    "options": [
+                        { "value": "04B" },
+                        { "value": "Alagard" },
+                        { "value": "Ari-bold" },
+                        { "value": "Determination" },
+                        { "value": "Dogica" },
+                        { "value": "Hack-Regular" },
+                        { "value": "Lemonmilk-Regular" },
+                        { "value": "Minecraft" },
+                        { "value": "Pixeled" },
+                        { "value": "Pixellari" },
+                        { "value": "Roboto-Regular" },
+                        { "value": "VCR_OSD" }
+                    ]
+                },
+                                {
+		    "name": "Main List - Font Size",
+                    "id": "mainFontSize",
+                    "description": "The font size for the Main List",
                     "type": "range",
-                    "default": "0",
-                    "min": -25,
-                    "max": 5,
+                    "default": "20",
+                    "min": 1,
+                    "max": 25,
                     "step": 1,
                 },
 
@@ -197,7 +199,7 @@ Item {
                     "step": 5,
                 },
                 {
-		            "name": "Sub-Menu Font Size",
+		            "name": "Sub-Menu - Font Size",
                     "id": "menusize",
                     "description": "The font size for the Sub-Menu",
                     "type": "range",
@@ -216,16 +218,6 @@ Item {
                     "max": 8,
                     "step": 1,
                 },
-                //{
-                //    "name": "Sub-Menu - Width",
-                //    "id": "subMenuWidth",
-                //    "description": "The percentage of width of the screen to define the width of the Sub-Menu",
-                //    "type": "range",
-                //    "default": "55",
-                //    "min": 40,
-                //    "max": 90,
-                //    "step": 5,
-                //},
                 {
                     "name": "Sub-Menu - Height",
                     "id": "subMenuHeight",
@@ -241,21 +233,22 @@ Item {
                     "id": "subMenuMargin",
                     "description": "The margin between the Main List and Sub-Menu",
                     "type": "range",
-                    "default": "2",
-                    "min": -2,
-                    "max": 5,
+                    "default": "0",
+                    "min": -5,
+                    "max": 10,
                     "step": 1,
                 },
-                //{
-                //    "name": "Sub-Menu - Empty Height",
-                //    "id": "subMenuEmptyHeight",
-                //    "description": "The margin between the Main List and Menu when there is no Sub-Menu",
-                //    "type": "range",
-                //    "default": "6",
-                //    "min": 0,
-                //    "max": 12,
-                //    "step": 1,
-                //},
+                
+                {
+		    "name": "Top Margin",
+                    "id": "menuadjust",
+                    "description": "Adjust the screen to be closer to the top of the screen",
+                    "type": "range",
+                    "default": "0",
+                    "min": -25,
+                    "max": 20,
+                    "step": 1,
+                },
 
             ]
         },
@@ -271,8 +264,19 @@ Item {
                     "description": "The font size for the Footer",
                     "type": "range",
                     "default": "20",
-                    "min": 10,
+                    "min": 1,
                     "max": 25,
+                    "step": 1,
+                },
+
+                {
+		    "name": "Footer Offset",
+                    "id": "footeroffset",
+                    "description": "Offset of the footer from the bottom",
+                    "type": "range",
+                    "default": "0",
+                    "min": -5,
+                    "max": 30,
                     "step": 1,
                 },
                 

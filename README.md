@@ -2,7 +2,7 @@
 Pegasus Boy Lite is a theme for [Pegasus Frontend](https://pegasus-frontend.org) based on [Pegaus Boy by gtaforever00](https://github.com/gtaforever00/pegasus-boy).  It features a minimal interface that prioritizes the game list and images with settings to tweak the layout how you like.
 
 ## Installation
-Download the [latest release](https://github.com/tap0119/PegasusBoyLite/releases), extract and place the resulting folder in your Pegasus theme directory. In Pegasus, select the theme in the settings menu.
+Download the [latest release](https://github.com/tap0119/PegasusBoyLite/releases), extract and place in the resulting folder your Pegasus theme directory. In Pegasus, select the theme in the settings menu.
 
 ## Assets
 This theme is designed to use the following assets. To get the most out of this theme, it is reccomended you have a Screenshot, and at least one of the titlescreen or boxart for each game. 
@@ -10,7 +10,6 @@ This theme is designed to use the following assets. To get the most out of this 
 - Titlescreen
 - Boxfront
 - Screenshot
-- Background
 
 For information on assets see [Assets in the Pegasus Docs](https://pegasus-frontend.org/docs/user-guide/meta-assets/)
 
@@ -34,13 +33,14 @@ For information on assets see [Assets in the Pegasus Docs](https://pegasus-front
 
 - (A) Accept        - Launch Game
 - (B) Back          - Enlarge images
-- (X) Game Details  - Switch between images shown
+- (X) Game Details  - Switch between the Title screen and Box Art image 
 - (Y) Filter        - Favorite game
 
 ## Screenshots
 ![1|150](./assets/screenshots/1.png)
 ![2|150](./assets/screenshots/2.png)
 ![3|150](./assets/screenshots/3.png)
+![4|150](./assets/screenshots/4.png)
 ![5|150](./assets/screenshots/5.png)
 
 ## License
@@ -54,7 +54,4 @@ Distributed under the GNU General Public License v3.0+. See [COPYING](COPYING) f
   License: [CC BY 4.0](assets/retroarch-assets/COPYING)
 - [Hack font](https://github.com/source-foundry/Hack)
   License: [MIT License](assets/fonts/Hack/LICENSE.md)
-
-
-
 

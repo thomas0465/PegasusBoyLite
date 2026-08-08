@@ -57,6 +57,9 @@ Item {
         "listwrap",
         "collectionscroll",
         "footerfontsize",
+        "footeroffset",
+        "mainFontSize",
+        "fontInput",
         "menusize",
         "primaryAsset",
         "menuadjust",
@@ -86,7 +89,7 @@ Item {
     property int subMenuColumns: 4
     property int subMenuWidth: 55
     property int subMenuHeight: 6
-    property int subMenuMargin: 2
+    property int subMenuMargin:0
     property int subMenuEmptyHeight: 6
 
     property bool collectionAllGames: false
@@ -120,6 +123,7 @@ Item {
     property bool listwrap:true
     property bool collectionscroll: true
     property int footerfontsize: 20
+    property int footeroffset: 0
 
     property int menusize: 16
     property string primaryAsset: "Title Screen"
@@ -127,6 +131,7 @@ Item {
 
     property bool replacePar: false
     property string fontInput: "Hack-Regular"
+    property int mainFontSize: 20
 
     FontLoader {
     id: customFont
