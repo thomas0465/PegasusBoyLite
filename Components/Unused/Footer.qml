@@ -108,7 +108,7 @@ Item {
                 anchors.leftMargin: parent.width * 0.01
                 anchors.verticalCenter: parent.verticalCenter
 
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pixelSize: footerRightAcceptCircle.height * 0.8
                 color: themeData.colorTheme[theme].primary
 
@@ -136,7 +136,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
 
 
-                    font.family: "HackRegular"
+                    font.family: themeSettings.font.customFont
                     font.pixelSize: parent.height * 0.8
                     font.bold: true
                     color: themeData.colorTheme[theme].background
@@ -153,7 +153,7 @@ Item {
                 anchors.leftMargin: parent.width * 0.01
                 anchors.verticalCenter: parent.verticalCenter
 
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pixelSize: footerRightFavoriteCircle.height * 0.8
                 color: themeData.colorTheme[theme].primary
 

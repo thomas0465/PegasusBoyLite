@@ -23,7 +23,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
 
-            font.family: "HackRegular"
+            font.family: themeSettings.font.customFont
             font.pixelSize: parent.height * 0.8
             font.bold: true
             color: root.textColor

@@ -37,6 +37,10 @@ Item {
         property real lines_white: 1.0
         property real scanlinesOpacity: themeSettings.shaderScanlinesOpacity/10
         property real scanlineGlow: themeSettings.shaderScanlinesGlow/100
+        // Pixel-grid overlay: combines the horizontal scanlines with a matching
+        // vertical pattern. Hardcoded true for now, swap for a themeSettings
+        // flag later.
+        property bool gridEnable: themeSettings.shaderScanlinesGrid
         property real mask: 0.0
         property real mask_weight: 0.5
         //property real imageSize: 180.0
@@ -234,8 +238,12 @@ Item {
                 (themeSettings.shaderScanlinesEnable ? "
                 // Generate scanlines
                 float scale = imageSize;
-                //float angle = (qt_TexCoord0.y * originalSize.w) * omega * scale + phase;
-                float angle = (" + (themeSettings.shaderScanlinesCurve ? "texCoord.y" : "qt_TexCoord0.y") + ") * omega * scale + phase;
+
+                // Wrapped into [0, 2*pi) via fract() before sin() - large
+                // scale values can otherwise push the raw angle high enough
+                // that mediump sin() loses accuracy and stops oscillating.
+                float cyclesY = freq * scale * (" + (themeSettings.shaderScanlinesCurve ? "texCoord.y" : "qt_TexCoord0.y") + ");
+                float angle = fract(cyclesY) * (2.0 * pi) + phase;
                 float lines;
                 lines = sin(angle);
                 lines *= amp;
@@ -243,6 +251,27 @@ Item {
                 lines = abs(lines);
                 lines *= lines_white - lines_black;
                 lines += lines_black;
+
+                " +
+                (gridEnable ? "
+                // Second pass along X, combined with the horizontal pass via
+                // min() so both sets of lines carve into the image, forming
+                // a pixel-grid mesh instead of just rows.
+                float aspect = sourceSize.x / sourceSize.y;
+                float cyclesX = freq * scale * aspect * (" + (themeSettings.shaderScanlinesCurve ? "texCoord.x" : "qt_TexCoord0.x") + ");
+                float angleX = fract(cyclesX) * (2.0 * pi) + phase;
+
+                float linesX;
+                linesX = sin(angleX);
+                linesX *= amp;
+                linesX += offset;
+                linesX = abs(linesX);
+                linesX *= lines_white - lines_black;
+                linesX += lines_black;
+
+                lines = min(lines, linesX);
+                " : "") +
+                "
 
                 //color += color - clamp(blurHoriz(source, texCoord), 0.0, 0.5);
                 //color += color - clamp(blurVert(source, texCoord), 0.0, 0.5);

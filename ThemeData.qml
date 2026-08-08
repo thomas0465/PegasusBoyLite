@@ -139,8 +139,5 @@ Item {
         }
     }
 
-    property var font: {
-        "HackRegular": ""
-    }
 
 }

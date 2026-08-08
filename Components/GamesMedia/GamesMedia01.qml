@@ -72,7 +72,7 @@ Item {
 
 	//fontSizeMode: Text.HorizontalFit
  	//font.pointSize: themeSettings.footerfontsize +5 
-    //    font.family: "HackRegular"
+    //    font.family: themeSettings.font.customFont
     //}
 
 

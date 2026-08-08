@@ -641,7 +641,7 @@ FocusScope {
                 anchors.bottomMargin: 1.5
 
                 opacity: (themeSettings.showClock) ? 1 : 0
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;
             }  
@@ -669,7 +669,7 @@ FocusScope {
                 anchors.bottomMargin: 1.5
 
                 opacity: (themeSettings.showBattery) ? 1 : 0
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;
             }  
@@ -697,7 +697,7 @@ FocusScope {
                 anchors.bottomMargin: 1.5
 
                 opacity: (themeSettings.gamesListCounter) ? 1 : 0
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;
             }  

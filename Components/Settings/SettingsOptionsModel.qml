@@ -44,6 +44,26 @@ Item {
                         { "value": "Test"}
                     ]
                 },
+                                {
+                    "name": "Font",
+                    "id": "fontInput",
+                    "description": "Text Font",
+                    "type": "list",
+                    "default": "Hack-Regular",
+                    "options": [
+                        { "value": "alagard" },
+                        { "value": "ari-bold" },
+                        { "value": "ari-condensed" },
+                        { "value": "dogica" },
+                        { "value": "Hack-Regular" },
+                        { "value": "Lemonmilk-Regular" },
+                        { "value": "Roboto-Regular" },
+                        { "value": "SuperMario85" },
+                        { "value": "SuperPixel" },
+                        { "value": "VCR_OSD" },
+                        { "value": "None" }
+                    ]
+                },
 
                 {
                     "name": "Sounds - Menu",
@@ -315,6 +335,13 @@ Item {
                     "description": "Enable the scanline shader",
                     "type": "bool",
                     "default": "Enable",
+                },
+                {
+                    "name": "Scanlines - Grid",
+                    "id": "shaderScanlinesGrid",
+                    "description": "Enable vertical scanlines to make a grid",
+                    "type": "bool",
+                    "default": "Disable",
                 },
                 {
                     "name": "Scanlines - Distance",

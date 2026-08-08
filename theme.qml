@@ -7,11 +7,7 @@ FocusScope {
 
     focus: true
 
-    FontLoader {
-        id: hackRegularFont
-        name: "HackRegular"
-        source: "./assets/fonts/Hack/Hack-Regular.ttf"
-    }
+
 
     property var menuOptions: [
         { name: "collections", title: "Games"},
@@ -94,5 +90,7 @@ FocusScope {
 
         }
     }
+
+
 
 }

@@ -32,6 +32,7 @@ Item {
         "shaderCurvatureEnable",
         "shaderCurvatureAmount",
         "shaderScanlinesEnable",
+        "shaderScanlinesGrid",
         "shaderScanlinesImageSize",
         "shaderScanlinesOpacity",
         "shaderScanlinesGlow",
@@ -102,6 +103,7 @@ Item {
     property bool shaderCurvatureEnable: true
     property int shaderCurvatureAmount: 100
     property bool shaderScanlinesEnable: true
+    property bool shaderScanlinesGrid: false
     property int shaderScanlinesImageSize: 180
     property int shaderScanlinesOpacity: 5
     property int shaderScanlinesGlow: 15
@@ -124,6 +126,17 @@ Item {
     property int menuadjust: 0
 
     property bool replacePar: false
+    property string fontInput: "Hack-Regular"
+
+    FontLoader {
+    id: customFont
+    source: "./assets/fonts/" + themeSettings.fontInput +".ttf"
+}
+
+property var font: ({
+    "customFont": customFont.name
+})
+
 
 
 

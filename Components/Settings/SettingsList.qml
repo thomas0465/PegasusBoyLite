@@ -45,7 +45,7 @@ FocusScope {
                 }
 
 
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.4
 
                 elide: Text.ElideRight

@@ -185,7 +185,7 @@ FocusScope {
 
                     anchors.fill: parent
 
-                    font.family: "HackRegular"
+                    font.family: themeSettings.font.customFont
                     font.pixelSize:parent.height  * 0.1
                     color: themeData.colorTheme[theme].primary
 
@@ -205,7 +205,7 @@ FocusScope {
 
                     anchors.bottom: parent.bottom
 
-                    font.family: "HackRegular"
+                    font.family: themeSettings.font.customFont
                     font.pixelSize: parent.height * .08
                     color: themeData.colorTheme[theme].light
 
@@ -255,7 +255,7 @@ Component.onCompleted: viewcreated = true;
                 anchors.bottomMargin: 1.5
 
                 opacity: (themeSettings.showClock) ? 1 : 0
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;
             }  
@@ -283,7 +283,7 @@ Component.onCompleted: viewcreated = true;
                 anchors.bottomMargin: 1.5
 
                 opacity: (themeSettings.showBattery) ? 1 : 0
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;
             }  

@@ -43,7 +43,7 @@ FocusScope {
                     leftMargin: parent.width * 0.02
                 }
 
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.4
 
                 color: settingsOptionListView.ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].secondary

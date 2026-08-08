@@ -62,7 +62,7 @@ Item {
                 anchors.leftMargin: parent.width * 0.02
                 anchors.verticalCenter: parent.verticalCenter
 
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 //fontSizeMode: Text.HorizontalFit
                 // minimumPixelSize: 8
                 // font.pixelSize: 72

@@ -25,7 +25,7 @@ Item {
 
 		verticalAlignment: Text.AlignCenter; 
 
-                font.family: "HackRegular"
+                font.family: themeSettings.font.customFont
                 font.pixelSize: subMenuListView.fontSize
                 font.bold:  subMenuTextRect.ListView.isCurrentItem ? true: false
                 color: subMenuTextRect.ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].light

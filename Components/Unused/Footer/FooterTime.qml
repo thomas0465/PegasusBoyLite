@@ -23,7 +23,7 @@ Item {
 //    Text {
 //        id: timeText
         
-//        font.family: "HackRegular"
+//        font.family: themeSettings.font.customFont
 //        font.pixelSize: parent.height * 0.7
 //        color: themeData.colorTheme[theme].primary
 

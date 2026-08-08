@@ -76,7 +76,7 @@ FocusScope {
 
         TextMetrics {
             id: subMenuListFont
-            font.family: "HackRegular"
+            font.family: themeSettings.font.customFont
             font.bold: true
             font.capitalization: Font.AllUppercase
         }
@@ -155,7 +155,7 @@ FocusScope {
     //             id: subMenuText
     //             text: modelData[textName]
 
-    //             font.family: "HackRegular"
+    //             font.family: themeSettings.font.customFont
     //             font.pixelSize: subMenuListView.fontSize
     //             font.bold: false
     //             color: subMenuTextRect.ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].secondary
