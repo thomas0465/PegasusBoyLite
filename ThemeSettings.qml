@@ -66,6 +66,9 @@ Item {
         "replacePar"
     ]
 
+    property string raUsername: ""
+    property string raApiKey: ""
+
 
     property string theme: "Black"
 

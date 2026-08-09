@@ -8,6 +8,7 @@ import "Components/Delegates"
 import "Components/Generic"
 import "Components/SubMenu"
 import "Components/GamesMedia"
+import "Components/Achievements"
 
 FocusScope {
     property alias gamesListModel: collectionsMenuRoot.gamesListModel
@@ -352,23 +353,30 @@ FocusScope {
         }
 
  Keys.onReleased: {
-            if (api.keys.isPageUp(event)) {
-                event.accepted = true;
-                var count = gamesListLoader.item.model.count;
-                var index = gamesListLoader.item.currentIndex - 10;
-                if (index < 0) {index = 0;}
-                gamesListLoader.item.currentIndex = index;
-                return;
-            }
+            //if (api.keys.isPageUp(event)) {
+            //    event.accepted = true;
+            //    var count = gamesListLoader.item.model.count;
+            //    var index = gamesListLoader.item.currentIndex - 10;
+            //    if (index < 0) {index = 0;}
+            //    gamesListLoader.item.currentIndex = index;
+            //    return;
+            //}
 
-            if (api.keys.isPageDown(event)) {
-                event.accepted = true;
-                var count = gamesListLoader.item.model.count;
-                var index = gamesListLoader.item.currentIndex + 10;
-                if (index >= count) {index = count - 1;}
-                gamesListLoader.item.currentIndex = index;
-                return;
-            }
+            //if (api.keys.isPageDown(event)) {
+            //    event.accepted = true;
+            //    var count = gamesListLoader.item.model.count;
+            //    var index = gamesListLoader.item.currentIndex + 10;
+            //    if (index >= count) {index = count - 1;}
+            //    gamesListLoader.item.currentIndex = index;
+            //    return;
+            //}
+
+
+    if (api.keys.isPageUp(event)) {
+        event.accepted = true
+        achievements.fetchAchievementsForGame(currentGame)
+        return
+    }
 
             //prevent autorepeat
             if (api.keys.isCancel(event) || api.keys.isDetails(event) || api.keys.isFilters(event)){
@@ -376,6 +384,9 @@ FocusScope {
                 return;
             }
 }
+
+
+
 
         Loader {
             id: collectionsMenuLoader
@@ -604,6 +615,11 @@ FocusScope {
             id: gamesListDelegate
             rows: gamesListLoader.item.rows
         }
+
+                    Achievements {
+    id: achievements
+    anchors.fill: parent   // so the banner can center itself
+}
 
                     Timer {
         interval: 1000

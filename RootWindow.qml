@@ -3,6 +3,8 @@ import SortFilterProxyModel 0.2
 import QtMultimedia 5.9
 
 import "Logger.js" as Logger
+import "Components/Achievements"
+
 
 Item {
     id: rootWindow
@@ -14,7 +16,9 @@ Item {
 	}
 
 
+
     Keys.onPressed: {
+
         if (api.keys.isNextPage(event)) {
             event.accepted = true
             if(menuLoader.item.currentIndex == 0){
