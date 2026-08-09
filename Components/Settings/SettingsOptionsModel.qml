@@ -269,16 +269,16 @@ Item {
                     "step": 1,
                 },
 
-                {
-		    "name": "Footer Offset",
-                    "id": "footeroffset",
-                    "description": "Offset of the footer from the bottom",
-                    "type": "range",
-                    "default": "0",
-                    "min": -5,
-                    "max": 30,
-                    "step": 1,
-                },
+                // {
+		        //    "name": "Footer Offset",
+                //    "id": "footeroffset",
+                //    "description": "Offset of the footer from the bottom",
+                //    "type": "range",
+                //    "default": "0",
+                //    "min": -5,
+                //    "max": 30,
+                //    "step": 1,
+                //},
                 
                 {
                     "name": "Show Clock",
