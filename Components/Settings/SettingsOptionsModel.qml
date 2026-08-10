@@ -13,6 +13,7 @@ Item {
     //   - list
     //   - bool
     //   - range (min, max, step)
+    //   - text (free text entry - requires a keyboard/OSK to type into)
 
     property var settingsModel: [
         {
@@ -419,6 +420,25 @@ Item {
                     "max": 20,
                     "step": 1,
                 },          
+            ]
+        },
+        {
+            "name": "RetroAchievements",
+            "settings": [
+                {
+                    "name": "Username",
+                    "id": "raUsername",
+                    "description": "RetroAchievements account username",
+                    "type": "text",
+                    "default": "",
+                },
+                {
+                    "name": "API Key",
+                    "id": "raApiKey",
+                    "description": "RetroAchievements web API key",
+                    "type": "text",
+                    "default": "",
+                },
             ]
         }
     ]

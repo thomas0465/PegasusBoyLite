@@ -16,6 +16,9 @@ Item {
     // Add settings here to auto load from Pegasus
     property var settingsList: [
         "theme",
+	"raUsername",
+	"raApiKey",
+
         "lastPlayedDays",
         "itemListRows",
         "itemListWidth",

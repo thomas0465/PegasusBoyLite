@@ -123,12 +123,9 @@ FocusScope {
                 focus: false
 
                 //width: (parent.width * (themeSettings.itemListWidth / 100))
-		width:parent.width * .96 *.7
+		width:parent.width * .96
                 
 		height: parent.height * (themeSettings.subMenuHeight / 100)
-                //columns: themeSettings.subMenuColumns
-		columns: 4
-
 
                 anchors.left: parent.left
                anchors.leftMargin: parent.width * 0.02
@@ -209,9 +206,15 @@ FocusScope {
                     font.pixelSize: parent.height * .08
                     color: themeData.colorTheme[theme].light
 
+
                     text: {
-                        return "Default: " +
-                        settingsListView.model.get(settingsListView.currentIndex).default;
+                        if (settingsListView.model.get(settingsListView.currentIndex).default !== ""){
+                            return "Default: " +
+                            settingsListView.model.get(settingsListView.currentIndex).default;
+                        }else{
+                            return ""
+                        }
+
                     }
 
 Component.onCompleted: viewcreated = true;

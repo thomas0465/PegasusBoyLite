@@ -3,8 +3,26 @@ import QtQuick 2.15
 Item {
     id: root
 
+    signal achievementsReady()
+    signal achievementsError(string reason)
+
     property string statusMessage: ""
     property bool statusVisible: false
+
+    // Populated on a successful fetch - the UI panel binds to these.
+    property string gameTitle: ""
+    property var achievementsList: []
+
+    // Derived counts - recompute automatically whenever achievementsList
+    // is reassigned (ie. after every fetch).
+    property int achievementsTotal: achievementsList.length
+    property int achievementsUnlocked: {
+        var count = 0
+        for (var i = 0; i < achievementsList.length; i++) {
+            if (achievementsList[i].DateEarned) { count++ }
+        }
+        return count
+    }
 
     property var consoleList: null
     property var gameListCache: ({})
@@ -96,8 +114,7 @@ Item {
         }
 
         if (!ids.length) {
-            console.error("RA: no console match for \"" + title + "\" - tried shortnames: " + shortNames.join(", "))
-            showStatus("RA: no console match for \"" + title + "\" - tried shortnames:"  + shortNames.join(", "))
+            reportError("no console match for \"" + title + "\" - tried shortnames: " + shortNames.join(", "))
         }
 
         return ids
@@ -106,8 +123,7 @@ Item {
     // Tries each console in order until one has a matching game title.
     function tryConsoles(consoleIds, index, title, callback) {
         if (index >= consoleIds.length) {
-            console.error("RA: no game match for \"" + title + "\" across " + consoleIds.length + " console(s): " + consoleIds.join(", "))
-            showStatus("RA: no game match for \"" + title + "\" (checked " + consoleIds.length + " console(s))")
+            reportError("no game match for \"" + title + "\" (checked " + consoleIds.length + " console(s))")
             callback(null)
             return
         }
@@ -169,25 +185,46 @@ Item {
                 + "&g=" + gameId + "&u=" + themeSettings.raUsername
 
         getJson(url, function(data) {
-            var total = 0
-            var unlocked = 0
-            for (var id in data.Achievements) {
-                total++
-                if (data.Achievements[id].DateEarned) { unlocked++ }
-            }
-            showStatus("RA: " + data.Title + " — " + unlocked + "/" + total)
+            gameTitle = data.Title
+            achievementsList = buildAchievementsList(data)
+            achievementsReady()
         })
+    }
+
+    function buildAchievementsList(data) {
+        var arr = []
+        for (var id in data.Achievements) {
+            arr.push(data.Achievements[id])
+        }
+        arr.sort(function(a, b) {
+            return (a.DisplayOrder || 0) - (b.DisplayOrder || 0)
+        })
+        return arr
     }
 
     function getJson(url, callback) {
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
         xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                callback(JSON.parse(xhr.responseText))
+            if (xhr.readyState !== XMLHttpRequest.DONE) { return }
+
+            if (xhr.status !== 200) {
+                reportError("request failed (HTTP " + xhr.status + ")")
+                return
             }
+
+            callback(JSON.parse(xhr.responseText))
+        }
+        xhr.onerror = function() {
+            reportError("network error")
         }
         xhr.send()
+    }
+
+    function reportError(msg) {
+        console.error("RA: " + msg)
+        showStatus("RA: " + msg)
+        achievementsError(msg)
     }
 
     function showStatus(msg) {

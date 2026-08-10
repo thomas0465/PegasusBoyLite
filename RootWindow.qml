@@ -3,7 +3,6 @@ import SortFilterProxyModel 0.2
 import QtMultimedia 5.9
 
 import "Logger.js" as Logger
-import "Components/Achievements"
 
 
 Item {

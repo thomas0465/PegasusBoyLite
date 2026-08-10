@@ -46,12 +46,6 @@ FocusScope {
 	}
 
 	SoundEffect {
-		id: navSound2;
-		source: 'assets/sound/click.wav';
-		volume: .2;
-	}
-
-	SoundEffect {
 		id: favSound;
 		source: 'assets/sound/favo.wav';
 		volume: .6 ;
@@ -373,8 +367,8 @@ FocusScope {
 
 
     if (api.keys.isPageUp(event)) {
-        event.accepted = true
-        achievements.fetchAchievementsForGame(currentGame)
+         event.accepted = true
+        achievementsPanel.open(currentGame)
         return
     }
 
@@ -593,7 +587,7 @@ FocusScope {
                onCurrentIndexChanged:{Logger.info("gamesListView:modelEpoch:" + model.get(currentIndex).lastPlayedEpoch)
 		
 	        if(viewcreated && themeSettings.soundslist && keyup){
-                navSound2.play()
+                navSound.play()
             }
 
 	        if(viewcreated && keyup){
@@ -616,9 +610,10 @@ FocusScope {
             rows: gamesListLoader.item.rows
         }
 
-                    Achievements {
-    id: achievements
-    anchors.fill: parent   // so the banner can center itself
+AchievementsPanel {
+    id: achievementsPanel
+    z: 1000
+    onClosed: gamesListLoader.item.forceActiveFocus()
 }
 
                     Timer {
