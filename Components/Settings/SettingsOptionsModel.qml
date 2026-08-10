@@ -425,6 +425,13 @@ Item {
         {
             "name": "RetroAchievements",
             "settings": [
+                                {
+                    "name": "Enable RetroAchievements",
+                    "id": "enableRA",
+                    "description": "Enable RetroAchievements, press page down on the game list to load RetroAchievements",
+                    "type": "bool",
+                    "default": "Disable",
+                },  
                 {
                     "name": "Username",
                     "id": "raUsername",
