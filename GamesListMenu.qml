@@ -701,7 +701,11 @@ AchievementsPanel {
             Text {
 
                 id: t2
-                text: (gamesListLoader.item.currentIndex + 1) + "/" + gamesListModelLoader.item.count
+    text: achievementsPanel.contentOpen
+        ?  (achievementsPanel.listView.currentIndex + 1) + "/" + achievementsPanel.listView.count
+        : (gamesListLoader.item.currentIndex + 1) + "/" + gamesListModelLoader.item.count
+
+
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;

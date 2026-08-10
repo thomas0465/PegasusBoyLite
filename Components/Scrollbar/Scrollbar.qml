@@ -34,8 +34,8 @@ Item {
         }
 
         Component.onCompleted: {
-            Logger.debug("Scrollbar:parent:height:" + parent.height);
-            Logger.debug("Scrollbar:visibleArea:heightRatio:" + visibleArea.heightRatio);
+            //Logger.debug("Scrollbar:parent:height:" + parent.height);
+            //Logger.debug("Scrollbar:visibleArea:heightRatio:" + visibleArea.heightRatio);
         }
 
     }
