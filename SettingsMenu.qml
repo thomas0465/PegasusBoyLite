@@ -328,6 +328,7 @@ Component.onCompleted: viewcreated = true;
                     rightMargin: parent.width * 0.05
                 }
 
+
                 model: settingsListView.model.get(settingsListView.currentIndex)
 
             }

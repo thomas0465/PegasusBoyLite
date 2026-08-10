@@ -11,9 +11,18 @@ FocusScope {
     property alias model: optionsRoot.settingModel
 
     onActiveFocusChanged: {
-        // Use a single Accept press for text settings
-        if (activeFocus && optionsRoot.settingModel.type === "text") {
+        // Explicit, self-healing focus routing. settingsListView's own
+        // "focus: true" binding gets permanently destroyed the first time
+        // textInput.forceActiveFocus() steals focus away from it (Qt
+        // imperatively overwrites the binding to make room, which severs
+        // it for good) - so we can't rely on that default anymore. Always
+        // decide where focus goes explicitly instead.
+        if (!activeFocus) { return }
+
+        if (optionsRoot.settingModel.type === "text") {
             textInput.forceActiveFocus()
+        } else {
+            settingsListView.forceActiveFocus()
         }
     }
 
@@ -29,12 +38,20 @@ FocusScope {
         Keys.onPressed: {
             if (optionsRoot.settingModel.type === "text") {
                 if (api.keys.isAccept(event) && !textInput.activeFocus) {
-                    event.accepted = true
+                    
                     textInput.forceActiveFocus()
                     return
                 }
-                if (api.keys.isCancel(event)) {
+
+                if (api.keys.isAccept(event) && textInput.activeFocus) {
                     themeSettings.saveSetting(optionsRoot.settingModel.id, textInput.text)
+                    textInput.focus = false
+                    return
+                }
+
+                if (api.keys.isCancel(event)) {
+                    //themeSettings.saveSetting(optionsRoot.settingModel.id, textInput.text)
+                    textInput.text = themeSettings[settingModel.id]
                     textInput.focus = false
                     // No event.accepted - cancel button action goes up to SettingsMenu.qml's cancel action
                     return
@@ -128,13 +145,15 @@ FocusScope {
                     left: parent.left
                     right: parent.right
                     top: parent.top
-                    topMargin: parent.height * -0.5
-                    leftMargin: parent.width * 0.02
+                    topMargin: parent.height * -0.7
+                    leftMargin: parent.width * -0.05
                     rightMargin: parent.width * 0.02
                 }
-                height: parent.height * 0.15
+                height: parent.height * 0.2
 
-                color: themeData.colorTheme[theme].dark
+                //white out input when on API key and not inputting
+                color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key') ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].background
+
                 border.width: 1
                 border.color: textInput.activeFocus ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].light
 
@@ -148,13 +167,8 @@ FocusScope {
                     clip: true
                     font.family: themeSettings.font.customFont
                     font.pixelSize: parent.height * 0.5
-                    color: themeData.colorTheme[theme].primary
+                    color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key') ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].primary
 
-                    onAccepted: {
-                        // Enter/Return on an attached keyboard confirms and saves
-                        themeSettings.saveSetting(optionsRoot.settingModel.id, text)
-                        focus = false
-                    }
                 }
             }
 
@@ -163,15 +177,19 @@ FocusScope {
                     top: textInputBackground.bottom
                     topMargin: parent.height * 0.02
                     left: parent.left
-                    leftMargin: parent.width * 0.02
+                    leftMargin: parent.width * -0.05
+                    right: parent.right
+                    rightMargin: parent.width * 0.02
                 }
+                                    wrapMode: Text.WordWrap
 
                 text: textInput.activeFocus
-                    ? "Type your text, then press Enter or Cancel to save"
-                    : "Press Accept to edit, Cancel to save and exit"
+                    ? "Input text, press Enter to save, and Cancel to cancel"
+                    : "Press Enter to begin inputting text"
                 font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.08
                 color: themeData.colorTheme[theme].light
+                
             }
         }
 

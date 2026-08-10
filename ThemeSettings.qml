@@ -16,8 +16,10 @@ Item {
     // Add settings here to auto load from Pegasus
     property var settingsList: [
         "theme",
-	"raUsername",
-	"raApiKey",
+	    
+        "raUsername",
+	    "raApiKey",
+        "enableRA",
 
         "lastPlayedDays",
         "itemListRows",
@@ -69,6 +71,7 @@ Item {
         "replacePar"
     ]
 
+    property bool enableRA: false
     property string raUsername: ""
     property string raApiKey: ""
 

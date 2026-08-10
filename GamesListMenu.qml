@@ -366,7 +366,7 @@ FocusScope {
             //}
 
 
-    if (api.keys.isPageUp(event) && singleimageview2 == 0) {
+    if (api.keys.isPageUp(event) && singleimageview2 == 0 && themeSettings.enableRA) {
          event.accepted = true
         achievementsPanel.open(currentGame)
         return
@@ -551,6 +551,7 @@ FocusScope {
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.02
             anchors.bottom:parent.bottom
+            anchors.bottomMargin: themeSettings.footeroffset 
 
             width: parent.width * (themeSettings.itemListWidth / 100)
 
@@ -637,7 +638,7 @@ AchievementsPanel {
         Rectangle {
             width: t.width + 2.5
             height:t.height + 3
-            y:parent.height + 5
+            y:parent.height + 5 - themeSettings.footeroffset
 
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.02
@@ -649,7 +650,7 @@ AchievementsPanel {
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;
-                anchors.bottomMargin: 1.5 + themeSettings.footeroffset
+                anchors.bottomMargin: 1.5 
 
                 opacity: (themeSettings.showClock) ? 1 : 0
                 font.family: themeSettings.font.customFont
@@ -701,7 +702,11 @@ AchievementsPanel {
             Text {
 
                 id: t2
-                text: (gamesListLoader.item.currentIndex + 1) + "/" + gamesListModelLoader.item.count
+    text: achievementsPanel.contentOpen
+        ?  (achievementsPanel.listView.currentIndex + 1) + "/" + achievementsPanel.listView.count
+        : (gamesListLoader.item.currentIndex + 1) + "/" + gamesListModelLoader.item.count
+
+
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;
