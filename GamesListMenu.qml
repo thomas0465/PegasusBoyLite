@@ -366,7 +366,7 @@ FocusScope {
             //}
 
 
-    if (api.keys.isPageUp(event)) {
+    if (api.keys.isPageUp(event) && singleimageview2 == 0) {
          event.accepted = true
         achievementsPanel.open(currentGame)
         return

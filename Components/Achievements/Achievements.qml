@@ -39,14 +39,15 @@ Item {
         "gbc": ["game boy color"],
         "gba": ["game boy advance"],
         "gameboy": ["game boy", "game boy color", "game boy advance"],
-                "gb hacks": ["game boy", "game boy color", "game boy advance"],
+        "gb hacks": ["game boy", "game boy color", "game boy advance"],
         "n64": ["nintendo 64"],
         "genesis": ["mega drive"],
         "megadrive": ["mega drive"],
         "md": ["mega drive"],
         "mastersystem": ["master system"],
         "psx": ["playstation"],
-        "arcade": ["arcade"]
+        "arcade": ["arcade"],
+        "homebrew": ["game boy", "game boy color", "game boy advance"]
     })
 
     // Manual overrides for titles that don't match automatically. Key is
@@ -68,7 +69,7 @@ Item {
         checkConsoles(shortNames, searchTitle, function(consoleIds) {
             if (!consoleIds.length) { return }
 
-            tryConsoles(consoleIds, 0, searchTitle, function(gameId) {
+            tryConsoles(shortNames, consoleIds, 0, searchTitle, function(gameId) {
                 if (!gameId) { return }
 
                 fetchGameAchievements(gameId)
@@ -114,16 +115,16 @@ Item {
         }
 
         if (!ids.length) {
-            reportError("no console match for \"" + title + "\" - tried shortnames: " + shortNames.join(", "))
+            reportError("No console match. Tried: " + shortNames.join(", "))
         }
 
         return ids
     }
 
     // Tries each console in order until one has a matching game title.
-    function tryConsoles(consoleIds, index, title, callback) {
+    function tryConsoles(shortNames, consoleIds, index, title, callback) {
         if (index >= consoleIds.length) {
-            reportError("no game match for \"" + title + "\" (checked " + consoleIds.length + " console(s))")
+            reportError("No match for \"" + title + "\". Checked: " + shortNames.join(", "))
             callback(null)
             return
         }
@@ -132,7 +133,7 @@ Item {
             if (gameId) {
                 callback(gameId)
             } else {
-                tryConsoles(consoleIds, index + 1, title, callback)
+                tryConsoles(shortNames, consoleIds, index + 1, title, callback)
             }
         })
     }
@@ -175,7 +176,7 @@ Item {
         return title.toLowerCase()
         .replace(/~.*?~/g, "")                             // ignore ~hack~ and ~homebrew~
         .replace(/\(.*?\)/g, "")                           // ignore ()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip all accents generically
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip accents 
         .replace(/[^a-z0-9]/g, "")                         // ignore punctuation
     }
 
@@ -185,6 +186,9 @@ Item {
                 + "&g=" + gameId + "&u=" + themeSettings.raUsername
 
         getJson(url, function(data) {
+            if(data.Title == null){
+                reportError("Achievements not found for account, check if your Username is correct")
+            }
             gameTitle = data.Title
             achievementsList = buildAchievementsList(data)
             achievementsReady()
@@ -196,6 +200,7 @@ Item {
         for (var id in data.Achievements) {
             arr.push(data.Achievements[id])
         }
+
         arr.sort(function(a, b) {
             return (a.DisplayOrder || 0) - (b.DisplayOrder || 0)
         })
@@ -209,7 +214,7 @@ Item {
             if (xhr.readyState !== XMLHttpRequest.DONE) { return }
 
             if (xhr.status !== 200) {
-                reportError("request failed (HTTP " + xhr.status + ")")
+                reportError("Request failed (HTTP " + xhr.status + "). Check your Username and API key")
                 return
             }
 
@@ -249,12 +254,12 @@ Item {
         radius: 4
 
         anchors {
-            top: parent.top
-            horizontalCenter: parent.horizontalCenter
-            topMargin: parent.height * 0.03
+            bottom: parent.bottom
+
+            bottomMargin: parent.height * 0.03
         }
 
-        color: themeData.colorTheme[theme].dark
+        color: themeData.colorTheme[theme].light
         border.color: themeData.colorTheme[theme].primary
         border.width: 1
         z: 999
@@ -262,9 +267,9 @@ Item {
         Text {
             id: statusText
             anchors.centerIn: parent
-            text: root.statusMessage
+            text:  root.statusMessage
             font.family: themeSettings.font.customFont
-            font.pixelSize: 18
+            font.pixelSize: 20 + ( themeSettings.mainFontSize - 20)
             color: themeData.colorTheme[theme].primary
         }
     }

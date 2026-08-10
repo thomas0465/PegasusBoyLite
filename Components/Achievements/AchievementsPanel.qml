@@ -104,6 +104,16 @@ FocusScope {
             return
         }
 
+        if (api.keys.isCancel(event)) {
+            event.accepted = true;
+            return
+        }
+
+        if (api.keys.isAccept(event)) {
+            event.accepted = true;
+            return
+        }
+
         if (event.key === Qt.Key_Right) {
             event.accepted = true
             return
@@ -138,6 +148,26 @@ FocusScope {
         Behavior on opacity { NumberAnimation { duration: 150 } }
     }
 
+        
+    Text {
+        id: panelTitleNum
+        visible: contentOpen
+
+        anchors {
+            top: parent.top
+            topMargin: parent.height * 0.03
+            right: parent.right
+            leftMargin: 10
+        }
+
+        text: fetcher.achievementsUnlocked + "/" + fetcher.achievementsTotal
+        wrapMode: Text.WordWrap
+        font.family: themeSettings.font.customFont
+        font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
+        font.bold: true
+        color: themeData.colorTheme[theme].primary
+    }
+
     Text {
         id: panelTitle
         visible: contentOpen
@@ -146,18 +176,18 @@ FocusScope {
             top: parent.top
             topMargin: parent.height * 0.03
             left: parent.left
-            right: parent.right
+            right: panelTitleNum.left
             leftMargin: parent.width * 0.05
-            rightMargin: parent.width * 0.05
         }
 
-        text: fetcher.gameTitle + "  (" + fetcher.achievementsUnlocked + "/" + fetcher.achievementsTotal + ")"
+        text: fetcher.gameTitle 
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
         font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
         font.bold: true
         color: themeData.colorTheme[theme].primary
     }
+
 
 
     Scrollbar {
@@ -208,7 +238,7 @@ FocusScope {
             id: delegateRoot
 
             width: ListView.view.width
-            height: root.height/themeSettings.itemListRows
+            height: Math.max(root.height/themeSettings.itemListRows, achTitle.implicitHeight + achDesc.implicitHeight + 10)
 
             property bool unlocked: !!modelData.DateEarned
             property string badgeUrl: "https://media.retroachievements.org/Badge/"
@@ -220,8 +250,8 @@ FocusScope {
             Image {
                 id: badgeImage
 
-                width: parent.height * .8
-                height: parent.height * .8
+                width: root.height/themeSettings.itemListRows * .8
+                height: root.height/themeSettings.itemListRows * .8
 
                 anchors {
                     top: parent.top
@@ -248,7 +278,7 @@ FocusScope {
 
                 text: modelData.Points 
                 font.family: themeSettings.font.customFont
-                font.pixelSize: 20 + (themeSettings.mainFontSize - 20)
+                font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
                 font.bold: true
 
                 color: unlocked ? 
@@ -271,7 +301,7 @@ FocusScope {
                     top: parent.top
                     topMargin: 8
                     left: badgeImage.right
-                    right: parent.right
+                    right: pointsText.left
                     leftMargin: 10
                     rightMargin: 10
                 }
@@ -279,7 +309,7 @@ FocusScope {
                 text: modelData.Title 
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
-                font.pixelSize: parent.height * 0.4 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
                 font.bold: true
                 
                 color: unlocked ? 
@@ -301,7 +331,7 @@ FocusScope {
                 anchors {
                     top: achTitle.bottom
                     left: badgeImage.right
-                    right: parent.right
+                    right: pointsText.left
                     leftMargin: 10
                     rightMargin: 10
                 }
@@ -309,7 +339,7 @@ FocusScope {
                 text: modelData.Description
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
-                font.pixelSize:  parent.height * 0.2 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize:  root.height/themeSettings.itemListRows * 0.3 + ( themeSettings.mainFontSize - 20)
                 color: delegateRoot.ListView.isCurrentItem
                     ? themeData.colorTheme[theme].background
                     : themeData.colorTheme[theme].light

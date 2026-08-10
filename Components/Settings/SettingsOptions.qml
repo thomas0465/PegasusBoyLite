@@ -5,9 +5,17 @@ import "../Delegates"
 import "../../Logger.js" as Logger
 
 FocusScope {
+    id: root
 
     // property alias model: settingsListView.model
     property alias model: optionsRoot.settingModel
+
+    onActiveFocusChanged: {
+        // Use a single Accept press for text settings
+        if (activeFocus && optionsRoot.settingModel.type === "text") {
+            textInput.forceActiveFocus()
+        }
+    }
 
     Item {
         id: optionsRoot
@@ -20,15 +28,15 @@ FocusScope {
 
         Keys.onPressed: {
             if (optionsRoot.settingModel.type === "text") {
-                if (api.keys.isAccept(event)) {
+                if (api.keys.isAccept(event) && !textInput.activeFocus) {
                     event.accepted = true
                     textInput.forceActiveFocus()
                     return
                 }
                 if (api.keys.isCancel(event)) {
-                    event.accepted = true
                     themeSettings.saveSetting(optionsRoot.settingModel.id, textInput.text)
                     textInput.focus = false
+                    // No event.accepted - cancel button action goes up to SettingsMenu.qml's cancel action
                     return
                 }
                 return
@@ -120,7 +128,7 @@ FocusScope {
                     left: parent.left
                     right: parent.right
                     top: parent.top
-                    topMargin: parent.height * 0.1
+                    topMargin: parent.height * -0.5
                     leftMargin: parent.width * 0.02
                     rightMargin: parent.width * 0.02
                 }
@@ -162,7 +170,7 @@ FocusScope {
                     ? "Type your text, then press Enter or Cancel to save"
                     : "Press Accept to edit, Cancel to save and exit"
                 font.family: themeSettings.font.customFont
-                font.pixelSize: parent.height * 0.05
+                font.pixelSize: parent.height * 0.08
                 color: themeData.colorTheme[theme].light
             }
         }

@@ -127,6 +127,7 @@ FocusScope {
                 
 		height: parent.height * (themeSettings.subMenuHeight / 100)
 
+
                 anchors.left: parent.left
                anchors.leftMargin: parent.width * 0.02
 
@@ -135,7 +136,7 @@ FocusScope {
 
             }
 
-
+            //main left side settings list
             ItemList {
                 id: settingsListView
                 focus: settingsMenuRoot.focus
@@ -171,7 +172,7 @@ FocusScope {
                     topMargin: parent.height * 0.02
                     left: settingsListView.right
                     leftMargin: parent.width * 0.02
-                    bottom: settingsOptions.top
+                    bottom: settingsOptions.top 
                     bottomMargin: parent.height * 0.02
                     right: parent.right
                     rightMargin: parent.width * 0.02
@@ -189,12 +190,13 @@ FocusScope {
                     wrapMode: Text.WordWrap
 
                     text: {
-			//description
+			        //description
                         return settingsListView.model.get(settingsListView.currentIndex).description;
                     }
-		    onTextChanged: {
-				if(viewcreated && themeSettings.soundslist){navSound2.play()}
-				}
+		            
+                    onTextChanged: {
+				        if(viewcreated && themeSettings.soundslist){navSound2.play()}
+				    }
                 }
 
                 Text {
