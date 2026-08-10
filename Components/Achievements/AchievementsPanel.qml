@@ -29,9 +29,11 @@ import "../Scrollbar"
 //   }
 
 
+//TODO: maybe? Add wrap to top and bottom of list, add remember what place you were in when loading list
+
 
 FocusScope {
-    id: root
+    id: achievementsPanelRoot
 
 	SoundEffect {
 		id: navSound;
@@ -42,6 +44,7 @@ FocusScope {
     signal closed()
 
     property bool contentOpen: false
+    property bool enlargeBadge: false
 
     width: parent.width * (themeSettings.itemListWidth / 100) + (parent.width * 0.02)
 
@@ -67,11 +70,11 @@ FocusScope {
         anchors.fill: parent
 
         onAchievementsReady: {
-            root.contentOpen = true
-            root.forceActiveFocus()
+            achievementsPanelRoot.contentOpen = true
+            achievementsPanelRoot.forceActiveFocus()
         }
         onAchievementsError: {
-            root.contentOpen = false
+            achievementsPanelRoot.contentOpen = false
         }
     }
 
@@ -80,7 +83,7 @@ FocusScope {
 
         if (api.keys.isPageUp(event)) {
             event.accepted = true
-            root.close()
+            achievementsPanelRoot.close()
             return
         }
     }
@@ -106,6 +109,7 @@ FocusScope {
 
         if (api.keys.isCancel(event)) {
             event.accepted = true;
+            enlargeBadge = !enlargeBadge
             return
         }
 
@@ -135,7 +139,8 @@ FocusScope {
         }
 
         if (api.keys.isNextPage(event)) {
-            event.accepted = true;
+            //allow going to settings directly
+            achievementsPanelRoot.close()
             return
         }
     }
@@ -157,15 +162,19 @@ FocusScope {
             top: parent.top
             topMargin: parent.height * 0.03
             right: parent.right
-            leftMargin: 10
+            leftMargin: 20
+            rightMargin: parent.width * 0.04
+            
         }
 
         text: fetcher.achievementsUnlocked + "/" + fetcher.achievementsTotal
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20) 
         font.bold: true
-        color: themeData.colorTheme[theme].primary
+        color: themeData.colorTheme[theme].light
+
+
     }
 
     Text {
@@ -180,10 +189,10 @@ FocusScope {
             leftMargin: parent.width * 0.05
         }
 
-        text: fetcher.gameTitle 
+        text: fetcher.gameTitle.replace(/~.*?~/g, "")  
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
         font.bold: true
         color: themeData.colorTheme[theme].primary
     }
@@ -206,6 +215,8 @@ FocusScope {
     }
 
 
+
+
     ListView {
         id: listView
         visible: contentOpen
@@ -217,6 +228,7 @@ FocusScope {
             right: parent.right
             bottom: parent.bottom
             leftMargin: parent.width * 0.04
+            rightMargin: parent.width * 0.04
 
         }
         
@@ -231,31 +243,69 @@ FocusScope {
         highlightMoveDuration: 0
     }
 
+    Rectangle {
+        id:currentAchBackground
+        visible: enlargeBadge && contentOpen ? 1 : 0
+        z:-100
+
+        width: root.width
+        height: parent.height/1.89
+        x: (root.width * (themeSettings.itemListWidth / 100) + (parent.width * 0.02))
+        y:parent.height/1.89;
+        color: themeData.colorTheme[theme].background
+
+    }
+
+Image {
+    id: currentBadgeImage
+
+    visible: enlargeBadge && contentOpen ? 1 : 0
+
+    width: parent.height/3
+    height: parent.height/3
+        x: parent.width + (root.width - parent.width - width) / 2
+
+        y:parent.height - parent.height/2.5;
+
+    property var currentAchievement: fetcher.achievementsList.length > 0
+        ? fetcher.achievementsList[listView.currentIndex]
+        : null
+
+    source: currentAchievement
+        ? "https://media.retroachievements.org/Badge/" + currentAchievement.BadgeName + ".png"
+        : ""
+
+    fillMode: Image.PreserveAspectFit
+    asynchronous: true
+    smooth: true
+}
+
     Component {
         id: achievementDelegate
+
 
         Rectangle {
             id: delegateRoot
 
             width: ListView.view.width
-            height: Math.max(root.height/themeSettings.itemListRows, achTitle.implicitHeight + achDesc.implicitHeight + 10)
+            height: Math.max(achievementsPanelRoot.height/themeSettings.itemListRows + 18, achTitle.implicitHeight + achDesc.implicitHeight + 23)
 
             property bool unlocked: !!modelData.DateEarned
             property string badgeUrl: "https://media.retroachievements.org/Badge/"
-                + modelData.BadgeName + ".png"
-                //(unlocked ? ".png" : "_lock.png")
+                + modelData.BadgeName + (unlocked ? ".png" : "_lock.png")
 
             color: ListView.isCurrentItem ? themeData.colorTheme[theme].primary : "transparent"
+
 
             Image {
                 id: badgeImage
 
-                width: root.height/themeSettings.itemListRows * .8
-                height: root.height/themeSettings.itemListRows * .8
+                width: achievementsPanelRoot.height/themeSettings.itemListRows
+                height: achievementsPanelRoot.height/themeSettings.itemListRows
 
                 anchors {
                     top: parent.top
-                    topMargin: 8
+                    topMargin:  achievementsPanelRoot.height/themeSettings.itemListRows * .1
                     left: parent.left
                     leftMargin: 10
                 }
@@ -278,7 +328,7 @@ FocusScope {
 
                 text: modelData.Points 
                 font.family: themeSettings.font.customFont
-                font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
                 font.bold: true
 
                 color: unlocked ? 
@@ -306,10 +356,10 @@ FocusScope {
                     rightMargin: 10
                 }
 
-                text: modelData.Title 
+                text: modelData.Title
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
-                font.pixelSize: root.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
                 font.bold: true
                 
                 color: unlocked ? 
@@ -339,9 +389,9 @@ FocusScope {
                 text: modelData.Description
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
-                font.pixelSize:  root.height/themeSettings.itemListRows * 0.3 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize:  achievementsPanelRoot.height/themeSettings.itemListRows * 0.3 + ( themeSettings.mainFontSize - 20)
                 color: delegateRoot.ListView.isCurrentItem
-                    ? themeData.colorTheme[theme].background
+                    ? themeData.colorTheme[theme].light
                     : themeData.colorTheme[theme].light
             }
         }
