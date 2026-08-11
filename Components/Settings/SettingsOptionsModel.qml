@@ -93,7 +93,7 @@ Item {
                     "id": "backgroundGradientInvert",
                     "description": "Invert the background gradient to start at the top",
                     "type": "bool",
-                    "default": "Disabled",
+                    "default": "Disable",
                 },
                                 {
 		    "name": "Main List - Font Size",
@@ -396,10 +396,10 @@ Item {
                     "id": "shaderScanlinesOpacity",
                     "description": "The Opacity of the scanlines",
                     "type": "range",
-                    "default": "5",
-                    "min": 1,
-                    "max": 10,
-                    "step": 1,
+                    "default": "50",
+                    "min": 5,
+                    "max": 98,
+                    "step": 3,
                 },
                 {
                     "name": "Scanlines - Highlight",

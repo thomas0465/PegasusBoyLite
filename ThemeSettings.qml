@@ -121,7 +121,7 @@ Item {
     property bool shaderScanlinesEnable: true
     property bool shaderScanlinesGrid: false
     property int shaderScanlinesImageSize: 180
-    property int shaderScanlinesOpacity: 5
+    property int shaderScanlinesOpacity: 50
     property int shaderScanlinesGlow: 15
     property bool shaderScanlinesCurve: false
     property bool shaderAberrationEnable: true

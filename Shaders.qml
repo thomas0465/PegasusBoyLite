@@ -35,7 +35,7 @@ Item {
         property real phase: 0.5
         property real lines_black: 0.3
         property real lines_white: 1.0
-        property real scanlinesOpacity: themeSettings.shaderScanlinesOpacity/10
+        property real scanlinesOpacity: themeSettings.shaderScanlinesOpacity/100
         property real scanlineGlow: themeSettings.shaderScanlinesGlow/100
         // Pixel-grid overlay: combines the horizontal scanlines with a matching
         // vertical pattern. Hardcoded true for now, swap for a themeSettings
