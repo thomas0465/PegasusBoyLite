@@ -105,105 +105,114 @@ FocusScope {
 
             //change collections
             if (event.key == Qt.Key_Left && subMenuEnable) {
-		        event.accepted = true;
-                if (collectionsMenuLoader.item.listView.currentIndex - 1 >= 0) {
-		            viewcreated = false
-                    pagecreated = true
-                    collectionsMenuLoader.item.listView.decrementCurrentIndex();
+                event.accepted = true;
+                viewcreated = false
+                pagecreated = true
 
-                    if(gamesListLoader.item.currentIndex >= 0 && setplace){
-                        place = gamesListLoader.item.currentIndex
-                    }
+                var newLeftIndex = collectionsMenuLoader.item.listView.currentIndex - 1
+                if (newLeftIndex < 0 && themeSettings.subMenuWrap) {
+                    newLeftIndex = collectionsMenuLoader.item.listView.count - 1
+                }
 
-                    if(currentCollection.name == "♥ Favorites"){
-                        favFilter = true
-                    }
-                    if(currentCollection.name != "♥ Favorites"){
-                        favFilter = false
-                    }
+                if(newLeftIndex >= 0){
+                collectionsMenuLoader.item.listView.currentIndex = newLeftIndex
 
-                    if(currentCollection.name == "Recent"){
-                        recentFilter = true
-                    }
-                    if(currentCollection.name != "Recent"){
-                        recentFilter = false
-                    }
+                if(gamesListLoader.item.currentIndex >= 0 && setplace){
+                    place = gamesListLoader.item.currentIndex
+                }
 
-                    // Hacky force refresh of game media
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
-                    gamesListLoader.active = false
-                    gamesListLoader.active = true
+                if(currentCollection.name == "♥ Favorites"){
+                    favFilter = true
+                }
+                if(currentCollection.name != "♥ Favorites"){
+                    favFilter = false
+                }
 
-                    gamesListLoader.item.currentIndex = place;
+                if(currentCollection.name == "Recent"){
+                    recentFilter = true
+                }
+                if(currentCollection.name != "Recent"){
+                    recentFilter = false
+                }
 
-                    if(place >= gamesListModelLoader.item.count -1) {
-                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
+                // Hacky force refresh of game media
+                gamesMediaLoader.active = false
+                gamesMediaLoader.active = true
+                gamesListLoader.active = false
+                gamesListLoader.active = true
+                if(themeSettings.soundsmenu){
+                    navSound.play();
+                }
+                }
 
-                        setplace = false
-                    }
+                gamesListLoader.item.currentIndex = place;
 
-                    viewcreated = true
-                    
-                    
-                    Logger.debug("GamesListMenu:keys:left:currentSubMenu:" + currentCollection.name)
-                    if(themeSettings.soundsmenu){
-                        navSound.play();
-                    }
-                }	
+                if(place >= gamesListModelLoader.item.count -1) {
+                    gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
+                    setplace = false
+                }
 
+                viewcreated = true
 
-		
+                Logger.debug("GamesListMenu:keys:left:currentSubMenu:" + currentCollection.name)
+
                 return;
             }
-            
+
             if (event.key == Qt.Key_Right && subMenuEnable) {
                 event.accepted = true;
-                if (collectionsMenuLoader.item.listView.currentIndex + 1 < collectionsMenuLoader.item.listView.count) {
-                    viewcreated = false
-                    pagecreated = true
+                viewcreated = false
+                pagecreated = true
 
-                    collectionsMenuLoader.item.listView.incrementCurrentIndex();
-                        
-                    if(gamesListLoader.item.currentIndex > 0 && setplace){
-                        place = gamesListLoader.item.currentIndex
-                    }
-
-                    if(currentCollection.name == "♥ Favorites"){
-                        favFilter = true
-                    }
-                    if(currentCollection.name != "♥ Favorites"){
-                        favFilter = false
-                    }
-
-                    if(currentCollection.name == "Recent"){
-                        recentFilter = true
-                    }
-                    if(currentCollection.name != "Recent"){
-                        recentFilter = false
-                    }
-    
-                    // Hacky force refresh of game media
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
-                    gamesListLoader.active = false
-                    gamesListLoader.active = true
-
-                    gamesListLoader.item.currentIndex = place;
-                    if(place > gamesListModelLoader.item.count -1) {
-                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
-
-                        setplace = false
-                    }
-
-                    viewcreated = true
-
-                    Logger.debug("GamesListMenu:keys:right:currentSubMenu:" + currentCollection.name)
-                    if(themeSettings.soundsmenu){
-                        navSound.play();
-                    }
+                var newRightIndex = collectionsMenuLoader.item.listView.currentIndex + 1
+                if (newRightIndex >= collectionsMenuLoader.item.listView.count && themeSettings.subMenuWrap) {
+                    newRightIndex = 0
                 }
-		
+
+                if(newRightIndex < collectionsMenuLoader.item.listView.count){
+                collectionsMenuLoader.item.listView.currentIndex = newRightIndex
+                
+
+                if(gamesListLoader.item.currentIndex > 0 && setplace){
+                    place = gamesListLoader.item.currentIndex
+                }
+
+                if(currentCollection.name == "♥ Favorites"){
+                    favFilter = true
+                }
+                if(currentCollection.name != "♥ Favorites"){
+                    favFilter = false
+                }
+
+                if(currentCollection.name == "Recent"){
+                    recentFilter = true
+                }
+                if(currentCollection.name != "Recent"){
+                    recentFilter = false
+                }
+
+                // Hacky force refresh of game media
+                gamesMediaLoader.active = false
+                gamesMediaLoader.active = true
+                gamesListLoader.active = false
+                gamesListLoader.active = true
+
+                if(themeSettings.soundsmenu){
+                    navSound.play();
+                }
+                }
+
+                gamesListLoader.item.currentIndex = place;
+                if(place > gamesListModelLoader.item.count -1) {
+                    gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
+                    setplace = false
+                }
+
+                viewcreated = true
+
+                Logger.debug("GamesListMenu:keys:right:currentSubMenu:" + currentCollection.name)
+
+
                 return;
             }
 
@@ -366,7 +375,7 @@ FocusScope {
             //}
 
 
-    if (api.keys.isPageUp(event) && singleimageview2 == 0) {
+    if (api.keys.isPageUp(event) && singleimageview2 == 0 && themeSettings.enableRA) {
          event.accepted = true
         achievementsPanel.open(currentGame)
         return
@@ -551,6 +560,7 @@ FocusScope {
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.02
             anchors.bottom:parent.bottom
+            anchors.bottomMargin: themeSettings.footeroffset 
 
             width: parent.width * (themeSettings.itemListWidth / 100)
 
@@ -637,7 +647,7 @@ AchievementsPanel {
         Rectangle {
             width: t.width + 2.5
             height:t.height + 3
-            y:parent.height + 5
+            y:parent.height + 5 - themeSettings.footeroffset
 
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.02
@@ -649,7 +659,7 @@ AchievementsPanel {
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;
-                anchors.bottomMargin: 1.5 + themeSettings.footeroffset
+                anchors.bottomMargin: 1.5 
 
                 opacity: (themeSettings.showClock) ? 1 : 0
                 font.family: themeSettings.font.customFont
@@ -701,7 +711,11 @@ AchievementsPanel {
             Text {
 
                 id: t2
-                text: (gamesListLoader.item.currentIndex + 1) + "/" + gamesListModelLoader.item.count
+    text: achievementsPanel.contentOpen
+        ?  (achievementsPanel.listView.currentIndex + 1) + "/" + achievementsPanel.listView.count
+        : (gamesListLoader.item.currentIndex + 1) + "/" + gamesListModelLoader.item.count
+
+
 
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;

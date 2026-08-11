@@ -16,8 +16,10 @@ Item {
     // Add settings here to auto load from Pegasus
     property var settingsList: [
         "theme",
-	"raUsername",
-	"raApiKey",
+	    
+        "raUsername",
+	    "raApiKey",
+        "enableRA",
 
         "lastPlayedDays",
         "itemListRows",
@@ -58,6 +60,7 @@ Item {
         "soundsmenu",
         "wordwrap",
         "listwrap",
+        "subMenuWrap",
         "collectionscroll",
         "footerfontsize",
         "footeroffset",
@@ -69,6 +72,7 @@ Item {
         "replacePar"
     ]
 
+    property bool enableRA: false
     property string raUsername: ""
     property string raApiKey: ""
 
@@ -127,6 +131,7 @@ Item {
 
     property bool wordwrap:true
     property bool listwrap:true
+    property bool subMenuWrap: true
     property bool collectionscroll: true
     property int footerfontsize: 20
     property int footeroffset: 0

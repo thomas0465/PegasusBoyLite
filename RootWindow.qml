@@ -96,7 +96,7 @@ Item {
         anchors {
             top: menuLoader.bottom
             bottomMargin: (themeSettings.gamesListCounter || themeSettings.showClock || themeSettings.showBattery) ? themeSettings.footerfontsize + 3 + (parent.height * 0.03) : parent.height * 0.03 
-            bottom: parent.bottom
+            bottom: parent.bottom 
             left: parent.left
             right: parent.right
         }

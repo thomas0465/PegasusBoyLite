@@ -132,6 +132,13 @@ Item {
                    "type": "bool",
                    "default": "Enable",
                 },
+                                {
+                   "name": "Sub-Menu Wrap Around",
+                   "id": "subMenuWrap",
+                   "description": "Press left on the left-most collection to go to the right-most, and vice versa",
+                   "type": "bool",
+                   "default": "Enable",
+                },
                {
                    "name": "Word Wrap",
                    "id": "wordwrap",
@@ -162,7 +169,6 @@ Item {
                         { "value": "Hack-Regular" },
                         { "value": "Lemonmilk-Regular" },
                         { "value": "Minecraft" },
-                        { "value": "Pixeled" },
                         { "value": "Pixellari" },
                         { "value": "Roboto-Regular" },
                         { "value": "VCR_OSD" }
@@ -270,16 +276,16 @@ Item {
                     "step": 1,
                 },
 
-                // {
-		        //    "name": "Footer Offset",
-                //    "id": "footeroffset",
-                //    "description": "Offset of the footer from the bottom",
-                //    "type": "range",
-                //    "default": "0",
-                //    "min": -5,
-                //    "max": 30,
-                //    "step": 1,
-                //},
+                {
+		            "name": "Footer Offset",
+                    "id": "footeroffset",
+                    "description": "Offset of the footer from the bottom",
+                    "type": "range",
+                    "default": "0",
+                    "min": -5,
+                    "max": 30,
+                    "step": 1,
+                },
                 
                 {
                     "name": "Show Clock",
@@ -425,6 +431,13 @@ Item {
         {
             "name": "RetroAchievements",
             "settings": [
+                                {
+                    "name": "Enable RetroAchievements",
+                    "id": "enableRA",
+                    "description": "Enable RetroAchievements, press page down on the game list to load RetroAchievements",
+                    "type": "bool",
+                    "default": "Disable",
+                },  
                 {
                     "name": "Username",
                     "id": "raUsername",

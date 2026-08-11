@@ -23,12 +23,16 @@ Item {
                 id: subMenuText
                 text: model[textName]
 
-		verticalAlignment: Text.AlignCenter; 
+		//verticalAlignment: Text.AlignCenter; 
 
                 font.family: themeSettings.font.customFont
                 font.pixelSize: subMenuListView.fontSize
-                font.bold:  subMenuTextRect.ListView.isCurrentItem ? true: false
-                color: subMenuTextRect.ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].light
+                font.bold:  subMenuTextRect.
+                    ListView.isCurrentItem ? true: false
+                color: subMenuTextRect.
+                    ListView.isCurrentItem ? 
+                    themeData.colorTheme[theme].primary 
+                    : themeData.colorTheme[theme].light
                 //color: themeData.colorTheme[theme].primary
                 font.capitalization: Font.AllUppercase
                 
