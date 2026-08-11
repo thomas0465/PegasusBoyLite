@@ -22,7 +22,7 @@ Item {
 
             color: {
                 if (activeFocus) { return ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].background };
-                return ListView.isCurrentItem ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].background;
+                return ListView.isCurrentItem ? themeData.colorTheme[theme].light :  "transparent" ;
             }
 
             Rectangle {
@@ -39,7 +39,7 @@ Item {
 
                 color: {
                     if (activeFocus) { return gamesListRect.ListView.isCurrentItem ? themeData.colorTheme[theme].background : themeData.colorTheme[theme].primary };
-                    gamesListRect.ListView.isCurrentItem ? themeData.colorTheme[theme].background : themeData.colorTheme[theme].light;
+                    gamesListRect.ListView.isCurrentItem ?  "transparent" : themeData.colorTheme[theme].light;
                 }
                 visible: model.favorite !== undefined && model.favorite
                 //visible: modelData.favorite !== undefined && modelData.favorite

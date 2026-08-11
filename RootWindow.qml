@@ -53,11 +53,18 @@ Item {
         }
     }
 
+Gradient {
+    id: backgroundGradient
+    GradientStop { position: 0.0; color: themeData.colorTheme[theme].background}
+    GradientStop { position: 1.0; color: themeData.colorTheme[theme].secondary}
+}
+
     Rectangle {
         id: background
         width: parent.width
         height: parent.height
         color: themeData.colorTheme[theme].background
+        gradient: themeSettings.backgroundGradient ? backgroundGradient : null
     }
 
     property alias menuItem: menuLoader.item

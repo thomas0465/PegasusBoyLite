@@ -91,9 +91,11 @@ FocusScope {
 
 
             fontSize = utils.calculateFontSizeModel(subMenuListFont.font, 
-                (subMenuListView.width / subMenuListView.columns) * 0.8,
+                (subMenuListView.width / subMenuListView.columns) * 1.5,
                 subMenuListView.height, 
                 collectionNames.map((x) => x[subMenuDelegate.textName])
+
+
                 //model.map((x) => x[subMenuDelegate.textName])
                 // model.map((x) => x.name)
                 // model.toVarArray().map((x) => x.name)

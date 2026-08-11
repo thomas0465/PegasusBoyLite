@@ -249,7 +249,7 @@ Component.onCompleted: viewcreated = true;
 
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.02
-            color: themeData.colorTheme[theme].background
+            color: "transparent"
             opacity: 1
             Text {
                 id: t
@@ -276,7 +276,7 @@ Component.onCompleted: viewcreated = true;
             anchors.left: parent.left
             anchors.leftMargin: (parent.width * (themeSettings.itemListWidth / 100)) - (t3.width/1.2)
 
-            color: themeData.colorTheme[theme].background
+            color: "transparent"
             opacity: 1
             Text {
 

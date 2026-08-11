@@ -51,7 +51,6 @@ FocusScope {
                 }
 
                 if (api.keys.isCancel(event)) {
-
                     textInput.text = optionsRoot.editSnapshot
                     themeSettings.saveSetting(optionsRoot.settingModel.id, optionsRoot.editSnapshot)
                     textInput.focus = false
@@ -171,7 +170,6 @@ FocusScope {
                     font.pixelSize: parent.height * 0.5
                     color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key') ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].primary
 
-
                     // Saves continuously as you type, instead of depending
                     // on catching a specific "commit" event (Return key,
                     // editingFinished, etc.) - those depend on how input is
@@ -193,7 +191,6 @@ FocusScope {
                             optionsRoot.editSnapshot = text
                         }
                     }
-
                 }
             }
 

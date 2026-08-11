@@ -47,6 +47,14 @@ Item {
                 },
 
                 {
+                    "name": "Background Gradient",
+                    "id": "backgroundGradient",
+                    "description": "Enable the background gradient",
+                    "type": "bool",
+                    "default": "Disable",
+               },
+
+                {
                     "name": "Sounds - Menu",
                     "id": "soundsmenu",
                     "description": "Enable sounds when navigating the Menu and favoriting games",

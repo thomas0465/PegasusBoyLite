@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtGraphicalEffects 1.12
 
 import "../Settings"
+import "../Achievements"
 
 Item {
 
@@ -9,6 +10,7 @@ Item {
     required property bool imagetype
     required property bool imagebigview
     required property int singleimageview
+    required property bool enlargeBadge
 
     property int marginoffset: (themeSettings.gamesListCounter || themeSettings.showClock || themeSettings.showBattery) ? themeSettings.footerfontsize + 5 : 0
 
@@ -33,7 +35,7 @@ Item {
 
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
 
-        opacity: (singleimageview == 1) ? 0: 1;
+        opacity: (singleimageview == 1) ? 0: (!enlargeBadge ? 1 : 0);
 
     }
 

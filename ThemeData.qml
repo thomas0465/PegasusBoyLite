@@ -105,7 +105,7 @@ Item {
          "Black": {
             background: "#000000",
             primary: "#e9ecef",
-            secondary: "#8e8e8eff",
+            secondary: "#424242",
             light: "#6c757d",
             dark: "#000000",
         },

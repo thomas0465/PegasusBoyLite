@@ -162,7 +162,7 @@ FocusScope {
 
     Rectangle {
         anchors.fill: parent
-        color: themeData.colorTheme[theme].background
+        color: "transparent"
         opacity: contentOpen ? 1 : 0
         visible: opacity > 0
         Behavior on opacity { NumberAnimation { duration: 150 } }
@@ -263,18 +263,6 @@ FocusScope {
         highlightMoveDuration: 0
     }
 
-    Rectangle {
-        id:currentAchBackground
-        visible: enlargeBadge && contentOpen ? 1 : 0
-        z:-100
-
-        width: root.width
-        height: parent.height/1.89
-        x: (root.width * (themeSettings.itemListWidth / 100) + (parent.width * 0.02))
-        y:parent.height/1.89;
-        color: themeData.colorTheme[theme].background
-
-    }
 
 Image {
     id: currentBadgeImage

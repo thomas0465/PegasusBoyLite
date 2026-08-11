@@ -570,6 +570,7 @@ FocusScope {
             id: gamesListView
             ItemList {
                 focus: true
+                opacity: !achievementsPanel.contentOpen
 
                 rows: themeSettings.itemListRows
 
@@ -651,7 +652,7 @@ AchievementsPanel {
 
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.02
-            color: themeData.colorTheme[theme].background
+            color: "transparent"
             opacity: 1
             Text {
                 id: t
@@ -678,7 +679,7 @@ AchievementsPanel {
             anchors.left: parent.left
             anchors.leftMargin: (parent.width * (themeSettings.itemListWidth / 100)) - (t3.width/1.2)
 
-            color: themeData.colorTheme[theme].background
+            color: "transparent"
             opacity: 1
             Text {
 
@@ -706,7 +707,7 @@ AchievementsPanel {
             anchors.left: parent.left
             anchors.leftMargin: (themeSettings.showBattery) ? (parent.width * (themeSettings.itemListWidth / 100)) - (t2.width/1.2) - t3.width - 2.5 - 10:  (parent.width * (themeSettings.itemListWidth / 100)) - (t2.width/1.2)
 
-            color: themeData.colorTheme[theme].background
+            color: "transparent"
             opacity: 1
             Text {
 
@@ -742,7 +743,7 @@ AchievementsPanel {
 
 
             opacity: 1
-            color: themeData.colorTheme[theme].background
+            color: "transparent"
 
             Rectangle {
 
@@ -812,6 +813,7 @@ AchievementsPanel {
 		        imagetype: imagetype2;
                 imagebigview: imagebigview2;
                 singleimageview: singleimageview2;
+                        enlargeBadge: achievementsPanel.enlargeBadge
         	}
         }
 

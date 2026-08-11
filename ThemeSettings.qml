@@ -69,7 +69,8 @@ Item {
         "menusize",
         "primaryAsset",
         "menuadjust",
-        "replacePar"
+        "replacePar",
+        "backgroundGradient"
     ]
 
     property bool enableRA: false
@@ -143,6 +144,7 @@ Item {
     property bool replacePar: false
     property string fontInput: "Hack-Regular"
     property int mainFontSize: 20
+    property bool backgroundGradient: false
 
     FontLoader {
     id: customFont
