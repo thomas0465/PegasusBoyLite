@@ -71,27 +71,59 @@ FocusScope {
 
             Keys.onPressed: {
 
+                //wrap from top to bottom
+            if (event.key == Qt.Key_Up && themeSettings.listwrap && !settingsOptionsActive) {
+                event.accepted = true;
+                settingsListView.moveIndex(settingsListView.model.count - 1)
+                return;
+            }
+
+            if (event.key == Qt.Key_Down && themeSettings.listwrap && !settingsOptionsActive) {
+		        event.accepted = true;
+                settingsListView.currentIndex = 0
+                return;
+            }
+
 
 
                 if (event.key == Qt.Key_Left &&  !settingsOptionsActive) {
                     event.accepted = true;
-			viewcreated = false;
-			if(collectionsMenuListView.listView.currentIndex > 0 && themeSettings.soundsmenu){
-		    navSound.play();
-			}
-                    collectionsMenuListView.listView.decrementCurrentIndex();
-	            viewcreated = true;
-                    return;
+                    viewcreated = false;
+
+                    var newLeftIndex = collectionsMenuListView.listView.currentIndex - 1
+                    if (newLeftIndex < 0 && themeSettings.subMenuWrap) {
+                        newLeftIndex = collectionsMenuListView.listView.count - 1
+                    }
+
+                    if(newLeftIndex >= 0){
+                        collectionsMenuListView.listView.currentIndex = newLeftIndex
+
+                        if(themeSettings.soundsmenu){
+                            navSound.play();
+                        }
+                    }
+
+                    
+                    viewcreated = true;
+                        return;
                 }
                 
                 if (event.key == Qt.Key_Right && !settingsOptionsActive) {
                     event.accepted = true;
-			viewcreated = false;
-			if(collectionsMenuListView.listView.currentIndex < 3 && themeSettings.soundsmenu){
-		    navSound.play();
-			}
-                    collectionsMenuListView.listView.incrementCurrentIndex()
-			viewcreated = true;
+			        viewcreated = false;
+                    var newRightIndex = collectionsMenuListView.listView.currentIndex + 1
+                    if (newRightIndex >= collectionsMenuListView.listView.count && themeSettings.subMenuWrap) {
+                        newRightIndex = 0
+                    }
+
+                    if(newRightIndex < collectionsMenuListView.listView.count){
+                        collectionsMenuListView.listView.currentIndex = newRightIndex
+
+                        if(themeSettings.soundsmenu){
+                            navSound.play();
+                        }
+                    }
+			        viewcreated = true;
                     return;
                 }
 
@@ -147,6 +179,7 @@ FocusScope {
                 anchors.left: parent.left
                 anchors.leftMargin: parent.width * 0.02
                 anchors.bottom: parent.bottom
+                anchors.bottomMargin: themeSettings.footeroffset
 
                 width: parent.width * (themeSettings.itemListWidth / 100)
 

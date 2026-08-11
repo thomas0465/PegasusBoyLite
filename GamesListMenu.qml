@@ -813,7 +813,8 @@ AchievementsPanel {
 		        imagetype: imagetype2;
                 imagebigview: imagebigview2;
                 singleimageview: singleimageview2;
-                        enlargeBadge: achievementsPanel.enlargeBadge
+                enlargeBadge: achievementsPanel.enlargeBadge
+                contentOpen: achievementsPanel.contentOpen
         	}
         }
 

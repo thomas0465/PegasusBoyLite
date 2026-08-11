@@ -55,8 +55,10 @@ Item {
 
 Gradient {
     id: backgroundGradient
-    GradientStop { position: 0.0; color: themeData.colorTheme[theme].background}
-    GradientStop { position: 1.0; color: themeData.colorTheme[theme].secondary}
+    GradientStop { position: themeSettings.backgroundGradientInvert ? 1 : 0
+                    ; color: themeData.colorTheme[theme].background}
+    GradientStop { position: themeSettings.backgroundGradientInvert ? 0 : 1
+                    ; color: themeSettings.backgroundGradientColor}
 }
 
     Rectangle {

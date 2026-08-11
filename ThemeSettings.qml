@@ -70,7 +70,9 @@ Item {
         "primaryAsset",
         "menuadjust",
         "replacePar",
-        "backgroundGradient"
+        "backgroundGradient",
+        "backgroundGradientColor",
+        "backgroundGradientInvert"
     ]
 
     property bool enableRA: false
@@ -145,6 +147,8 @@ Item {
     property string fontInput: "Hack-Regular"
     property int mainFontSize: 20
     property bool backgroundGradient: false
+    property string backgroundGradientColor: "#424242"
+    property bool backgroundGradientInvert: false
 
     FontLoader {
     id: customFont

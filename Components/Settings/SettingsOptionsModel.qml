@@ -17,16 +17,8 @@ Item {
 
     property var settingsModel: [
         {
-            "name": "General",
+            "name": "Style",
             "settings": [
-                // {
-                //     "name": "Language",
-                //     "id": "language",
-                //     "description": "Change the theme's language",
-                //     "type": "list",
-                //     "default": "en",
-                //     "options": ["en"],
-                // },
                 {
                     "name": "Theme",
                     "id": "theme",
@@ -39,128 +31,12 @@ Item {
                         { "value": "Black" },
                         { "value": "Green" },
                         { "value": "Amber" },
-                        { "value": "Blue" },
+                        { "value": "Light Blue"},
+                        { "value": "Dark Blue" },
                         { "value": "Purple" },
             			{ "value": "Vampire" },
-                        { "value": "Test"}
                     ]
                 },
-
-                {
-                    "name": "Background Gradient",
-                    "id": "backgroundGradient",
-                    "description": "Enable the background gradient",
-                    "type": "bool",
-                    "default": "Disable",
-               },
-
-                {
-                    "name": "Sounds - Menu",
-                    "id": "soundsmenu",
-                    "description": "Enable sounds when navigating the Menu and favoriting games",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                {
-                    "name": "Sounds - Main List",
-                    "id": "soundslist",
-                    "description": "Enable sounds when navigating the Main List",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                {
-                    "name": "Show All Games",
-                    "id": "collectionAllGames",
-                    "description": "Show All games collection in the games list (may require restart)",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-                {
-                    "name": "Last Played Range",
-                    "id": "lastPlayedDays",
-                    "description": "How many days to show games on the recent list. Select 0 to disable (may require restart)",
-                    "type": "list",
-                    "default": "0",
-                    "options": [
-                        { "value": "0" },
-		                { "value": "1" },
-                        { "value": "3" },
-                        { "value": "7" },
-                        { "value": "14" },
- 			            { "value": "30" },
-                    ]
-                },
-
-                {
-                    "name": "Primary Asset",
-                    "id": "primaryAsset",
-                    "description": "Show Title Screen or Box Art first",
-                    "type": "list",
-                    "default": "Title Screen",
-                    "options": [
-			            { "value": "Title Screen" },
-                        { "value": "Box Art" },
-                    ]
-                },
-                {
-                    "name": "Collection Short Names",
-                    "id": "collectionShortNames",
-                    "description": "Use collection short names",
-                    "type": "bool",
-                    "default": "Enable",
-                },
-
-                {
-                    "name": "Collection Scroll Bar",
-                    "id": "collectionscroll",
-                    "description": "Show the small Scroll Bar next to the Sub-Menu for collections",
-                    "type": "bool",
-                    "default": "Enable",
-               },
-
-                {
-                    "name": "Favorites on Top",
-                    "id": "gamesFavoritesOnTop",
-                    "description": "Show favorites at the top of the Main List",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-
-                {
-                    "name": "Remove Text in ()",
-                    "id": "replacePar",
-                    "description": "Remove text in parenthises when showing game names",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-                {
-                   "name": "Main List Wrap Around",
-                   "id": "listwrap",
-                   "description": "Press up at the top of the Main List to go to the bottom, and vice versa",
-                   "type": "bool",
-                   "default": "Enable",
-                },
-                                {
-                   "name": "Sub-Menu Wrap Around",
-                   "id": "subMenuWrap",
-                   "description": "Press left on the left-most collection to go to the right-most, and vice versa",
-                   "type": "bool",
-                   "default": "Enable",
-                },
-               {
-                   "name": "Word Wrap",
-                   "id": "wordwrap",
-                   "description": "Wrap long game names in the Main List",
-                   "type": "bool",
-                   "default": "Enable",
-                },
-
-            ]
-        },
-        {
-            "name": "Layout",
-            "settings": [
-
                 
                                 {
                     "name": "Font",
@@ -171,16 +47,53 @@ Item {
                     "options": [
                         { "value": "04B" },
                         { "value": "Alagard" },
-                        { "value": "Ari-bold" },
+                        { "value": "Ari-Bold" },
                         { "value": "Determination" },
                         { "value": "Dogica" },
-                        { "value": "Hack-Regular" },
+                        //{ "value": "Hack-Regular" },
                         { "value": "Lemonmilk-Regular" },
                         { "value": "Minecraft" },
+                        { "value": "m6x11"},
                         { "value": "Pixellari" },
                         { "value": "Roboto-Regular" },
-                        { "value": "VCR_OSD" }
+                        { "value": "VCR_OSD" },
+                        { "value": "ShareTechMono" }
                     ]
+                },
+
+                {
+                    "name": "Gradient - Enable",
+                    "id": "backgroundGradient",
+                    "description": "Enable the background gradient",
+                    "type": "bool",
+                    "default": "Disable",
+               },
+                {
+                    "name": "Gradient - Color",
+                    "id": "backgroundGradientColor",
+                    "description": "The color of the background gradient",
+                    "type": "list",
+                    "default": "Gray",
+                    "options": [
+                        { "label": "White", "value": "#ffffff" },
+                        { "label": "Light Gray", "value": "#c1c1c1" },
+                        { "label": "Dark Gray", "value": "#424242" },
+                        { "label": "Black", "value": "#000000" },
+                        { "label": "Light Purple", "value": "#a151e7" },
+                        { "label": "Dark Purple", "value": "#622795" },
+                        { "label": "Red", "value": "#7f1919" },
+                        { "label": "Green", "value": "#07891a" },
+                        { "label": "Light Blue", "value": "#00bbd4" },
+                        { "label": "Dark Blue", "value": "#1d1282" },
+                    ]
+                },
+
+                                {
+                    "name": "Gradient - Invert",
+                    "id": "backgroundGradientInvert",
+                    "description": "Invert the background gradient to start at the top",
+                    "type": "bool",
+                    "default": "Disabled",
                 },
                                 {
 		    "name": "Main List - Font Size",
@@ -216,7 +129,7 @@ Item {
                 {
 		            "name": "Sub-Menu - Font Size",
                     "id": "menusize",
-                    "description": "The font size for the Sub-Menu",
+                    "description": "The font size for the Sub-Menu (updates on reloading the Main List)",
                     "type": "range",
                     "default": "16",
                     "min": 10,
@@ -267,6 +180,111 @@ Item {
 
             ]
         },
+        {
+            "name": "General",
+            "settings": [
+                {
+                    "name": "Sounds - Menu",
+                    "id": "soundsmenu",
+                    "description": "Enable sounds when navigating the Menu and favoriting games",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                {
+                    "name": "Sounds - Main List",
+                    "id": "soundslist",
+                    "description": "Enable sounds when navigating the Main List",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                {
+                    "name": "Collections - All Games",
+                    "id": "collectionAllGames",
+                    "description": "Show All games collection in the games list (may require restart)",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+                {
+                    "name": "Collections - Recent Date Range",
+                    "id": "lastPlayedDays",
+                    "description": "How many days to show games on the recent list. Select 0 to disable (may require restart)",
+                    "type": "list",
+                    "default": "0",
+                    "options": [
+                        { "value": "0" },
+		                { "value": "1" },
+                        { "value": "3" },
+                        { "value": "7" },
+                        { "value": "14" },
+ 			            { "value": "30" },
+                    ]
+                },
+                {
+                    "name": "Collections - Short Names",
+                    "id": "collectionShortNames",
+                    "description": "Use collection short names",
+                    "type": "bool",
+                    "default": "Enable",
+                },
+
+                {
+                    "name": "Collections - Scroll Bar",
+                    "id": "collectionscroll",
+                    "description": "Show the small scroll Bar next to the Sub-Menu for collections",
+                    "type": "bool",
+                    "default": "Enable",
+               },      
+                               {
+                   "name": "Wrap - Main List",
+                   "id": "listwrap",
+                   "description": "Press up at the top of the Main List to go to the bottom, and vice versa",
+                   "type": "bool",
+                   "default": "Enable",
+                },
+                                {
+                   "name": "Wrap - Sub-Menu",
+                   "id": "subMenuWrap",
+                   "description": "Press left on the left-most collection to go to the right-most, and vice versa",
+                   "type": "bool",
+                   "default": "Enable",
+                },
+               {
+                   "name": "Word Wrap",
+                   "id": "wordwrap",
+                   "description": "Wrap long game names in the Main List",
+                   "type": "bool",
+                   "default": "Enable",
+                },          
+                {
+                    "name": "Favorites on Top",
+                    "id": "gamesFavoritesOnTop",
+                    "description": "Show favorites at the top of the Main List",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+
+                {
+                    "name": "Remove Text in ()",
+                    "id": "replacePar",
+                    "description": "Remove text in parenthises when showing game names",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+                               {
+                    "name": "Primary Image",
+                    "id": "primaryAsset",
+                    "description": "Show Title Screen or Box Art first",
+                    "type": "list",
+                    "default": "Title Screen",
+                    "options": [
+			            { "value": "Title Screen" },
+                        { "value": "Box Art" },
+                    ]
+                },
+
+            ]
+        },
+
 
         {
             "name": "Footer",
@@ -437,7 +455,7 @@ Item {
             ]
         },
         {
-            "name": "RetroAchievements",
+            "name": "RA",
             "settings": [
                                 {
                     "name": "Enable RetroAchievements",

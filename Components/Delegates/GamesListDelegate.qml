@@ -39,7 +39,7 @@ Item {
 
                 color: {
                     if (activeFocus) { return gamesListRect.ListView.isCurrentItem ? themeData.colorTheme[theme].background : themeData.colorTheme[theme].primary };
-                    gamesListRect.ListView.isCurrentItem ?  "transparent" : themeData.colorTheme[theme].light;
+                    gamesListRect.ListView.isCurrentItem ?  themeData.colorTheme[theme].background : themeData.colorTheme[theme].light;
                 }
                 visible: model.favorite !== undefined && model.favorite
                 //visible: modelData.favorite !== undefined && modelData.favorite

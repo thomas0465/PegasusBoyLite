@@ -60,18 +60,11 @@ Item {
     //secondary - none
     //light - secondary text, selected item
     //dark - settings left side background
-        "Test": {
-            background: "#302442",
-            primary: "#7ebcde",
-            secondary: "#ffffffff",
-            light: "#7ebcde",
-            dark: "#302442",
-        },
         "Green": {
             background: "#181810",
             primary: "#6bd425",
             secondary: "#618b25",
-            light: "#618b25",
+            light: "#497e00",
             dark: "#181810",
         },
         "Amber": {
@@ -81,12 +74,19 @@ Item {
             light: "#A38500",
             dark: "#7A6400",
         },
-        "Blue": {
+        "Dark Blue": {
             background: "#03071e",
             primary: "#d0dde2",
             secondary: "#d0dde2",
             light: "#b8bcc1",
             dark: "#03071e",
+        },
+        "Light Blue": {
+            background: "#302442",
+            primary: "#7ebcde",
+            secondary: "#ffffffff",
+            light: "#7ebcde",
+            dark: "#302442",
         },
         "Purple": {
             background: "#0b0410",
@@ -98,7 +98,7 @@ Item {
         "Vampire": {
             background: "#242631",
             primary: "#a576ce",
-            secondary: "#622795ff",
+            secondary: "#622795",
             light: "#7c52a0",
             dark: "#151619ff",
         },

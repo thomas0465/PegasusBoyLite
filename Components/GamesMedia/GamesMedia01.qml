@@ -11,6 +11,7 @@ Item {
     required property bool imagebigview
     required property int singleimageview
     required property bool enlargeBadge
+    required property bool contentOpen
 
     property int marginoffset: (themeSettings.gamesListCounter || themeSettings.showClock || themeSettings.showBattery) ? themeSettings.footerfontsize + 5 : 0
 
@@ -35,7 +36,7 @@ Item {
 
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
 
-        opacity: (singleimageview == 1) ? 0: (!enlargeBadge ? 1 : 0);
+        opacity: (singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0);
 
     }
 

@@ -62,7 +62,16 @@ FocusScope {
 
             if (api.keys.isAccept(event)) {
                 //event.accepted = true
-                themeSettings.saveSetting(optionsRoot.settingModel.id, settingsListView.model[settingsListView.currentIndex], optionsRoot.settingModel.type);
+                var valueToSave = settingsListView.model[settingsListView.currentIndex];
+
+                if (optionsRoot.settingModel.type === "list") {
+                    // Save the underlying value, not the displayed label -
+                    // those can now differ (eg. save "#424242" while the
+                    // list shows "Gray").
+                    valueToSave = optionsRoot.settingModel.options.get(settingsListView.currentIndex).value;
+                }
+
+                themeSettings.saveSetting(optionsRoot.settingModel.id, valueToSave, optionsRoot.settingModel.type);
             }
         }
 
@@ -102,7 +111,27 @@ FocusScope {
             function setIndex() {
                 Logger.debug("SettingsOptions:setIndex:model:" + model);
                 if (model === undefined || model == [] || optionsRoot.settingModel == []) { return }
-                var value = themeSettings[optionsRoot.settingModel.id];
+
+                var currentValue = themeSettings[optionsRoot.settingModel.id];
+
+                if (optionsRoot.settingModel.type === "list") {
+                    // Find the option whose VALUE matches the saved
+                    // setting, not whose displayed label matches - those
+                    // can now differ (eg. saved "#424242", displayed
+                    // "Gray").
+                    var opts = optionsRoot.settingModel.options
+                    var listIndex = 0
+                    for (var i = 0; i < opts.count; ++i) {
+                        if (opts.get(i).value === currentValue) {
+                            listIndex = i
+                            break
+                        }
+                    }
+                    settingsListView.currentIndex = listIndex
+                    return
+                }
+
+                var value = currentValue;
                 if (optionsRoot.settingModel.type == "bool") {
                     value = (value) ? "Enable" : "Disable"
                 }
@@ -224,7 +253,9 @@ FocusScope {
                     model: {
                         const list = []
                         for(var i=0; i < optionsRoot.settingModel.options.count; ++i) {
-                            list.push(optionsRoot.settingModel.options.get(i).value)
+                            var opt = optionsRoot.settingModel.options.get(i)
+                            // Show "label" if the option defines one 
+                            list.push(opt.label !== undefined ? opt.label : opt.value)
                         }
                         return list
                     }
