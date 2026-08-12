@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Item {
-    id: root
+    id: achRoot
 
     signal achievementsReady()
     signal achievementsError(string reason)
@@ -11,6 +11,7 @@ Item {
 
     // Populated on a successful fetch - the UI panel binds to these.
     property string gameTitle: ""
+    property string imageIcon: ""
     property var achievementsList: []
 
     // Derived counts - recompute automatically whenever achievementsList
@@ -35,8 +36,8 @@ Item {
     property var consoleNameHints: ({
 
 
-        "nes": ["nintendo entertainment"],
-        "snes": ["super nintendo"],
+        "nes": ["nes"],
+        "snes": ["snes"],
         "gb": ["game boy"],
         "gbc": ["game boy color"],
         "gba": ["game boy advance"],
@@ -47,14 +48,16 @@ Item {
         "md": ["mega drive"],
         "mastersystem": ["master system"],
         "psx": ["playstation"],
+        "ps1": ["playstation"],
         "arcade": ["arcade"],
+
+
         "homebrew": ["game boy", "game boy color", "game boy advance"],
         "gb hacks": ["game boy", "game boy color", "game boy advance"],
-        "nes hacks": ["nintendo entertainment"],
-        "nes mario": ["nintendo entertainment"],
-        "snes hacks": ["super nintendo"],
-        "snes mario": ["super nintendo"],
-        "ps1": ["playstation"],
+        "nes hacks": ["nes"],
+        "nes mario": ["nes"],
+        "snes hacks": ["snes"],
+        "snes mario": ["snes"],
         "n64 hacks": ["nintendo 64"],
         "n64 mario": ["nintendo 64"],
         "n64 zelda": ["nintendo 64"],
@@ -70,7 +73,8 @@ Item {
 
 
         "For Who The Frog Bell Tolls (English Translation)": "Kaeru no Tame ni Kane wa Naru",
-        "The Legendary Starfy (Starfy 1 Translation)": "Densetsu no Stafy"
+        "The Legendary Starfy (Starfy 1 Translation)": "Densetsu no Stafy",
+	"The Second Reality Project 2 Reloaded [112 VH]": "The Second Reality Project 2 Reloaded: Zycloboo's Challenge"
 
 
     })
@@ -182,9 +186,10 @@ Item {
         }
 
         console.error("RA: no match for \"" + title + "\" on console " + consoleId + " - checked " + list.length + " games:")
-        for (var j = 0; j < list.length; j++) {
-            console.log("  - " + list[j].Title)
-        }
+	//list game names checked in logs
+        //for (var j = 0; j < list.length; j++) {
+        //    console.log("  - " + list[j].Title)
+        //}
 
         return null
     }
@@ -193,9 +198,10 @@ Item {
         return title.toLowerCase()
         .replace(/~.*?~/g, "")                             // ignore ~hack~ and ~homebrew~
         .replace(/\(.*?\)/g, "")                           // ignore ()
-        .replace(/\[.*?]/g, "")                            // ignore []
+        .replace(/\[.*?\]/g, "")                           // ignore []
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip accents 
         .replace(/[^a-z0-9]/g, "")                         // ignore punctuation
+        .replace(/SMB.* - /g, "")                          // replace 'SMB -', 'SMB2 -', etc
     }
 
     function fetchGameAchievements(gameId) {
@@ -208,6 +214,8 @@ Item {
                 reportError("Achievements not found for account, check if your Username is correct")
             }
             gameTitle = data.Title
+            imageIcon = data.ImageIcon
+            console.log("data: " + imageIcon)
             achievementsList = buildAchievementsList(data)
             achievementsReady()
         })
@@ -259,36 +267,53 @@ Item {
     Timer {
         id: statusTimer
         interval: 4000
-        onTriggered: root.statusVisible = false
+        onTriggered: achRoot.statusVisible = false
     }
 
-    Rectangle {
-        visible: opacity > 0
-        opacity: root.statusVisible ? 1 : 0
-        Behavior on opacity { NumberAnimation { duration: 200 } }
+Rectangle {
+    visible: opacity > 0
+    opacity: achRoot.statusVisible ? 1 : 0
+    Behavior on opacity {
+        NumberAnimation { duration: 200 }
+    }
 
-        width: statusText.implicitWidth + 40
-        height: statusText.implicitHeight + 20
-        radius: 4
+    anchors {
+        left: achRoot.left
+        bottom: parent.bottom
+
+        leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .01
+        rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .01
+        bottomMargin: parent.height * 0.03
+    }
+
+    height: statusText.implicitHeight + 20
+    width: Math.min( parent.width * 100 / themeSettings.itemListWidth - (parent.width * 100 / themeSettings.itemListWidth) * .1,  statusText.implicitWidth + (parent.width * 100 / themeSettings.itemListWidth) * .02)
+
+    color: themeData.colorTheme[theme].secondary
+    border.color: themeData.colorTheme[theme].primary
+    border.width: 1
+    z: 999
+
+    Text {
+        id: statusText
 
         anchors {
-            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            verticalCenter: parent.verticalCenter
 
-            bottomMargin: parent.height * 0.03
+            //leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
+            //rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
         }
 
-        color: themeData.colorTheme[theme].light
-        border.color: themeData.colorTheme[theme].primary
-        border.width: 1
-        z: 999
+        text: achRoot.statusMessage
+        font.family: themeSettings.font.customFont
+        font.pixelSize: achRoot.height / 22
+                        + (themeSettings.mainFontSize - 20)
 
-        Text {
-            id: statusText
-            anchors.centerIn: parent
-            text:  root.statusMessage
-            font.family: themeSettings.font.customFont
-            font.pixelSize: 20 + ( themeSettings.mainFontSize - 20)
-            color: themeData.colorTheme[theme].primary
-        }
+        color: themeData.colorTheme[theme].primary
+        wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignHCenter
     }
+}
 }

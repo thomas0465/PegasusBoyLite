@@ -13,7 +13,7 @@ FocusScope {
     //required property var model
 
     function moveIndex(index) {
-        Logger.info("ItemList:moveIndex:" + index)
+        //Logger.info("ItemList:moveIndex:" + index)
         itemListView.currentIndex = index;
         itemListView.positionViewAtIndex(index, ListView.SnapPosition);
     }
@@ -61,7 +61,7 @@ FocusScope {
         Component.onCompleted: positionViewAtIndex(currentIndex, ListView.SnapPosition)
 
         onCurrentIndexChanged: {
-            Logger.info("ItemList:itemListView:indexchanged:" + currentIndex)
+            //Logger.info("ItemList:itemListView:indexchanged:" + currentIndex)
         }
 
         //delegate: gamesListDelegate

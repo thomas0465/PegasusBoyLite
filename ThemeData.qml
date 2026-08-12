@@ -128,7 +128,7 @@ Item {
             background: "#2b2b2b",
             primary: "#bfbfbf",
             secondary: "#6d6d6d",
-            light: "#a6a6a6",
+            light: "#bfbfbf",
             dark: "#2b2b2b",
         },
     }

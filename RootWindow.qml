@@ -125,7 +125,7 @@ Gradient {
 
                 onStatusChanged: {
                     if (collectionsMenuModelLoader.status == Loader.Ready) {
-                        Logger.info("RootWindow:collectionsMenuModelLoader:LoaderReady")
+                        //Logger.info("RootWindow:collectionsMenuModelLoader:LoaderReady")
                         gamesListMenuLoader.active = true
                     }
                 }
@@ -145,7 +145,7 @@ Gradient {
                     ]
 
                     Component.onCompleted: {
-                        Logger.info("collections proxy model: " + sourceModel.count)
+                        //Logger.info("collections proxy model: " + sourceModel.count)
                         //gamesListMenuLoader.active = true
                     }
                 }
@@ -172,7 +172,7 @@ Gradient {
                     menuName: rootWindow.state
 
                     Component.onCompleted: {
-                        Logger.info("RootWindow:collectionsMenu:onCompleted");
+                        //Logger.info("RootWindow:collectionsMenu:onCompleted");
                     }
                 }
             }
@@ -247,14 +247,14 @@ Gradient {
     ]
 
     onStateChanged: {
-        Logger.info("rootWindow:stateChanged:state:" + state);
+        //Logger.info("rootWindow:stateChanged:state:" + state);
         if (menuItem !== null) {
             themeSettings["menuIndex_main"] = menuItem.currentIndex;
         }
     }
 
     Component.onCompleted: {
-        Logger.info("rootWindow:onCompleted");
+       //Logger.info("rootWindow:onCompleted");
         if (menuItem !== null) {
             menuItem.currentIndex = themeSettings["menuIndex_main"];
         }

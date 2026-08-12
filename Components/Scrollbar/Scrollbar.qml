@@ -14,7 +14,7 @@ Item {
         height: {
             var h = parent.height * visibleArea.heightRatio;
             if (h < parent.height * 0.1) { h = parent.height * 0.1 }
-            Logger.debug("Scrollbar:height:" + h);
+            //Logger.debug("Scrollbar:height:" + h);
             return h;
         }
 
@@ -29,7 +29,7 @@ Item {
             // scale scrollbar based on height of scrollbar
             var ratio = (height / parent.height) - visibleArea.heightRatio;
             var posY = (visibleArea.yPosition * (1 - ratio)) * parent.height;
-            Logger.debug("Scrollbar:y:" + posY);
+            //Logger.debug("Scrollbar:y:" + posY);
             return posY;
         }
 

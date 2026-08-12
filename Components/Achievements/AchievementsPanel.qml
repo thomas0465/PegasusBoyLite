@@ -168,6 +168,26 @@ FocusScope {
         Behavior on opacity { NumberAnimation { duration: 150 } }
     }
 
+    Image {
+        id: gameIcon
+        visible: contentOpen
+
+        width: achievementsPanelRoot.height/themeSettings.itemListRows * 1.2
+        height: achievementsPanelRoot.height/themeSettings.itemListRows * 1.2
+
+        anchors {
+            top: parent.top
+            topMargin: parent.height * 0.03
+            left: parent.left
+            leftMargin: parent.width * 0.051
+        }
+
+        source: "https://media.retroachievements.org" + fetcher.imageIcon
+        fillMode: Image.PreserveAspectFit
+        asynchronous: true
+        smooth: true
+    }
+
         
     Text {
         id: panelTitleNum
@@ -177,8 +197,8 @@ FocusScope {
             top: parent.top
             topMargin: parent.height * 0.03
             right: parent.right
-            leftMargin: 20
-            rightMargin: parent.width * 0.04
+            leftMargin: parent.width * 0.04
+            rightMargin: parent.width * 0.045
             
         }
 
@@ -199,9 +219,9 @@ FocusScope {
         anchors {
             top: parent.top
             topMargin: parent.height * 0.03
-            left: parent.left
+            left: gameIcon.right
             right: panelTitleNum.left
-            leftMargin: parent.width * 0.05
+            leftMargin: parent.width * 0.01
         }
 
         text: fetcher.gameTitle.replace(/~.*?~/g, "")  
@@ -222,7 +242,7 @@ FocusScope {
         anchors {
             left: parent.left
             right: listView.left
-            rightMargin: 4
+            rightMargin: parent.width * 0.005
             top: parent.top
             bottom: parent.bottom
         }
@@ -238,7 +258,7 @@ FocusScope {
 
         anchors {
             top: panelTitle.bottom
-            topMargin: parent.height * 0.02
+            topMargin: parent.height * 0.09
             left: parent.left
             right: parent.right
             bottom: parent.bottom
@@ -315,7 +335,7 @@ Image {
                     top: parent.top
                     topMargin:  achievementsPanelRoot.height/themeSettings.itemListRows * .1
                     left: parent.left
-                    leftMargin: 10
+                    leftMargin: parent.width * 0.01
                 }
 
                 source: delegateRoot.badgeUrl
@@ -357,11 +377,11 @@ Image {
 
                 anchors {
                     top: parent.top
-                    topMargin: 8
+                    topMargin: parent.width * 0.02
                     left: badgeImage.right
                     right: pointsText.left
-                    leftMargin: 10
-                    rightMargin: 10
+                    leftMargin: parent.width * 0.02
+                    rightMargin: parent.width * 0.02
                 }
 
                 text: modelData.Title
@@ -390,14 +410,14 @@ Image {
                     top: achTitle.bottom
                     left: badgeImage.right
                     right: pointsText.left
-                    leftMargin: 10
-                    rightMargin: 10
+                    leftMargin: parent.width * 0.04
+                    rightMargin: parent.width * 0.02
                 }
 
                 text: modelData.Description
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
-                font.pixelSize:  achievementsPanelRoot.height/themeSettings.itemListRows * 0.3 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize:  achievementsPanelRoot.height/themeSettings.itemListRows * 0.31 + ( themeSettings.mainFontSize - 20)
                 color: unlocked ? 
                     (delegateRoot.ListView.isCurrentItem ?
                         themeData.colorTheme[theme].background

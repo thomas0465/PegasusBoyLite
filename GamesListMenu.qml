@@ -376,7 +376,7 @@ FocusScope {
 
 
     if (api.keys.isPageUp(event) && singleimageview2 == 0 && themeSettings.enableRA) {
-         event.accepted = true
+        event.accepted = true
         achievementsPanel.open(currentGame)
         return
     }
@@ -403,9 +403,9 @@ FocusScope {
 
             onStatusChanged: {
                 if (collectionsMenuLoader.status == Loader.Ready) {
-                    Logger.info("GamesListMenu:collectionsMenuLoader:LoaderReady")
+                    //Logger.info("GamesListMenu:collectionsMenuLoader:LoaderReady")
 
-                    Logger.info("GamesListMenu:collectionsMenuListView:onCompleted:index:" + item.model.get(themeSettings["menuIndex_subMenu"]).name)
+                    //Logger.info("GamesListMenu:collectionsMenuListView:onCompleted:index:" + item.model.get(themeSettings["menuIndex_subMenu"]).name)
 
                     let index = 0
                     if (item.model.get(themeSettings["menuIndex_subMenu"]).name === themeSettings["menuIndex_subMenu_name"]) {
@@ -470,7 +470,7 @@ FocusScope {
 
             onStatusChanged: {
                 if (gamesListModelLoader.status == Loader.Ready) {
-                    Logger.info("GamesListMenu:gamesListModelLoader:LoaderReady")
+                    //Logger.info("GamesListMenu:gamesListModelLoader:LoaderReady")
                     gamesListLoader.active = true
                 }
 
@@ -533,17 +533,17 @@ FocusScope {
                     }
                 ]
 
-                onModelReset: {
-                    Logger.info("GamesListMenu:gamesListProxyModel:modelReset")
-                }
+                //onModelReset: {
+                //    Logger.info("GamesListMenu:gamesListProxyModel:modelReset")
+                //}
 
-                onLayoutChanged: {
-                    Logger.info("GamesListMenu:gamesListProxyModel:layoutChanged")
-                }
+                //onLayoutChanged: {
+                //    Logger.info("GamesListMenu:gamesListProxyModel:layoutChanged")
+                //}
 
-                Component.onCompleted: {
-                    Logger.info("GamesListMenu:gamesListProxyModel:onComplete")
-                }
+                //Component.onCompleted: {
+                //    Logger.info("GamesListMenu:gamesListProxyModel:onComplete")
+                //}
 
             }
         }
@@ -578,14 +578,15 @@ FocusScope {
                 delegate: gamesListDelegate.delegate
 
                 Component.onCompleted: {
-                    //const isGame = (element) => element.title === themeSettings["menuIndex_gamesList_name"]
-                    //let index = utils.findModelIndex(gamesListView.model, isGame); 
                     let index = 0;
-                    Logger.info("GamesListMenu:gamesListView:onCompleted:modelAtIndex:" + model.get(themeSettings["menuIndex_gamesList"]).title)
+                    //Logger.info("GamesListMenu:gamesListView:onCompleted:modelAtIndex:" + model.get(themeSettings["menuIndex_gamesList"]).title)
+                    
                     if (model.get(themeSettings["menuIndex_gamesList"]).title === themeSettings["menuIndex_gamesList_name"]) {
                         index = themeSettings["menuIndex_gamesList"]
                     }
-                    Logger.info("GameListMenu:gameListView:onCompleted:savedIndex:" + index);
+                    
+                    //Logger.info("GameListMenu:gameListView:onCompleted:savedIndex:" + index);
+                    
                     moveIndex(index);
 
                     
@@ -595,20 +596,21 @@ FocusScope {
 			
                 }
 
-               onCurrentIndexChanged:{Logger.info("gamesListView:modelEpoch:" + model.get(currentIndex).lastPlayedEpoch)
-		
-	        if(viewcreated && themeSettings.soundslist && keyup){
-                navSound.play()
-            }
+               onCurrentIndexChanged:{
+                    //Logger.info("gamesListView:modelEpoch:" + model.get(currentIndex).lastPlayedEpoch)
+            
+                    if(viewcreated && themeSettings.soundslist && keyup){
+                        navSound.play()
+                    }
 
-	        if(viewcreated && keyup){
-                setplace = true
-            }
- 		}
+                    if(viewcreated && keyup){
+                        setplace = true
+                    }
+                }
 
 
                 Component.onDestruction: { 
-                    Logger.debug("GamesListMenu:gamesListView:currentGame:" + collectionsMenuRoot.currentGame.title) 
+                    //Logger.debug("GamesListMenu:gamesListView:currentGame:" + collectionsMenuRoot.currentGame.title) 
                     themeSettings["menuIndex_gamesList_name"] = collectionsMenuRoot.currentGame.title
                     themeSettings["menuIndex_gamesList"] = currentIndex
                 }
@@ -732,7 +734,7 @@ AchievementsPanel {
         	//collections scroll bar
         Rectangle {
 
-            width: 8
+            width: gamesListLoader.width * 0.035
             height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) : 0
 
             anchors {
@@ -747,10 +749,10 @@ AchievementsPanel {
 
             Rectangle {
 
-                width: 8
-                height: Math.round(parent.height * .3)
+                width: gamesListLoader.width * 0.035
+                height: Math.round(parent.height * .5)
 
-                y: ((parent.height - (parent.height * .3)) * ((collectionsMenuLoader.item.currentIndex + 1) /  (collectionsMenuLoader.item.listView.count)));
+                y: ((parent.height - (parent.height * .5)) * ((collectionsMenuLoader.item.currentIndex + 1) /  (collectionsMenuLoader.item.listView.count)));
 
                 opacity: (themeSettings.collectionscroll && collectionsMenuLoader.item.listView.count - 1 >= themeSettings.subMenuColumns) ? 1: 0;
                 color: (viewcreated) ? themeData.colorTheme[theme].light: themeData.colorTheme[theme].background
@@ -819,7 +821,7 @@ AchievementsPanel {
         }
 
         Component.onCompleted: {
-            Logger.info("GamesListMenu:collectionsMenuRoot:onComplete")
+            //Logger.info("GamesListMenu:collectionsMenuRoot:onComplete")
         }
 
     }

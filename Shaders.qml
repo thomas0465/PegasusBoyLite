@@ -335,17 +335,17 @@ Item {
             // anchors.horizontalCenter: parent.horizontalCenter
             anchors.fill: parent
 
-            Component.onCompleted: {
+            //Component.onCompleted: {
                 // effectSource.textureSize = Qt.size(width, height)
-                console.log("RootWindow loaded")
-            }
+                //console.log("RootWindow loaded")
+            //}
 
-            onWidthChanged: {
-                console.log("RootWindow: " + rootWindow.width + ", " + rootWindow.height)
-            }
-            onHeightChanged: {
-                console.log("RootWindow: " + rootWindow.width + ", " + rootWindow.height)
-            }
+            //onWidthChanged: {
+                //console.log("RootWindow: " + rootWindow.width + ", " + rootWindow.height)
+            //}
+            //onHeightChanged: {
+                //console.log("RootWindow: " + rootWindow.width + ", " + rootWindow.height)
+            //}
 
         }
 
@@ -369,27 +369,27 @@ Item {
 
 
 
-            Component.onCompleted: {
-                console.log("Shader Texture Size: " + textureSize)
-            }
+            //Component.onCompleted: {
+                //console.log("Shader Texture Size: " + textureSize)
+            //}
 
         }
         
-        onStatusChanged: {
+        //onStatusChanged: {
              // Print warning messages
-             if (log) console.log(log);
-         }
+         //    if (log) console.log(log);
+         //}
 
-         Component.onCompleted: {
-            if (GraphicsInfo.shaderType === GraphicsInfo.GLSL)
-                console.log("Shader Type: GLSL")
-            if (GraphicsInfo.shaderType === GraphicsInfo.HSLS)
-                console.log("Shader Type: HLSL")
+         //Component.onCompleted: {
+            //if (GraphicsInfo.shaderType === GraphicsInfo.GLSL)
+            //    console.log("Shader Type: GLSL")
+            //if (GraphicsInfo.shaderType === GraphicsInfo.HSLS)
+            //    console.log("Shader Type: HLSL")
 
-            console.log("Source Size: " + sourceSize)
-            console.log("Texture Size: " + originalSize)
-            console.log("Output Size: " + outputSize)
-         }
+            //console.log("Source Size: " + sourceSize)
+            //console.log("Texture Size: " + originalSize)
+            //console.log("Output Size: " + outputSize)
+        // }
 
     }
 

@@ -169,7 +169,7 @@ property var font: ({
             Logger.warn("themeSettings:loadSetting:" + name + ":undefined");
             value = themeSettings[name];
         }
-        Logger.info("themeSettings:loadSetting:" + name + ":value:" + value);
+        //Logger.info("themeSettings:loadSetting:" + name + ":value:" + value);
         return value;
     }
 
@@ -180,7 +180,7 @@ property var font: ({
         }
         themeSettings[name] = v;
         api.memory.set(name, v);
-        Logger.info("themeSettings:saveSetting:" + name + ":value:" + v);
+        //Logger.info("themeSettings:saveSetting:" + name + ":value:" + v);
         api.memory.set("settingsVersion", settingsVersion);
     }
 

@@ -40,7 +40,7 @@ FocusScope {
 
         onColumnsChanged: {
             var col = themeSettings.subMenuColumns;
-            Logger.debug("SubMenu:columnsChanged:columns:" + columns);
+            //Logger.debug("SubMenu:columnsChanged:columns:" + columns);
             //if (subMenuListView.count <= col || col == 0) {
             //    subMenuListView.columns = subMenuListView.count;
             //}
@@ -52,7 +52,7 @@ FocusScope {
 
             resizeFont()
 
-            Logger.debug("SubMenu:columnsChanged:" + columns);
+            //Logger.debug("SubMenu:columnsChanged:" + columns);
 
         }
 
@@ -87,7 +87,7 @@ FocusScope {
                 collectionNames.push(subMenuListView.model.get(i))
             }
 
-            Logger.info("SubMenu:resizeFont:list:typeof:" + (typeof collectionNames))
+            //Logger.info("SubMenu:resizeFont:list:typeof:" + (typeof collectionNames))
 
 
             fontSize = utils.calculateFontSizeModel(subMenuListFont.font, 
@@ -115,7 +115,7 @@ FocusScope {
             //     subMenuListView.height, 
             //     model.toVarArray().map((x) => x.name)
             // )
-            Logger.info("SubMenu:subMenuListView:onCompleted:setColumns:" + themeSettings.subMenuColumns)
+            //Logger.info("SubMenu:subMenuListView:onCompleted:setColumns:" + themeSettings.subMenuColumns)
             columns = (settingsview)? 5: themeSettings.subMenuColumns;
             resizeFont()
             // The position for the middle elements caused it to be at the beginning
@@ -127,7 +127,7 @@ FocusScope {
         }
 
         onCurrentIndexChanged: {
-            Logger.info("SubMenu:subMenuListView:currentIndexChanged:" + currentIndex)
+            //Logger.info("SubMenu:subMenuListView:currentIndexChanged:" + currentIndex)
 
 
         }
