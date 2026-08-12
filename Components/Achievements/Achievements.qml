@@ -36,9 +36,9 @@ Item {
     property var consoleNameHints: ({
 
 
-        "nes": ["nes"],
-        "snes": ["snes"],
-        "gb": ["game boy"],
+        "nes": ["nes/famicom"],
+        "snes": ["SNES/Super Famicom"],
+        "gb":["game boy", "game boy color", "game boy advance"],
         "gbc": ["game boy color"],
         "gba": ["game boy advance"],
         "gameboy": ["game boy", "game boy color", "game boy advance"],
@@ -54,10 +54,10 @@ Item {
 
         "homebrew": ["game boy", "game boy color", "game boy advance"],
         "gb hacks": ["game boy", "game boy color", "game boy advance"],
-        "nes hacks": ["nes"],
-        "nes mario": ["nes"],
-        "snes hacks": ["snes"],
-        "snes mario": ["snes"],
+        "nes hacks": ["nes/famicom"],
+        "nes mario": ["nes/famicom"],
+        "snes hacks": ["SNES/Super Famicom"],
+        "snes mario": ["SNES/Super Famicom"],
         "n64 hacks": ["nintendo 64"],
         "n64 mario": ["nintendo 64"],
         "n64 zelda": ["nintendo 64"],
@@ -93,12 +93,30 @@ Item {
             tryConsoles(shortNames, consoleIds, 0, searchTitle, function(gameId) {
                 if (!gameId) { return }
 
+                api.memory.set("ra_gameid_" + searchTitle, gameId)
                 fetchGameAchievements(gameId)
+            }, function(reason) {
+                offlineFallback(searchTitle, reason)
             })
+        }, function(reason) {
+            offlineFallback(searchTitle, reason)
         })
     }
 
-    function checkConsoles(shortNames, title, callback) {
+    // No network / a lookup step failed - if we've previously resolved this
+    // title to an RA game ID, skip straight to the cached achievements data
+    // instead of showing an error.
+    function offlineFallback(searchTitle, reason) {
+        var gameId = api.memory.get("ra_gameid_" + searchTitle)
+        if (!gameId) {
+            showStatus(reason)
+            return
+        }
+
+        useCachedAchievements(gameId, reason)
+    }
+
+    function checkConsoles(shortNames, title, callback, onError) {
         if (consoleList) {
             callback(matchConsoles(shortNames, title))
             return
@@ -110,42 +128,61 @@ Item {
         getJson(url, function(data) {
             consoleList = data
             callback(matchConsoles(shortNames, title))
-        })
+        }, onError)
     }
 
     // Returns every console ID that matches any hint for any of the
     // game's shortnames (deduplicated, in match order).
     function matchConsoles(shortNames, title) {
         var ids = []
+        var hintsTried = []
 
         for (var i = 0; i < shortNames.length; i++) {
-            var hints = consoleNameHints[shortNames[i]] || [shortNames[i]]
+            var hints = consoleNameHints[shortNames[i]]
 
             for (var h = 0; h < hints.length; h++) {
+                hintsTried.push(hints[h])
+
                 for (var j = 0; j < consoleList.length; j++) {
-                    var name = consoleList[j].Name.toLowerCase()
-                    if (name.indexOf(hints[h]) === -1) { continue }
-                    if (ids.indexOf(consoleList[j].ID) !== -1) { continue }
+                    if (consoleList[j].Name.toLowerCase() !== hints[h].toLowerCase()) { continue }
+                    
+                    //unneeded check if game is in multiple collections
+                    //if (ids.indexOf(consoleList[j].ID) !== -1) { continue }
 
                     ids.push(consoleList[j].ID)
-                    console.log("RA: console candidate for \"" + title + "\": "
-                        + consoleList[j].Name + " (ID " + consoleList[j].ID
-                        + ") via shortname \"" + shortNames[i] + "\" hint \"" + hints[h] + "\"")
+                    //console.log("RA: console candidate for \"" + title + "\": "
+                    //    + consoleList[j].Name + " (ID " + consoleList[j].ID
+                    //    + ") via shortname \"" + shortNames[i] + "\" hint \"" + hints[h] + "\"")
                 }
             }
         }
 
         if (!ids.length) {
-            reportError("No console match. Tried: " + shortNames.join(", "))
+            showStatus("No console match. Tried: " + hintsTried.join(", "))
         }
 
         return ids
     }
 
+    // Looks up the RA console names for a set of already-resolved console
+    // IDs, for use in status/error messages.
+    function consoleNamesForIds(ids) {
+        var names = []
+        for (var i = 0; i < ids.length; i++) {
+            for (var j = 0; j < consoleList.length; j++) {
+                if (consoleList[j].ID === ids[i]) {
+                    names.push(consoleList[j].Name)
+                    break
+                }
+            }
+        }
+        return names
+    }
+
     // Tries each console in order until one has a matching game title.
-    function tryConsoles(shortNames, consoleIds, index, title, callback) {
+    function tryConsoles(shortNames, consoleIds, index, title, callback, onError) {
         if (index >= consoleIds.length) {
-            reportError("No match for \"" + title + "\". Checked: " + shortNames.join(", "))
+            showStatus("No match for \"" + title + "\". Checked: " + consoleNamesForIds(consoleIds).join(", "))
             callback(null)
             return
         }
@@ -154,12 +191,12 @@ Item {
             if (gameId) {
                 callback(gameId)
             } else {
-                tryConsoles(shortNames, consoleIds, index + 1, title, callback)
+                tryConsoles(shortNames, consoleIds, index + 1, title, callback, onError)
             }
-        })
+        }, onError)
     }
 
-    function checkGame(title, consoleId, callback) {
+    function checkGame(title, consoleId, callback, onError) {
         if (gameListCache[consoleId]) {
             callback(matchGame(title, gameListCache[consoleId], consoleId))
             return
@@ -171,7 +208,7 @@ Item {
         getJson(url, function(data) {
             gameListCache[consoleId] = data
             callback(matchGame(title, data, consoleId))
-        })
+        }, onError)
     }
 
     function matchGame(title, list, consoleId) {
@@ -211,14 +248,35 @@ Item {
 
         getJson(url, function(data) {
             if(data.Title == null){
-                reportError("Achievements not found for account, check if your Username is correct")
+                showStatus("RA: Achievements not found for account, check if your Username is correct")
+                return
             }
             gameTitle = data.Title
             imageIcon = data.ImageIcon
             console.log("data: " + imageIcon)
             achievementsList = buildAchievementsList(data)
+            api.memory.set("ra_cache_" + gameId, JSON.stringify(data))
             achievementsReady()
+        }, function(reason) {
+            useCachedAchievements(gameId, reason)
         })
+    }
+
+    // Falls back to the last successfully-fetched payload for this game ID,
+    // saved via api.memory. Used when a fetch fails (offline, RA down, etc).
+    function useCachedAchievements(gameId, reason) {
+        var cached = api.memory.get("ra_cache_" + gameId)
+        if (!cached) {
+            showStatus(reason)
+            return
+        }
+
+        var data = JSON.parse(cached)
+        gameTitle = data.Title
+        imageIcon = data.ImageIcon
+        achievementsList = buildAchievementsList(data)
+        showStatus("RA: Offline - Showing cached achievements")
+        achievementsReady()
     }
 
     function buildAchievementsList(data) {
@@ -233,29 +291,24 @@ Item {
         return arr
     }
 
-    function getJson(url, callback) {
+    function getJson(url, callback, onError) {
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
         xhr.onreadystatechange = function() {
             if (xhr.readyState !== XMLHttpRequest.DONE) { return }
 
             if (xhr.status !== 200) {
-                reportError("Request failed (HTTP " + xhr.status + "). Check your Username and API key")
+                var reason = "Request failed (HTTP " + xhr.status + "). Check your Username and API key"
+                if (onError) { onError(reason) } else { showStatus(reason) }
                 return
             }
 
             callback(JSON.parse(xhr.responseText))
         }
         xhr.onerror = function() {
-            reportError("network error")
+            if (onError) { onError("network error") } else { showStatus("No online connection") }
         }
         xhr.send()
-    }
-
-    function reportError(msg) {
-        console.error("RA: " + msg)
-        showStatus("RA: " + msg)
-        achievementsError(msg)
     }
 
     function showStatus(msg) {
@@ -270,50 +323,50 @@ Item {
         onTriggered: achRoot.statusVisible = false
     }
 
-Rectangle {
-    visible: opacity > 0
-    opacity: achRoot.statusVisible ? 1 : 0
-    Behavior on opacity {
-        NumberAnimation { duration: 200 }
-    }
-
-    anchors {
-        left: achRoot.left
-        bottom: parent.bottom
-
-        leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .01
-        rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .01
-        bottomMargin: parent.height * 0.03
-    }
-
-    height: statusText.implicitHeight + 20
-    width: Math.min( parent.width * 100 / themeSettings.itemListWidth - (parent.width * 100 / themeSettings.itemListWidth) * .1,  statusText.implicitWidth + (parent.width * 100 / themeSettings.itemListWidth) * .02)
-
-    color: themeData.colorTheme[theme].secondary
-    border.color: themeData.colorTheme[theme].primary
-    border.width: 1
-    z: 999
-
-    Text {
-        id: statusText
-
-        anchors {
-            left: parent.left
-            right: parent.right
-            verticalCenter: parent.verticalCenter
-
-            //leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
-            //rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
+    Rectangle {
+        visible: opacity > 0
+        opacity: achRoot.statusVisible ? 1 : 0
+        Behavior on opacity {
+            NumberAnimation { duration: 200 }
         }
 
-        text: achRoot.statusMessage
-        font.family: themeSettings.font.customFont
-        font.pixelSize: achRoot.height / 22
-                        + (themeSettings.mainFontSize - 20)
+        anchors {
+            left: achRoot.left
+            bottom: parent.bottom
 
-        color: themeData.colorTheme[theme].primary
-        wrapMode: Text.WordWrap
-        horizontalAlignment: Text.AlignHCenter
+            leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .01
+            rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .01
+            bottomMargin: parent.height * 0.03
+        }
+
+        height: statusText.implicitHeight + 20
+        width: Math.min( parent.width * 100 / themeSettings.itemListWidth - (parent.width * 100 / themeSettings.itemListWidth) * .1,  statusText.implicitWidth + (parent.width * 100 / themeSettings.itemListWidth) * .02)
+
+        color: themeData.colorTheme[theme].secondary
+        border.color: themeData.colorTheme[theme].primary
+        border.width: 1
+        z: 999
+
+        Text {
+            id: statusText
+
+            anchors {
+                left: parent.left
+                right: parent.right
+                verticalCenter: parent.verticalCenter
+
+                //leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
+                //rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
+            }
+
+            text: achRoot.statusMessage
+            font.family: themeSettings.font.customFont
+            font.pixelSize: achRoot.height / 22
+                            + (themeSettings.mainFontSize - 20)
+
+            color: themeData.colorTheme[theme].primary
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignHCenter
+        }
     }
-}
 }

@@ -63,6 +63,7 @@ FocusScope {
     Achievements {
         id: fetcher
         anchors.fill: parent
+        z: 999
 
         onAchievementsReady: {
             var maxIndex = fetcher.achievementsList.length - 1
@@ -172,14 +173,14 @@ FocusScope {
         id: gameIcon
         visible: contentOpen
 
-        width: achievementsPanelRoot.height/themeSettings.itemListRows * 1.2
-        height: achievementsPanelRoot.height/themeSettings.itemListRows * 1.2
+        width: achievementsPanelRoot.height/themeSettings.itemListRows * 1.5
+        height: achievementsPanelRoot.height/themeSettings.itemListRows * 1.5
 
         anchors {
             top: parent.top
             topMargin: parent.height * 0.03
-            left: parent.left
-            leftMargin: parent.width * 0.051
+            left: scrollbar.right
+            leftMargin: parent.width * 0.014
         }
 
         source: "https://media.retroachievements.org" + fetcher.imageIcon
@@ -194,18 +195,18 @@ FocusScope {
         visible: contentOpen
 
         anchors {
-            top: parent.top
-            topMargin: parent.height * 0.03
+            //top: parent.top
+            //topMargin: parent.height * 0.03
             right: parent.right
             leftMargin: parent.width * 0.04
             rightMargin: parent.width * 0.045
-            
+            verticalCenter: gameIcon.verticalCenter
         }
 
         text: fetcher.achievementsUnlocked + "/" + fetcher.achievementsTotal
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20) 
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
         font.bold: true
         color: themeData.colorTheme[theme].light
 
@@ -217,11 +218,12 @@ FocusScope {
         visible: contentOpen
 
         anchors {
-            top: parent.top
-            topMargin: parent.height * 0.03
+            //top: parent.top
+            //topMargin: parent.height * 0.03
             left: gameIcon.right
             right: panelTitleNum.left
             leftMargin: parent.width * 0.01
+            verticalCenter: gameIcon.verticalCenter
         }
 
         text: fetcher.gameTitle.replace(/~.*?~/g, "")  
@@ -243,7 +245,7 @@ FocusScope {
             left: parent.left
             right: listView.left
             rightMargin: parent.width * 0.005
-            top: parent.top
+            top: listView.top
             bottom: parent.bottom
         }
 
@@ -257,8 +259,8 @@ FocusScope {
         visible: contentOpen
 
         anchors {
-            top: panelTitle.bottom
-            topMargin: parent.height * 0.09
+            top: gameIcon.bottom
+            topMargin: parent.height * 0.02
             left: parent.left
             right: parent.right
             bottom: parent.bottom
@@ -316,7 +318,7 @@ Image {
             id: delegateRoot
 
             width: ListView.view.width
-            height: Math.max(achievementsPanelRoot.height/themeSettings.itemListRows + 18, achTitle.implicitHeight + achDesc.implicitHeight + 23)
+            height: Math.max(achievementsPanelRoot.height/themeSettings.itemListRows + 18, achTitle.implicitHeight + achDesc.implicitHeight + 30)
 
             property bool unlocked: !!modelData.DateEarned
             property string badgeUrl: "https://media.retroachievements.org/Badge/"
@@ -349,9 +351,9 @@ Image {
 
                 anchors {
                     top: parent.top
-                    topMargin: 8
+                    topMargin: parent.width * 0.02
                     right: parent.right
-                    rightMargin: 10
+                    rightMargin: parent.width * 0.02
                 }
 
                 text: modelData.Points 
@@ -377,7 +379,7 @@ Image {
 
                 anchors {
                     top: parent.top
-                    topMargin: parent.width * 0.02
+                    topMargin: parent.width * 0.015
                     left: badgeImage.right
                     right: pointsText.left
                     leftMargin: parent.width * 0.02
@@ -408,6 +410,8 @@ Image {
 
                 anchors {
                     top: achTitle.bottom
+                    topMargin: parent.height * 0.08
+                    bottomMargin: parent.height * 0.08
                     left: badgeImage.right
                     right: pointsText.left
                     leftMargin: parent.width * 0.04
