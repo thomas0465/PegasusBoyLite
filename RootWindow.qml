@@ -55,18 +55,18 @@ Item {
 
 Gradient {
     id: backgroundGradient
-    GradientStop { position: themeSettings.backgroundGradientInvert ? 1 : 0
-                    ; color: themeData.colorTheme[theme].background}
     GradientStop { position: themeSettings.backgroundGradientInvert ? 0 : 1
                     ; color: themeSettings.backgroundGradientColor}
+    GradientStop { position: themeSettings.backgroundGradientInvert ? 1 : 0
+                    ; color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor}
 }
 
     Rectangle {
         id: background
         width: parent.width
         height: parent.height
-        color: themeData.colorTheme[theme].background
-        gradient: themeSettings.backgroundGradient ? backgroundGradient : null
+        color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor
+        gradient: themeSettings.backgroundGradientColor == "transparent" ? null: backgroundGradient
     }
 
     property alias menuItem: menuLoader.item

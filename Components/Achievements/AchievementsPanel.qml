@@ -347,7 +347,7 @@ Image {
                     )
                 :
                     (delegateRoot.ListView.isCurrentItem ?
-                        themeData.colorTheme[theme].light
+                        themeData.colorTheme[theme].background
                         : themeData.colorTheme[theme].light
                     )
             }
@@ -378,7 +378,7 @@ Image {
                     )
                 :
                     (delegateRoot.ListView.isCurrentItem ?
-                        themeData.colorTheme[theme].light
+                        themeData.colorTheme[theme].background
                         : themeData.colorTheme[theme].light
                     )
             }
@@ -398,9 +398,16 @@ Image {
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
                 font.pixelSize:  achievementsPanelRoot.height/themeSettings.itemListRows * 0.3 + ( themeSettings.mainFontSize - 20)
-                color: delegateRoot.ListView.isCurrentItem
-                    ? themeData.colorTheme[theme].light
-                    : themeData.colorTheme[theme].light
+                color: unlocked ? 
+                    (delegateRoot.ListView.isCurrentItem ?
+                        themeData.colorTheme[theme].background
+                        : themeData.colorTheme[theme].primary
+                    )
+                :
+                    (delegateRoot.ListView.isCurrentItem ?
+                        themeData.colorTheme[theme].background
+                        : themeData.colorTheme[theme].light
+                    )
             }
         }
 

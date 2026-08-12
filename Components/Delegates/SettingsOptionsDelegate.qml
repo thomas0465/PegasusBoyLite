@@ -17,8 +17,8 @@ Item {
             height: ListView.view.height / ListView.view.rows
 
             color: {
-                if (activeFocus) { return  ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].dark}
-                return ListView.isCurrentItem ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].dark
+                if (activeFocus) { return  ListView.isCurrentItem ? themeData.colorTheme[theme].primary : "transparent"}
+                return ListView.isCurrentItem ? themeData.colorTheme[theme].secondary : "transparent"
             }
 
             Text {

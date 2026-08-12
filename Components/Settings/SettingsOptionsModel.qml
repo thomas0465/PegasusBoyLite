@@ -29,6 +29,7 @@ Item {
                         { "value": "White" },
                         { "value": "Gray" },
                         { "value": "Black" },
+                        { "value": "Binary" },
                         { "value": "Green" },
                         { "value": "Amber" },
                         { "value": "Light Blue"},
@@ -37,8 +38,58 @@ Item {
             			{ "value": "Vampire" },
                     ]
                 },
-                
+
                                 {
+                    "name": "Background - Color",
+                    "id": "backgroundColor",
+                    "description": "The color of the background",
+                    "type": "list",
+                    "default": "Theme Default",
+                    "options": [
+                        { "label": "Theme Default", "value": "transparent"},
+                        { "label": "White", "value": "#ffffff" },
+                        { "label": "Light Gray", "value": "#c1c1c1" },
+                        { "label": "Gray", "value": "#424242" },
+                        { "label": "Dark Gray", "value": "#222222" },
+                        { "label": "Black", "value": "#000000" },
+                        { "label": "Dark Blue", "value": "#03071e" },
+                        { "label": "Dark Purple", "value": "#302442" },
+                        { "label": "Red", "value": "#530c0c" },
+                        { "label": "Green", "value": "#03390b" },
+                        { "label": "Light Blue", "value": "#00bbd4" },
+                        { "label": "Dark Blue", "value": "#0f084d" },
+                    ]
+                },
+                
+                {
+                    "name": "Gradient - Color",
+                    "id": "backgroundGradientColor",
+                    "description": "The color of the background gradient",
+                    "type": "list",
+                    "default": "None",
+                    "options": [
+                        { "label": "None", "value": "transparent"},
+                        { "label": "White", "value": "#ffffff" },
+                        { "label": "Light Gray", "value": "#c1c1c1" },
+                        { "label": "Dark Gray", "value": "#424242" },
+                        { "label": "Black", "value": "#000000" },
+                        { "label": "Light Purple", "value": "#a151e7" },
+                        { "label": "Dark Purple", "value": "#1e0534" },
+                        { "label": "Red", "value": "#7f1919" },
+                        { "label": "Green", "value": "#07891a" },
+                        { "label": "Light Blue", "value": "#00bbd4" },
+                        { "label": "Dark Blue", "value": "#1d1282" },
+                    ]
+                },
+
+                                {
+                    "name": "Gradient - Invert",
+                    "id": "backgroundGradientInvert",
+                    "description": "Invert the background gradient to start at the top",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+                                                {
                     "name": "Font",
                     "id": "fontInput",
                     "description": "Text Font",
@@ -59,41 +110,6 @@ Item {
                         { "value": "VCR_OSD" },
                         { "value": "ShareTechMono" }
                     ]
-                },
-
-                {
-                    "name": "Gradient - Enable",
-                    "id": "backgroundGradient",
-                    "description": "Enable the background gradient",
-                    "type": "bool",
-                    "default": "Disable",
-               },
-                {
-                    "name": "Gradient - Color",
-                    "id": "backgroundGradientColor",
-                    "description": "The color of the background gradient",
-                    "type": "list",
-                    "default": "Gray",
-                    "options": [
-                        { "label": "White", "value": "#ffffff" },
-                        { "label": "Light Gray", "value": "#c1c1c1" },
-                        { "label": "Dark Gray", "value": "#424242" },
-                        { "label": "Black", "value": "#000000" },
-                        { "label": "Light Purple", "value": "#a151e7" },
-                        { "label": "Dark Purple", "value": "#622795" },
-                        { "label": "Red", "value": "#7f1919" },
-                        { "label": "Green", "value": "#07891a" },
-                        { "label": "Light Blue", "value": "#00bbd4" },
-                        { "label": "Dark Blue", "value": "#1d1282" },
-                    ]
-                },
-
-                                {
-                    "name": "Gradient - Invert",
-                    "id": "backgroundGradientInvert",
-                    "description": "Invert the background gradient to start at the top",
-                    "type": "bool",
-                    "default": "Disable",
                 },
                                 {
 		    "name": "Main List - Font Size",

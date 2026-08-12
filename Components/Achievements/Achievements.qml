@@ -33,13 +33,14 @@ Item {
     // collections like a "Game Boy" folder that actually contains GB, GBC,
     // and GBA games.
     property var consoleNameHints: ({
+
+
         "nes": ["nintendo entertainment"],
         "snes": ["super nintendo"],
         "gb": ["game boy"],
         "gbc": ["game boy color"],
         "gba": ["game boy advance"],
         "gameboy": ["game boy", "game boy color", "game boy advance"],
-        "gb hacks": ["game boy", "game boy color", "game boy advance"],
         "n64": ["nintendo 64"],
         "genesis": ["mega drive"],
         "megadrive": ["mega drive"],
@@ -47,15 +48,31 @@ Item {
         "mastersystem": ["master system"],
         "psx": ["playstation"],
         "arcade": ["arcade"],
-        "homebrew": ["game boy", "game boy color", "game boy advance"]
+        "homebrew": ["game boy", "game boy color", "game boy advance"],
+        "gb hacks": ["game boy", "game boy color", "game boy advance"],
+        "nes hacks": ["nintendo entertainment"],
+        "nes mario": ["nintendo entertainment"],
+        "snes hacks": ["super nintendo"],
+        "snes mario": ["super nintendo"],
+        "ps1": ["playstation"],
+        "n64 hacks": ["nintendo 64"],
+        "n64 mario": ["nintendo 64"],
+        "n64 zelda": ["nintendo 64"],
+        "gcn": ["gamecube"],
+
+
     })
 
     // Manual overrides for titles that don't match automatically. Key is
     // your local Pegasus game title (must match exactly, case-sensitive),
     // value is the title to search for on RA instead.
     property var titleOverrides: ({
+
+
         "For Who The Frog Bell Tolls (English Translation)": "Kaeru no Tame ni Kane wa Naru",
         "The Legendary Starfy (Starfy 1 Translation)": "Densetsu no Stafy"
+
+
     })
 
     function fetchAchievementsForGame(game) {
@@ -176,6 +193,7 @@ Item {
         return title.toLowerCase()
         .replace(/~.*?~/g, "")                             // ignore ~hack~ and ~homebrew~
         .replace(/\(.*?\)/g, "")                           // ignore ()
+        .replace(/\[.*?]/g, "")                            // ignore []
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip accents 
         .replace(/[^a-z0-9]/g, "")                         // ignore punctuation
     }

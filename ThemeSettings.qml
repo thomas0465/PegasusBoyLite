@@ -18,7 +18,7 @@ Item {
         "theme",
 	    
         "raUsername",
-	    "raApiKey",
+	"raApiKey",
         "enableRA",
 
         "lastPlayedDays",
@@ -70,7 +70,7 @@ Item {
         "primaryAsset",
         "menuadjust",
         "replacePar",
-        "backgroundGradient",
+	    "backgroundColor",
         "backgroundGradientColor",
         "backgroundGradientInvert"
     ]
@@ -146,8 +146,8 @@ Item {
     property bool replacePar: false
     property string fontInput: "Hack-Regular"
     property int mainFontSize: 20
-    property bool backgroundGradient: false
-    property string backgroundGradientColor: "#424242"
+    property string backgroundColor: "transparent"
+    property string backgroundGradientColor: "transparent"
     property bool backgroundGradientInvert: false
 
     FontLoader {
