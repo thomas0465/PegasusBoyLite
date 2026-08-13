@@ -274,9 +274,16 @@ Item {
                     "id": "replacePar",
                     "description": "Remove text in parenthises when showing game names",
                     "type": "bool",
+                    "default": "Enable",
+                },
+                {
+                    "name": "Remove Text in []",
+                    "id": "replaceBrac",
+                    "description": "Remove text in brackets when showing game names",
+                    "type": "bool",
                     "default": "Disable",
                 },
-                               {
+                {
                     "name": "Primary Image",
                     "id": "primaryAsset",
                     "description": "Show Title Screen or Box Art first",
@@ -463,10 +470,12 @@ Item {
         {
             "name": "RA",
             "settings": [
-                                {
+                {
                     "name": "Enable RetroAchievements",
                     "id": "enableRA",
-                    "description": "Enable RetroAchievements, press page down on the game list to load RetroAchievements",
+                    "description": "Enable RetroAchievements, press page down to load RetroAchievements for a game. 
+
+Configure collection and game name overrides by editing the config file in the assets folder.",
                     "type": "bool",
                     "default": "Disable",
                 },  

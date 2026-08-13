@@ -122,18 +122,27 @@ FocusScope {
             return
         }
 
-        if (api.keys.isCancel(event)) {
+        // enlarge current ach image, and hide screenshot
+        if (api.keys.isDetails(event)) {
             event.accepted = true;
             enlargeBadge = !enlargeBadge
             return
         }
 
+        //return to main list
         if (api.keys.isAccept(event)) {
             event.accepted = true;
             achievementsPanelRoot.close()
             return
         }
 
+        if (api.keys.isCancel(event)) {
+            event.accepted = true;
+            achievementsPanelRoot.close()
+            return
+        }
+
+        //allow navigating collections
         if (event.key === Qt.Key_Right) {
             achievementsPanelRoot.close()
             return
@@ -161,14 +170,6 @@ FocusScope {
         }
     }
 
-    Rectangle {
-        anchors.fill: parent
-        color: "transparent"
-        opacity: contentOpen ? 1 : 0
-        visible: opacity > 0
-        Behavior on opacity { NumberAnimation { duration: 150 } }
-    }
-
     Image {
         id: gameIcon
         visible: contentOpen
@@ -179,8 +180,8 @@ FocusScope {
         anchors {
             top: parent.top
             topMargin: parent.height * 0.03
-            left: scrollbar.right
-            leftMargin: parent.width * 0.014
+            left: scrollbar.left
+            //leftMargin: parent.width * 0.014
         }
 
         source: "https://media.retroachievements.org" + fetcher.imageIcon
@@ -189,27 +190,62 @@ FocusScope {
         smooth: true
     }
 
-        
+
+    //-------------------------------------------------
+    //Game achievements unlocked, divider, and total achievements
     Text {
-        id: panelTitleNum
+        id: panelTitleNumBottom
         visible: contentOpen
 
         anchors {
-            //top: parent.top
-            //topMargin: parent.height * 0.03
             right: parent.right
             leftMargin: parent.width * 0.04
             rightMargin: parent.width * 0.045
-            verticalCenter: gameIcon.verticalCenter
+            bottom: gameIcon.bottom
+            bottomMargin: gameIcon.height * 0.08
         }
 
-        text: fetcher.achievementsUnlocked + "/" + fetcher.achievementsTotal
+        text:fetcher.achievementsTotal
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
         font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
-        font.bold: true
+        font.bold: false
         color: themeData.colorTheme[theme].light
+    }
 
+    Text {
+        id: panelTitleNumTop
+        visible: contentOpen
+
+        anchors {
+            top: gameIcon.top
+            topMargin: gameIcon.height * 0.08
+            horizontalCenter: panelTitleNumBottom.horizontalCenter
+        }
+
+        text: fetcher.achievementsUnlocked
+        wrapMode: Text.WordWrap
+        font.family: themeSettings.font.customFont
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
+        font.bold: false
+        color: themeData.colorTheme[theme].light
+    }
+
+    Rectangle{
+        id:panelTitleNumDivider
+
+        visible: contentOpen
+
+        width: panelTitleNumBottom.width
+        height: gameIcon.height/30
+        anchors {
+            verticalCenter: gameIcon.verticalCenter
+            horizontalCenter: panelTitleNumBottom.horizontalCenter
+        }
+
+        color: themeData.colorTheme[theme].light
+        rotation: 0
+        transformOrigin: Item.Center
 
     }
 
@@ -221,16 +257,16 @@ FocusScope {
             //top: parent.top
             //topMargin: parent.height * 0.03
             left: gameIcon.right
-            right: panelTitleNum.left
-            leftMargin: parent.width * 0.01
+            right: panelTitleNumBottom.left
+            leftMargin: parent.width * 0.05
             verticalCenter: gameIcon.verticalCenter
         }
 
-        text: fetcher.gameTitle.replace(/~.*?~/g, "")  
+        text:fetcher.gameTitle.replace(/~.*?~/g, "").replace(/^( *)[ ]/g,"")
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
-        font.bold: true
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.5 + ( themeSettings.mainFontSize - 20) 
+        font.bold: false
         color: themeData.colorTheme[theme].primary
     }
 
@@ -286,29 +322,29 @@ FocusScope {
     }
 
 
-Image {
-    id: currentBadgeImage
+    Image {
+        id: currentBadgeImage
 
-    visible: enlargeBadge && contentOpen ? 1 : 0
+        visible: enlargeBadge && contentOpen ? 1 : 0
 
-    width: parent.height/3
-    height: parent.height/3
-        x: parent.width + (root.width - parent.width - width - (parent.width * 0.08)) / 2
+        width: parent.height/3
+        height: parent.height/3
+            x: parent.width + (root.width - parent.width - width - (parent.width * 0.08)) / 2
 
-        y:parent.height - parent.height/2.5;
+            y:parent.height - parent.height/2.5;
 
-    property var currentAchievement: fetcher.achievementsList.length > 0
-        ? fetcher.achievementsList[listView.currentIndex]
-        : null
+        property var currentAchievement: fetcher.achievementsList.length > 0
+            ? fetcher.achievementsList[listView.currentIndex]
+            : null
 
-    source: currentAchievement
-        ? "https://media.retroachievements.org/Badge/" + currentAchievement.BadgeName + ".png"
-        : ""
+        source: currentAchievement
+            ? "https://media.retroachievements.org/Badge/" + currentAchievement.BadgeName + ".png"
+            : ""
 
-    fillMode: Image.PreserveAspectFit
-    asynchronous: true
-    smooth: true
-}
+        fillMode: Image.PreserveAspectFit
+        asynchronous: true
+        smooth: true
+    }
 
     Component {
         id: achievementDelegate
@@ -318,7 +354,12 @@ Image {
             id: delegateRoot
 
             width: ListView.view.width
-            height: Math.max(achievementsPanelRoot.height/themeSettings.itemListRows + 18, achTitle.implicitHeight + achDesc.implicitHeight + 30)
+            height: Math.max(
+                
+                achievementsPanelRoot.height/themeSettings.itemListRows + achievementsPanelRoot.height * 0.022, 
+            
+                achTitle.implicitHeight + achDesc.implicitHeight + achievementsPanelRoot.height * 0.02
+            )
 
             property bool unlocked: !!modelData.DateEarned
             property string badgeUrl: "https://media.retroachievements.org/Badge/"
@@ -359,7 +400,7 @@ Image {
                 text: modelData.Points 
                 font.family: themeSettings.font.customFont
                 font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
-                font.bold: true
+                font.bold: false
 
                 color: unlocked ? 
 
@@ -390,7 +431,7 @@ Image {
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
                 font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
-                font.bold: true
+                font.bold: false
                 
                 color: unlocked ? 
                 
@@ -410,11 +451,11 @@ Image {
 
                 anchors {
                     top: achTitle.bottom
-                    topMargin: parent.height * 0.08
-                    bottomMargin: parent.height * 0.08
+                    topMargin: parent.height * 0.02
+                    //bottomMargin: parent.height * 0.01
                     left: badgeImage.right
                     right: pointsText.left
-                    leftMargin: parent.width * 0.04
+                    leftMargin: parent.width * 0.07
                     rightMargin: parent.width * 0.02
                 }
 

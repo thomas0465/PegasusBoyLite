@@ -1,5 +1,7 @@
 import QtQuick 2.15
 
+import "../../assets"
+
 Item {
     id: achRoot
 
@@ -35,6 +37,52 @@ Item {
         }
     }
 
+    //--------------------------------------------------------------------
+    //overrides from the achievementsconfig file
+    AchievementsConfig {
+        id: achievementsConfig
+    }
+    property var consoleNameHints: parseOverrides(achievementsConfig.consoleHintsText,true)
+    property var titleOverrides: parseOverrides(achievementsConfig.titleOverridesText,false)
+
+    function parseOverrides(text, toLower) {
+        var result = {}
+        var entries = []
+
+        //split lines from text and populate entries
+        var lines = text.split("\n")
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim()
+            if (!line) { continue }
+
+            var sep = line.indexOf(":")
+            if (sep === -1) { continue }
+
+            entries.push({
+                key: line.substring(0, sep).trim(),
+                value: line.substring(sep + 1).trim()
+            })
+        }
+
+        //convert entries to values
+        for (var i = 0; i < entries.length; i++) {
+
+            var values = entries[i].value.split(",")
+            for (var j = 0; j < values.length; j++) {
+                values[j] = values[j].trim()
+            }
+            
+            if(toLower){
+                result[entries[i].key.toLowerCase()] = values
+            }else{
+                result[entries[i].key] = entries[i].value
+            }
+        }
+        return result
+    }
+
+    //--------------------------------------------------------------------
+    //track cached keys
     function trackCacheKey(key) {
         if (cacheKeys.indexOf(key) === -1) {
             cacheKeys.push(key)
@@ -42,6 +90,7 @@ Item {
         }
     }
 
+    //--------------------------------------------------------------------
     // Clears every tracked cache entry.
     function clearCache() {
         var stored = api.memory.get("ra_cache_index")
@@ -62,51 +111,8 @@ Item {
         showStatus("RA: Cache cleared (" + keys.length + " entries)")
     }
 
-    // Each shortname maps to one or more full RA console names, use game consoles file in /assets for full names
-    property var consoleNameHints: ({
-
-
-        "nes": ["nes/famicom"],
-        "snes": ["SNES/Super Famicom"],
-        "gb":["game boy", "game boy color", "game boy advance"],
-        "gbc": ["game boy color"],
-        "gba": ["game boy advance"],
-        "gameboy": ["game boy", "game boy color", "game boy advance"],
-        "n64": ["nintendo 64"],
-        "genesis": ["mega drive"],
-        "megadrive": ["mega drive"],
-        "md": ["mega drive"],
-        "mastersystem": ["master system"],
-        "psx": ["playstation"],
-        "ps1": ["playstation"],
-        "arcade": ["arcade"],
-
-
-        "homebrew": ["game boy", "game boy color", "game boy advance"],
-        "gb hacks": ["game boy", "game boy color", "game boy advance"],
-        "nes hacks": ["nes/famicom"],
-        "nes mario": ["nes/famicom"],
-        "snes hacks": ["SNES/Super Famicom"],
-        "snes mario": ["SNES/Super Famicom"],
-        "n64 hacks": ["nintendo 64"],
-        "n64 mario": ["nintendo 64"],
-        "n64 zelda": ["nintendo 64"],
-        "gcn": ["gamecube"],
-
-
-    })
-
-    // Manual overrides for titles that don't match automatically.
-    property var titleOverrides: ({
-
-
-        "For Who The Frog Bell Tolls (English Translation)": "Kaeru no Tame ni Kane wa Naru",
-        "The Legendary Starfy (Starfy 1 Translation)": "Densetsu no Stafy",
-	"The Second Reality Project 2 Reloaded [112 VH]": "The Second Reality Project 2 Reloaded: Zycloboo's Challenge"
-
-
-    })
-
+    //--------------------------------------------------------------------
+    //Start of getting achievements and progress data
     function fetchAchievementsForGame(game) {
         var searchTitle = titleOverrides[game.title] || game.title
 
@@ -208,7 +214,15 @@ Item {
     // Tries each console in order until one has a matching game title.
     function tryConsoles(shortNames, consoleIds, index, title, callback, onError) {
         if (index >= consoleIds.length) {
-            showStatus("No match for \"" + title + "\". Checked: " + consoleNamesForIds(consoleIds).join(", "))
+            showStatus("No match for \"" + 
+            
+            title
+            .replace(/\(.*?\)/g, "")
+            .replace(/\[.*?\]/g, "")
+            .replace(/[ \t]+$/g, "") 
+            //remove () and [] on displayed title 
+            
+            + "\". Checked: " + consoleNamesForIds(consoleIds).join(", "))
             callback(null)
             return
         }
@@ -260,11 +274,12 @@ Item {
     function normalize(title) {
         return title.toLowerCase()
         .replace(/~.*?~/g, "")                             // ignore ~hack~ and ~homebrew~
+        .replace(/smb.* - /g, "")                          // replace 'SMB -', 'SMB2 -', etc
         .replace(/\(.*?\)/g, "")                           // ignore ()
         .replace(/\[.*?\]/g, "")                           // ignore []
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip accents 
         .replace(/[^a-z0-9]/g, "")                         // ignore punctuation
-        .replace(/SMB.* - /g, "")                          // replace 'SMB -', 'SMB2 -', etc
+
     }
 
     function fetchGameAchievements(gameId) {
@@ -289,8 +304,9 @@ Item {
         })
     }
 
+    //--------------------------------------------------------------------
     // Falls back to the last successfully-fetched payload for this game ID,
-    // saved via api.memory. Used when a fetch fails (offline, RA down, etc).
+    // saved via api.memory. Used when a fetch fails
     function useCachedAchievements(gameId, reason) {
         var cached = api.memory.get("ra_cache_" + gameId)
         if (!cached) {
@@ -318,6 +334,8 @@ Item {
         return arr
     }
 
+    //--------------------------------------------------------------------
+    //get status
     function getJson(url, callback, onError) {
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
@@ -326,18 +344,20 @@ Item {
 
             if (xhr.status !== 200) {
                 var reason = "Request failed (HTTP " + xhr.status + "). Check your Username and API key"
-                if (onError) { onError(reason) } else { showStatus(reason) }
+                showStatus(reason)
                 return
             }
 
             callback(JSON.parse(xhr.responseText))
         }
         xhr.onerror = function() {
-            if (onError) { onError("network error") } else { showStatus("No online connection") }
+            showStatus("No online connection")
         }
         xhr.send()
     }
 
+    //--------------------------------------------------------------------
+    //show Status message
     function showStatus(msg) {
         statusMessage = msg
         statusVisible = true

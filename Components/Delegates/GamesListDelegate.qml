@@ -21,8 +21,12 @@ Item {
             height: ListView.view.height / ListView.view.rows
 
             color: {
-                if (activeFocus) { return ListView.isCurrentItem ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].background };
-                return ListView.isCurrentItem ? themeData.colorTheme[theme].light :  "transparent" ;
+                if (activeFocus) 
+                { return ListView.isCurrentItem ? 
+                    themeData.colorTheme[theme].primary : themeData.colorTheme[theme].background };
+                
+                return ListView.isCurrentItem ?
+                    themeData.colorTheme[theme].light :  "transparent" ;
             }
 
             Rectangle {
@@ -38,45 +42,47 @@ Item {
                 }
 
                 color: {
-                    if (activeFocus) { return gamesListRect.ListView.isCurrentItem ? themeData.colorTheme[theme].background : themeData.colorTheme[theme].primary };
-                    gamesListRect.ListView.isCurrentItem ?  themeData.colorTheme[theme].background : themeData.colorTheme[theme].light;
+                    if (activeFocus) 
+                        { return gamesListRect.ListView.isCurrentItem ? 
+                            themeData.colorTheme[theme].background : 
+                            themeData.colorTheme[theme].primary };
+
+                        gamesListRect.ListView.isCurrentItem ?  
+                            themeData.colorTheme[theme].background : 
+                            themeData.colorTheme[theme].light;
                 }
                 visible: model.favorite !== undefined && model.favorite
-                //visible: modelData.favorite !== undefined && modelData.favorite
+
             }
 
             Text {
                 id: gamesListText
 
-                width: parent.width - 25
-                //height: parent.height
-
-                // anchors.top: parent.top
-                //anchors.left: parent.left
-
                 anchors.left: gamesListFavorite.right
-
-                // anchors.right: parent.right
-                // anchors.bottom: parent.bottom
-
                 anchors.leftMargin: parent.width * 0.02
+                anchors.right: gamesListRect.right
+                anchors.rightMargin: parent.width * 0
+                
                 anchors.verticalCenter: parent.verticalCenter
 
                 font.family: themeSettings.font.customFont
-                //fontSizeMode: Text.HorizontalFit
-                // minimumPixelSize: 8
-                // font.pixelSize: 72
                 font.pixelSize: parent.height * 0.4 + ( themeSettings.mainFontSize - 20)
 
-		//fontSizeMode: Text.HorizontalFit
+		        wrapMode:(themeSettings.wordwrap) ? Text.WordWrap: Text.NoWrap
 
-		wrapMode:(themeSettings.wordwrap) ? Text.WordWrap: Text.NoWrap
-                //elide: Text.ElideRight
                 color: gamesListRect.ListView.isCurrentItem ? themeData.colorTheme[theme].background : themeData.colorTheme[theme].primary
 
 
-                text: (themeSettings.replacePar) ? model[textName].replace(/\(([^()]+)\)/g,""): model[textName]
-                //text: modelData[textName]
+                text: (themeSettings.replacePar) ? 
+                    (themeSettings.replaceBrac ? 
+                        model[textName].replace(/\(([^()]+)\)/g,"").replace(/\[[^\]]+\]/g,"")
+                        : model[textName].replace(/\(([^()]+)\)/g,"")
+                    )
+                        :
+                     (themeSettings.replaceBrac ? 
+                        model[textName].replace(/\[[^\]]+\]/g,"")
+                        : model[textName]
+                     )                
             }
             
         }

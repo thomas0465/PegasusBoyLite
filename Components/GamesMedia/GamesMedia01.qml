@@ -29,13 +29,8 @@ Item {
 
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        //sourceSize {
-        //    width: width
-        //    height: height
-        //}
 
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
-
         opacity: (singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0);
 
     }
@@ -50,13 +45,8 @@ Item {
 
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        //sourceSize {
-        //    width: width
-        //    height: height
-        //}
-       	 source: (imagetype) ? primary || secondary: secondary|| primary
-
-             opacity: (singleimageview == 2) ? 0: 1;
+       	source: (imagetype) ? primary || secondary: secondary|| primary
+        opacity: (singleimageview == 2) ? 0: 1;
     }
 
 

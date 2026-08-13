@@ -241,7 +241,7 @@ FocusScope {
                 height: parent.height * 0.2
 
                 //white out input when on API key and not inputting
-                color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key') ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].background
+                color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key'&& themeSettings.raApiKey !== "") ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].background
 
                 border.width: 1
                 border.color: textInput.activeFocus ? themeData.colorTheme[theme].primary : themeData.colorTheme[theme].light
@@ -283,10 +283,11 @@ FocusScope {
                     right: parent.right
                     rightMargin: parent.width * 0.02
                 }
-                                    wrapMode: Text.WordWrap
+                
+                wrapMode: Text.WordWrap
 
                 text: textInput.activeFocus
-                    ? "Input text, press Enter to save, and Cancel to cancel"
+                    ? "Input text, press Enter to save or Cancel to cancel"
                     : "Press Enter to begin inputting text"
                 font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.08

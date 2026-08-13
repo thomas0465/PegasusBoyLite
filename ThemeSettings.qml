@@ -18,7 +18,7 @@ Item {
         "theme",
 	    
         "raUsername",
-	"raApiKey",
+	    "raApiKey",
         "enableRA",
 
         "lastPlayedDays",
@@ -70,6 +70,7 @@ Item {
         "primaryAsset",
         "menuadjust",
         "replacePar",
+        "replaceBrac",
 	    "backgroundColor",
         "backgroundGradientColor",
         "backgroundGradientInvert"
@@ -143,7 +144,8 @@ Item {
     property string primaryAsset: "Title Screen"
     property int menuadjust: 0
 
-    property bool replacePar: false
+    property bool replacePar: true
+    property bool replaceBrac: true
     property string fontInput: "Roboto-Regular"
     property int mainFontSize: 20
     property string backgroundColor: "transparent"

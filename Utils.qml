@@ -80,11 +80,11 @@ Item {
         return 0
     }
 
-    Component.onCompleted: {
+    //Component.onCompleted: {
         // var logger = Logger;
-        Logger.LOG_PRIORITY = Logger.DEBUG;
-        Logger.info("Utils:onCompleted:Logger:" + Logger.LOG_PRIORITY);
-    }
+        //Logger.LOG_PRIORITY = Logger.DEBUG;
+        //Logger.info("Utils:onCompleted:Logger:" + Logger.LOG_PRIORITY);
+    //}
 
 
 }
