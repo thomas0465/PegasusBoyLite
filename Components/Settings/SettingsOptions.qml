@@ -212,7 +212,7 @@ FocusScope {
 
                 text: optionsRoot.actionFeedback !== ""
                     ? optionsRoot.actionFeedback
-                    : "Press Accept to run"
+                    : "Press Enter to run"
                 font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.11
                 color: optionsRoot.actionFeedback !== ""
