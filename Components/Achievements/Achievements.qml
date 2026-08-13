@@ -91,7 +91,7 @@ Item {
     }
 
     //--------------------------------------------------------------------
-    // Clears every tracked cache entry.
+    // Clears every tracked cached game entry from the pegasus settings data.
     function clearCache() {
         var stored = api.memory.get("ra_cache_index")
         var keys = []
@@ -108,7 +108,7 @@ Item {
         consoleList = null
         gameListCache = {}
 
-        showStatus("RA: Cache cleared (" + keys.length + " entries)")
+        showStatus("Cache cleared, deleted " + keys.length + " entries")
     }
 
     //--------------------------------------------------------------------
@@ -121,37 +121,58 @@ Item {
             shortNames.push(game.collections.get(i).shortName.toLowerCase())
         }
 
-        checkConsoles(shortNames, searchTitle, function(consoleIds) {
+        // Shared failure path: a lookup step failed fall back to whatever we last cached for this title.
+        var onFail = function(reason) {
+            loadCachedAchievements(api.memory.get("ra_gameid_" + searchTitle), reason)
+        }
+
+        resolveConsoleIds(shortNames, function(consoleIds) {
             if (!consoleIds.length) { return }
 
-            tryConsoles(shortNames, consoleIds, 0, searchTitle, function(gameId) {
+            tryConsoles(consoleIds, 0, searchTitle, function(gameId) {
                 if (!gameId) { return }
 
                 api.memory.set("ra_gameid_" + searchTitle, gameId)
                 trackCacheKey("ra_gameid_" + searchTitle)
                 fetchGameAchievements(gameId)
-            }, function(reason) {
-                offlineFallback(searchTitle, reason)
-            })
-        }, function(reason) {
-            offlineFallback(searchTitle, reason)
-        })
+            }, onFail)
+        }, onFail)
     }
 
-    // No network / a lookup step failed - fallback
-    function offlineFallback(searchTitle, reason) {
-        var gameId = api.memory.get("ra_gameid_" + searchTitle)
-        if (!gameId) {
-            showStatus(reason)
-            return
+    // Fetches (or reuses the cached) console list, then returns every
+    // console ID that matches one of the collection's configured hints.
+    function resolveConsoleIds(shortNames, callback, onError) {
+        var matchConsoles = function() {
+            var ids = []
+            var hintsTried = []
+
+            for (var i = 0; i < shortNames.length; i++) {
+                var hints = consoleNameHints[shortNames[i]]
+
+                if (!hints) {
+                    hintsTried.push(shortNames[i] + " (no override configured)")
+                    continue
+                }
+
+                for (var h = 0; h < hints.length; h++) {
+                    hintsTried.push(hints[h])
+
+                    for (var j = 0; j < consoleList.length; j++) {
+                        if (consoleList[j].Name.toLowerCase() !== hints[h].toLowerCase()) { continue }
+                        ids.push(consoleList[j].ID)
+                    }
+                }
+            }
+
+            if (!ids.length) {
+                showStatus("No console match for " + hintsTried.join(", "))
+            }
+
+            return ids
         }
 
-        useCachedAchievements(gameId, reason)
-    }
-
-    function checkConsoles(shortNames, title, callback, onError) {
         if (consoleList) {
-            callback(matchConsoles(shortNames, title))
+            callback(matchConsoles())
             return
         }
 
@@ -160,85 +181,57 @@ Item {
 
         getJson(url, function(data) {
             consoleList = data
-            callback(matchConsoles(shortNames, title))
+            callback(matchConsoles())
         }, onError)
     }
 
-    // Returns every console ID that matches any hint
-    function matchConsoles(shortNames, title) {
-        var ids = []
-        var hintsTried = []
-
-        for (var i = 0; i < shortNames.length; i++) {
-            var hints = consoleNameHints[shortNames[i]]
-
-            for (var h = 0; h < hints.length; h++) {
-                hintsTried.push(hints[h])
-
-                for (var j = 0; j < consoleList.length; j++) {
-                    if (consoleList[j].Name.toLowerCase() !== hints[h].toLowerCase()) { continue }
-                    
-                    //unneeded check if game is in multiple collections
-                    //if (ids.indexOf(consoleList[j].ID) !== -1) { continue }
-
-                    ids.push(consoleList[j].ID)
-                    //console.log("RA: console candidate for \"" + title + "\": "
-                    //    + consoleList[j].Name + " (ID " + consoleList[j].ID
-                    //    + ") via shortname \"" + shortNames[i] + "\" hint \"" + hints[h] + "\"")
-                }
-            }
-        }
-
-        if (!ids.length) {
-            showStatus("No console match. Tried: " + hintsTried.join(", "))
-        }
-
-        return ids
-    }
-
-    // Looks up the RA console names for a set of already-resolved console
-    // IDs, for use in status/error messages.
-    function consoleNamesForIds(ids) {
-        var names = []
-        for (var i = 0; i < ids.length; i++) {
-            for (var j = 0; j < consoleList.length; j++) {
-                if (consoleList[j].ID === ids[i]) {
-                    names.push(consoleList[j].Name)
-                    break
-                }
-            }
-        }
-        return names
-    }
-
-    // Tries each console in order until one has a matching game title.
-    function tryConsoles(shortNames, consoleIds, index, title, callback, onError) {
+    // Tries each console in order
+    function tryConsoles(consoleIds, index, title, callback, onError) {
         if (index >= consoleIds.length) {
-            showStatus("No match for \"" + 
-            
-            title
-            .replace(/\(.*?\)/g, "")
-            .replace(/\[.*?\]/g, "")
-            .replace(/[ \t]+$/g, "") 
-            //remove () and [] on displayed title 
-            
-            + "\". Checked: " + consoleNamesForIds(consoleIds).join(", "))
+            var names = []
+            for (var n = 0; n < consoleIds.length; n++) {
+                for (var m = 0; m < consoleList.length; m++) {
+                    if (consoleList[m].ID === consoleIds[n]) { names.push(consoleList[m].Name); break }
+                }
+            }
+
+            showStatus("\"" +
+                title
+                .replace(/\(.*?\)/g, "")
+                .replace(/\[.*?\]/g, "")
+                .replace(/[ \t]+$/g, "")
+                //remove () and [] on displayed title
+                + "\" not found. Tried " + names.join(", "))
             callback(null)
             return
         }
 
-        checkGame(title, consoleIds[index], function(gameId) {
+        var consoleId = consoleIds[index]
+        var target = normalize(title)
+
+        var matchGame = function(list) {
+            for (var i = 0; i < list.length; i++) {
+                if (normalize(list[i].Title) === target) {
+                    //console.log("RA: game match for \"" + title + "\" on console " + consoleId
+                    //    + ": " + list[i].Title + " (ID " + list[i].ID + ")")
+                    return list[i].ID
+                }
+            }
+            //console.error("No match for \"" + title + "\" on console " + consoleId + ". checked " + list.length + " games")
+            return null
+        }
+
+        var onGameList = function(list) {
+            var gameId = matchGame(list)
             if (gameId) {
                 callback(gameId)
             } else {
-                tryConsoles(shortNames, consoleIds, index + 1, title, callback, onError)
+                tryConsoles(consoleIds, index + 1, title, callback, onError)
             }
-        }, onError)
-    }
+        }
 
-    function checkGame(title, consoleId, callback, onError) {
         if (gameListCache[consoleId]) {
-            callback(matchGame(title, gameListCache[consoleId], consoleId))
+            onGameList(gameListCache[consoleId])
             return
         }
 
@@ -247,28 +240,8 @@ Item {
 
         getJson(url, function(data) {
             gameListCache[consoleId] = data
-            callback(matchGame(title, data, consoleId))
+            onGameList(data)
         }, onError)
-    }
-
-    function matchGame(title, list, consoleId) {
-        var target = normalize(title)
-
-        for (var i = 0; i < list.length; i++) {
-            if (normalize(list[i].Title) === target) {
-                console.log("RA: game match for \"" + title + "\" on console " + consoleId
-                    + ": " + list[i].Title + " (ID " + list[i].ID + ")")
-                return list[i].ID
-            }
-        }
-
-        console.error("RA: no match for \"" + title + "\" on console " + consoleId + " - checked " + list.length + " games:")
-	//list game names checked in logs
-        //for (var j = 0; j < list.length; j++) {
-        //    console.log("  - " + list[j].Title)
-        //}
-
-        return null
     }
 
     function normalize(title) {
@@ -289,37 +262,37 @@ Item {
 
         getJson(url, function(data) {
             if(data.Title == null){
-                showStatus("RA: Achievements not found for account, check if your Username is correct")
+                showStatus("Achievements not found for account, check if your Username is correct")
                 return
             }
+            achievementsReady()
             gameTitle = data.Title
             imageIcon = data.ImageIcon
             console.log("data: " + imageIcon)
             achievementsList = buildAchievementsList(data)
             api.memory.set("ra_cache_" + gameId, JSON.stringify(data))
             trackCacheKey("ra_cache_" + gameId)
-            achievementsReady()
+        
+        //on failure to load url, try to fallback to cached acheievement data
         }, function(reason) {
-            useCachedAchievements(gameId, reason)
+            loadCachedAchievements(gameId, reason)
         })
     }
 
     //--------------------------------------------------------------------
-    // Falls back to the last successfully-fetched payload for this game ID,
-    // saved via api.memory. Used when a fetch fails
-    function useCachedAchievements(gameId, reason) {
-        var cached = api.memory.get("ra_cache_" + gameId)
+    // Falls back to the last successfully-fetched payload for this game ID
+    function loadCachedAchievements(gameId, reason) {
+        var cached = gameId ? api.memory.get("ra_cache_" + gameId) : null
         if (!cached) {
             showStatus(reason)
             return
         }
-
+        achievementsReady()
         var data = JSON.parse(cached)
         gameTitle = data.Title
         imageIcon = data.ImageIcon
         achievementsList = buildAchievementsList(data)
-        showStatus("RA: Offline - Showing cached achievements")
-        achievementsReady()
+        showStatus("Offline - Showing cached achievements")
     }
 
     function buildAchievementsList(data) {
@@ -401,9 +374,6 @@ Item {
                 left: parent.left
                 right: parent.right
                 verticalCenter: parent.verticalCenter
-
-                //leftMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
-                //rightMargin: (parent.width * 100 / themeSettings.itemListWidth) * .005
             }
 
             text: achRoot.statusMessage

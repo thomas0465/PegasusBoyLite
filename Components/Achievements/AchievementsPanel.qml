@@ -4,15 +4,6 @@ import QtMultimedia 5.9
 import "../Scrollbar"
 
 // Right-side popup listing RetroAchievements for the currently open game.
-// Takes over dpad input while open; Cancel closes it and returns focus
-// to games list
-//
-// open(game) starts the fetch but does NOT show the panel or take focus
-// immediately - it only opens once Achievements.qml reports success via
-// its achievementsReady signal. On achievementsError, the panel stays
-// closed and Achievements.qml's own error banner (rendered inside this
-// component, so it's visible regardless of contentOpen) shows the reason.
-
 
 FocusScope {
     id: achievementsPanelRoot
