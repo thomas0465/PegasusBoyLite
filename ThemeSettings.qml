@@ -115,7 +115,7 @@ Item {
 
     property string language: "en"
 
-    property bool shaderEnable: true
+    property bool shaderEnable: false
     property bool shaderCurvatureEnable: true
     property int shaderCurvatureAmount: 100
     property bool shaderScanlinesEnable: true
@@ -144,7 +144,7 @@ Item {
     property int menuadjust: 0
 
     property bool replacePar: false
-    property string fontInput: "Hack-Regular"
+    property string fontInput: "Roboto-Regular"
     property int mainFontSize: 20
     property string backgroundColor: "transparent"
     property string backgroundGradientColor: "transparent"

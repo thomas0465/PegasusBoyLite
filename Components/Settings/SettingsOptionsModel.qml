@@ -5,16 +5,6 @@ import "../../Logger.js" as Logger
 Item {
     // Important: Also add variable to ThemeSettings in root folder
 
-    // Each settings needs a type and value
-    // The rendering and options available depend on
-    // the type of setting
-    // id: Matches to the relevant themeSettings value
-    // types:
-    //   - list
-    //   - bool
-    //   - range (min, max, step)
-    //   - text (free text entry - requires a keyboard/OSK to type into)
-
     property var settingsModel: [
         {
             "name": "Style",
@@ -94,7 +84,7 @@ Item {
                     "id": "fontInput",
                     "description": "Text Font",
                     "type": "list",
-                    "default": "Hack-Regular",
+                    "default": "Roboto-Regular",
                     "options": [
                         { "value": "04B" },
                         { "value": "Alagard" },
@@ -363,7 +353,7 @@ Item {
                     "id": "shaderEnable",
                     "description": "Enable or disable shaders",
                     "type": "bool",
-                    "default": "Enable",
+                    "default": "Disable",
                 },
                 {
                     "name": "Curvature - Enable",
@@ -492,6 +482,13 @@ Item {
                     "id": "raApiKey",
                     "description": "RetroAchievements web API key",
                     "type": "text",
+                    "default": "",
+                },
+                {
+                    "name": "Clear Achievement Cache",
+                    "id": "clearRACache",
+                    "description": "Remove locally cached RetroAchievements data",
+                    "type": "action",
                     "default": "",
                 },
             ]

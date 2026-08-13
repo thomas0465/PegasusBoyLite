@@ -128,7 +128,11 @@ FocusScope {
                 }
 
                 if (api.keys.isAccept(event)) {
-                    event.accepted = true;
+
+                    if(settingsListView.model.get(settingsListView.currentIndex).type !== "action")
+                    {
+                        event.accepted = true;
+                    }
                     if (settingsOptionsActive == false) {
                         settingsOptionsActive = true;
                         settingsOptions.forceActiveFocus();
@@ -137,6 +141,7 @@ FocusScope {
                         settingsOptionsActive = false;
                         settingsListView.forceActiveFocus();
                     }
+                    
                     return;
                 }
 

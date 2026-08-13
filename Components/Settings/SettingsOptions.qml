@@ -7,20 +7,20 @@ import "../../Logger.js" as Logger
 FocusScope {
     id: root
 
+    signal exit()
+
     // property alias model: settingsListView.model
     property alias model: optionsRoot.settingModel
 
     onActiveFocusChanged: {
-        // Explicit, self-healing focus routing. settingsListView's own
-        // "focus: true" binding gets permanently destroyed the first time
-        // textInput.forceActiveFocus() steals focus away from it (Qt
-        // imperatively overwrites the binding to make room, which severs
-        // it for good) - so we can't rely on that default anymore. Always
-        // decide where focus goes explicitly instead.
         if (!activeFocus) { return }
 
         if (optionsRoot.settingModel.type === "text") {
             textInput.forceActiveFocus()
+        } else if (optionsRoot.settingModel.type === "action") {
+            // No list or text field to delegate to - optionsRoot itself
+            //optionsRoot.forceActiveFocus()
+            settingsListView.forceActiveFocus()
         } else {
             settingsListView.forceActiveFocus()
         }
@@ -34,13 +34,27 @@ FocusScope {
 
         property var settingModel: []
         property string editSnapshot: ""
+        property string actionFeedback: ""
         // property string settingType: ""
 
+        Keys.onReleased: {
+            if (optionsRoot.settingModel.type === "action") {
+                if (api.keys.isAccept(event)) {
+                    runAction(optionsRoot.settingModel.id)
+                        settingsOptionsActive = true;
+                        settingsListView.forceActiveFocus();
+                }
+                return
+            }
+        }
+
         Keys.onPressed: {
+
             if (optionsRoot.settingModel.type === "text") {
                 if (api.keys.isAccept(event) && !textInput.activeFocus) {
                     
                     textInput.forceActiveFocus()
+                    root.exit()
                     return
                 }
 
@@ -62,17 +76,40 @@ FocusScope {
 
             if (api.keys.isAccept(event)) {
                 //event.accepted = true
+                actionFeedback = ""
                 var valueToSave = settingsListView.model[settingsListView.currentIndex];
 
                 if (optionsRoot.settingModel.type === "list") {
-                    // Save the underlying value, not the displayed label -
-                    // those can now differ (eg. save "#424242" while the
-                    // list shows "Gray").
                     valueToSave = optionsRoot.settingModel.options.get(settingsListView.currentIndex).value;
                 }
 
                 themeSettings.saveSetting(optionsRoot.settingModel.id, valueToSave, optionsRoot.settingModel.type);
             }
+        }
+
+        // Dispatch table for "action"-type settings. Add more ids here as
+        // more actions are needed.
+        function runAction(id) {
+            if (id === "clearRACache") {
+                clearRACache()
+            }
+        }
+
+        // Clears every RetroAchievements cache entry directly via
+        // api.memory, using the key scheme from Achievements.qml
+        function clearRACache() {
+            var stored = api.memory.get("ra_cache_index")
+            var keys = []
+            if (stored) {
+                try { keys = JSON.parse(stored) } catch (e) { keys = [] }
+            }
+
+            for (var i = 0; i < keys.length; i++) {
+                api.memory.set(keys[i], "")
+            }
+            api.memory.set("ra_cache_index", JSON.stringify([]))
+
+            optionsRoot.actionFeedback = "Cleared " + keys.length + " cached entries, press Enter to return"
         }
 
         // Component.onCompleted: {
@@ -97,7 +134,7 @@ FocusScope {
         ItemList {
             id: settingsListView
             focus: true
-            visible: optionsRoot.settingModel.type !== "text"
+            visible: optionsRoot.settingModel.type !== "text" && optionsRoot.settingModel.type !== "action"
 
             width: parent.width
             height: parent.height
@@ -115,10 +152,6 @@ FocusScope {
                 var currentValue = themeSettings[optionsRoot.settingModel.id];
 
                 if (optionsRoot.settingModel.type === "list") {
-                    // Find the option whose VALUE matches the saved
-                    // setting, not whose displayed label matches - those
-                    // can now differ (eg. saved "#424242", displayed
-                    // "Gray").
                     var opts = optionsRoot.settingModel.options
                     var listIndex = 0
                     for (var i = 0; i < opts.count; ++i) {
@@ -135,7 +168,7 @@ FocusScope {
                 if (optionsRoot.settingModel.type == "bool") {
                     value = (value) ? "Enable" : "Disable"
                 }
-                Logger.debug("SettingsOptions:setIndex:value:"+ value);
+                //Logger.debug("SettingsOptions:setIndex:value:"+ value);
                 var index = utils.findIndexByValue(model, value);
                 //if (index >= 0 || index !== undefined) { currentIndex = index };
                 settingsListView.currentIndex = index;
@@ -144,14 +177,14 @@ FocusScope {
             // Component.onCompleted: setIndex()
             //onModelChanged: {
             onSettingIdChanged: {
-                Logger.debug("SettingsOptions:onModelChanged:initiated");
-                Logger.debug("SettingsOptions:onModelChanged:id:" + optionsRoot.settingModel.id);
+                //Logger.debug("SettingsOptions:onModelChanged:initiated");
+                //Logger.debug("SettingsOptions:onModelChanged:id:" + optionsRoot.settingModel.id);
                 setIndex();
             }
 
-            onModelChanged: {
-                Logger.info("SettingsOptions:onModelChanged:model:" + model.count);
-            }
+            //onModelChanged: {
+            //    Logger.info("SettingsOptions:onModelChanged:model:" + model.count);
+            //}
         }
 
         SettingsOptionsDelegate {
@@ -160,9 +193,35 @@ FocusScope {
             textName: ""
         }
 
-        // ---- Free text entry (username/API key/etc.) --------------------
-        // Requires a physical/attached keyboard, or a platform on-screen
-        // keyboard that pops up automatically when a TextInput gets focus.
+        //action box
+        Item {
+            id: actionBox
+            visible: optionsRoot.settingModel.type === "action"
+            anchors.fill: parent
+
+            Text {
+                anchors {
+                    top: parent.top
+                    topMargin: parent.height * -0.7
+                    left: parent.left
+                    leftMargin: parent.width * -0.05
+                    right: parent.right
+                    rightMargin: parent.width * 0.02
+                }
+                wrapMode: Text.WordWrap
+
+                text: optionsRoot.actionFeedback !== ""
+                    ? optionsRoot.actionFeedback
+                    : "Press Accept to run"
+                font.family: themeSettings.font.customFont
+                font.pixelSize: parent.height * 0.11
+                color: optionsRoot.actionFeedback !== ""
+                    ? themeData.colorTheme[theme].primary
+                    : themeData.colorTheme[theme].light
+            }
+        }
+
+        // ---- text entry  --------------------
         Item {
             id: textEntryBox
             visible: optionsRoot.settingModel.type === "text"
@@ -199,22 +258,14 @@ FocusScope {
                     font.pixelSize: parent.height * 0.5
                     color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key') ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].primary
 
-                    // Saves continuously as you type, instead of depending
-                    // on catching a specific "commit" event (Return key,
-                    // editingFinished, etc.) - those depend on how input is
-                    // actually delivered on a given platform, and Android's
-                    // on-screen controls don't appear to trigger them the
-                    // same way a gamepad does. This guarantees whatever is
-                    // currently displayed is always what's saved,
+                    // Saves continuously as you type
                     // regardless of platform-specific input quirks.
                     onTextChanged: {
                         themeSettings.saveSetting(optionsRoot.settingModel.id, text)
                     }
 
                     // Snapshot the value the instant editing starts, so
-                    // Cancel has something meaningful to revert to - since
-                    // live-saving means themeSettings itself is no longer
-                    // a safe "last saved" reference once typing begins.
+                    // Cancel has something to revert to
                     onActiveFocusChanged: {
                         if (activeFocus) {
                             optionsRoot.editSnapshot = text
@@ -292,6 +343,10 @@ FocusScope {
             State {
                 name: "text"
                 // No ItemList model needed - textEntryBox handles everything.
+            },
+            State {
+                name: "action"
+                // No ItemList model needed - actionBox handles everything.
             },
             State {
                 name: ""

@@ -9,13 +9,10 @@ Item {
     property string statusMessage: ""
     property bool statusVisible: false
 
-    // Populated on a successful fetch - the UI panel binds to these.
     property string gameTitle: ""
     property string imageIcon: ""
     property var achievementsList: []
 
-    // Derived counts - recompute automatically whenever achievementsList
-    // is reassigned (ie. after every fetch).
     property int achievementsTotal: achievementsList.length
     property int achievementsUnlocked: {
         var count = 0
@@ -28,11 +25,44 @@ Item {
     property var consoleList: null
     property var gameListCache: ({})
 
-    // Each shortname maps to one or more RA console name hints (substring
-    // matched, case-insensitive). A shortname with multiple hints checks
-    // ALL of those consoles for a matching game title - useful for merged
-    // collections like a "Game Boy" folder that actually contains GB, GBC,
-    // and GBA games.
+    // Tracks every ra_gameid_*/ra_cache_* key
+    property var cacheKeys: []
+
+    Component.onCompleted: {
+        var stored = api.memory.get("ra_cache_index")
+        if (stored) {
+            try { cacheKeys = JSON.parse(stored) } catch (e) { cacheKeys = [] }
+        }
+    }
+
+    function trackCacheKey(key) {
+        if (cacheKeys.indexOf(key) === -1) {
+            cacheKeys.push(key)
+            api.memory.set("ra_cache_index", JSON.stringify(cacheKeys))
+        }
+    }
+
+    // Clears every tracked cache entry.
+    function clearCache() {
+        var stored = api.memory.get("ra_cache_index")
+        var keys = []
+        if (stored) {
+            try { keys = JSON.parse(stored) } catch (e) { keys = [] }
+        }
+
+        for (var i = 0; i < keys.length; i++) {
+            api.memory.set(keys[i], "")
+        }
+        api.memory.set("ra_cache_index", JSON.stringify([]))
+
+        cacheKeys = []
+        consoleList = null
+        gameListCache = {}
+
+        showStatus("RA: Cache cleared (" + keys.length + " entries)")
+    }
+
+    // Each shortname maps to one or more full RA console names, use game consoles file in /assets for full names
     property var consoleNameHints: ({
 
 
@@ -66,9 +96,7 @@ Item {
 
     })
 
-    // Manual overrides for titles that don't match automatically. Key is
-    // your local Pegasus game title (must match exactly, case-sensitive),
-    // value is the title to search for on RA instead.
+    // Manual overrides for titles that don't match automatically.
     property var titleOverrides: ({
 
 
@@ -94,6 +122,7 @@ Item {
                 if (!gameId) { return }
 
                 api.memory.set("ra_gameid_" + searchTitle, gameId)
+                trackCacheKey("ra_gameid_" + searchTitle)
                 fetchGameAchievements(gameId)
             }, function(reason) {
                 offlineFallback(searchTitle, reason)
@@ -103,9 +132,7 @@ Item {
         })
     }
 
-    // No network / a lookup step failed - if we've previously resolved this
-    // title to an RA game ID, skip straight to the cached achievements data
-    // instead of showing an error.
+    // No network / a lookup step failed - fallback
     function offlineFallback(searchTitle, reason) {
         var gameId = api.memory.get("ra_gameid_" + searchTitle)
         if (!gameId) {
@@ -131,8 +158,7 @@ Item {
         }, onError)
     }
 
-    // Returns every console ID that matches any hint for any of the
-    // game's shortnames (deduplicated, in match order).
+    // Returns every console ID that matches any hint
     function matchConsoles(shortNames, title) {
         var ids = []
         var hintsTried = []
@@ -256,6 +282,7 @@ Item {
             console.log("data: " + imageIcon)
             achievementsList = buildAchievementsList(data)
             api.memory.set("ra_cache_" + gameId, JSON.stringify(data))
+            trackCacheKey("ra_cache_" + gameId)
             achievementsReady()
         }, function(reason) {
             useCachedAchievements(gameId, reason)
