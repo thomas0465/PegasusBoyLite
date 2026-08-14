@@ -15,6 +15,9 @@ Item {
     property string imageIcon: ""
     property var achievementsList: []
 
+    property var subsetsList: []          // [{id, title}], base game always first
+    property int currentSubsetIndex: 0
+
     property int achievementsTotal: achievementsList.length
     property int achievementsUnlocked: {
         var count = 0
@@ -207,18 +210,31 @@ Item {
         }
 
         var consoleId = consoleIds[index]
-        var target = normalize(title)
 
-        var matchGame = function(list) {
+        function matchGame(list) {
+            var target = normalize(title)
             for (var i = 0; i < list.length; i++) {
                 if (normalize(list[i].Title) === target) {
-                    //console.log("RA: game match for \"" + title + "\" on console " + consoleId
-                    //    + ": " + list[i].Title + " (ID " + list[i].ID + ")")
+                    buildSubsetsList(list[i], list)
                     return list[i].ID
                 }
             }
             //console.error("No match for \"" + title + "\" on console " + consoleId + ". checked " + list.length + " games")
             return null
+        }
+
+        function buildSubsetsList(baseEntry, list) {
+            var subsets = [{ id: baseEntry.ID, title: baseEntry.Title }]
+
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].ID === baseEntry.ID) { continue }
+                if (list[i].Title.indexOf(baseEntry.Title) === 0 && list[i].Title.indexOf("[Subset") !== -1) {
+                    subsets.push({ id: list[i].ID, title: list[i].Title })
+                }
+            }
+
+            subsetsList = subsets
+            currentSubsetIndex = 0
         }
 
         var onGameList = function(list) {
@@ -253,6 +269,21 @@ Item {
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip accents 
         .replace(/[^a-z0-9]/g, "")                         // ignore punctuation
 
+    }
+
+    //--------------------------------------------------------------------
+    // Cycles to the next/previous subset (direction: -1 or 1), does nothing if game has no subsets
+    function switchSubset(direction) {
+        if (subsetsList.length <= 1) { return }
+
+        var newIndex = currentSubsetIndex + direction
+        if (newIndex < 0) { newIndex = subsetsList.length - 1 }
+        if (newIndex >= subsetsList.length) { newIndex = 0 }
+
+        currentSubsetIndex = newIndex
+        fetchGameAchievements(subsetsList[currentSubsetIndex].id)
+
+        
     }
 
     function fetchGameAchievements(gameId) {

@@ -47,5 +47,6 @@ gcn:		gamecube
 For Who The Frog Bell Tolls (English Translation):	Kaeru no Tame ni Kane wa Naru
 The Legendary Starfy (Starfy 1 Translation):		Densetsu no Stafy
 The Second Reality Project 2 Reloaded [112 VH]:		The Second Reality Project 2 Reloaded: Zycloboo's Challenge
+Zelda Revival (v1.1):					The Legend of Zelda: Zelda Revival
 
 	"}

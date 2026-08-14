@@ -134,13 +134,25 @@ FocusScope {
         }
 
         //allow navigating collections
-        if (event.key === Qt.Key_Right) {
-            achievementsPanelRoot.close()
+        //if (event.key === Qt.Key_Right) {
+        //    achievementsPanelRoot.close()
+        //    return
+        //}
+
+        //if (event.key === Qt.Key_Left) {
+        //    achievementsPanelRoot.close()
+        //    return
+        //}
+
+        if (event.key == Qt.Key_Left) {
+            event.accepted = true
+            fetcher.switchSubset(-1)
             return
         }
 
-        if (event.key === Qt.Key_Left) {
-            achievementsPanelRoot.close()
+        if (event.key == Qt.Key_Right) {
+            event.accepted = true
+            fetcher.switchSubset(1)
             return
         }
 
@@ -159,6 +171,19 @@ FocusScope {
             achievementsPanelRoot.close()
             return
         }
+    }
+
+    function switchSubset(direction) {
+        if (subsetsList.length <= 1) { return }
+
+        var newIndex = currentSubsetIndex + direction
+        if (newIndex < 0) { newIndex = subsetsList.length - 1 }
+        if (newIndex >= subsetsList.length) { newIndex = 0 }
+
+        currentSubsetIndex = newIndex
+        fetchGameAchievements(subsetsList[currentSubsetIndex].id)
+
+        var maxIndex = 2
     }
 
     Image {
@@ -240,17 +265,55 @@ FocusScope {
 
     }
 
+    //subset dot indicators
+    Row {
+        id: subsetDots
+        visible: contentOpen && fetcher.subsetsList.length > 1
+        spacing: parent.height * 0.025
+
+        anchors {
+            bottom: gameIcon.bottom
+            left: panelTitleBox.left
+            leftMargin: gameIcon.height * 0.03
+            //horizontalCenter: parent.horizontalCenter
+    }
+
+    Repeater {
+            model: fetcher.subsetsList.length
+
+            Rectangle {
+                width: gameIcon.width * .1
+                height: gameIcon.width * .1
+                radius: gameIcon.width * .05
+                color: index === fetcher.currentSubsetIndex
+                    ? themeData.colorTheme[theme].primary
+                    : themeData.colorTheme[theme].light
+                opacity: index === fetcher.currentSubsetIndex ? 1 : (themeData.colorTheme[theme].primary === themeData.colorTheme[theme].light ? 0.5 : 1 ) 
+            }
+        }
+    }
+
+Rectangle{
+    id: panelTitleBox
+    color: "transparent"
+        anchors {
+            top: gameIcon.top
+            right: panelTitleNumBottom.left
+            left: gameIcon.right
+            leftMargin: parent.width * 0.025
+            bottom: fetcher.subsetsList.length > 1 ? subsetDots.top: gameIcon.bottom
+            verticalCenter: gameIcon.verticalCenter 
+        }
+    
+
     Text {
         id: panelTitle
         visible: contentOpen
 
         anchors {
-            //top: parent.top
-            //topMargin: parent.height * 0.03
-            left: gameIcon.right
-            right: panelTitleNumBottom.left
-            leftMargin: parent.width * 0.05
-            verticalCenter: gameIcon.verticalCenter
+            left: parent.left
+            right: parent.right
+            verticalCenter: parent.verticalCenter 
         }
 
         text:fetcher.gameTitle.replace(/~.*?~/g, "").replace(/^( *)[ ]/g,"")
@@ -260,6 +323,7 @@ FocusScope {
         font.bold: false
         color: themeData.colorTheme[theme].primary
     }
+}
 
 
 
