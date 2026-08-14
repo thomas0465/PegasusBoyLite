@@ -48,5 +48,10 @@ For Who The Frog Bell Tolls (English Translation):	Kaeru no Tame ni Kane wa Naru
 The Legendary Starfy (Starfy 1 Translation):		Densetsu no Stafy
 The Second Reality Project 2 Reloaded [112 VH]:		The Second Reality Project 2 Reloaded: Zycloboo's Challenge
 Zelda Revival (v1.1):					The Legend of Zelda: Zelda Revival
+SMB2 - Return to Subcon:				Super Mario Bros. 2 Squared: Return to Subcon
+SMB3 - 3Mix:						Super Mario Bros. 3Mix 
+Metroid - V I T A L I T Y:				V I T A L I T Y
+Peach's Adventure [61 N]:				Super Mario Bros. Peach's Adventure
+
 
 	"}
