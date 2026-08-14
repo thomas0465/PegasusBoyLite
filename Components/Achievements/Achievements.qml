@@ -333,7 +333,11 @@ Item {
         }
 
         arr.sort(function(a, b) {
-            return (a.DisplayOrder || 0) - (b.DisplayOrder || 0)
+            if(a.DisplayOrder !== 0){
+                return (a.DisplayOrder || 0) - (b.DisplayOrder || 0)
+            }else{
+                return (a.ID || 0) - (b.ID || 0)
+            }
         })
         return arr
     }
