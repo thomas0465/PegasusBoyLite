@@ -52,6 +52,6 @@ SMB2 - Return to Subcon:				Super Mario Bros. 2 Squared: Return to Subcon
 SMB3 - 3Mix:						Super Mario Bros. 3Mix 
 Metroid - V I T A L I T Y:				V I T A L I T Y
 Peach's Adventure [61 N]:				Super Mario Bros. Peach's Adventure
-
+A Link to the Past - Allhallows Eve:			The Legend of Zelda: Allhallow's Eve
 
 	"}
