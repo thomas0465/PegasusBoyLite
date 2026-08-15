@@ -352,14 +352,23 @@ Item {
 
             if (xhr.status !== 200) {
                 var reason = "Request failed (HTTP " + xhr.status + "). Check your Username and API key"
-                showStatus(reason)
+                if (onError) {
+                    onError(reason)
+                } else {
+                    showStatus(reason)
+                }
                 return
             }
 
             callback(JSON.parse(xhr.responseText))
         }
         xhr.onerror = function() {
-            showStatus("No online connection")
+            var reason = "Offline - No cached achievements"
+            if (onError) {
+                onError(reason)
+            } else {
+                showStatus(reason)
+            }
         }
         xhr.send()
     }
