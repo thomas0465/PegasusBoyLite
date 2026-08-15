@@ -8,6 +8,8 @@ Item {
 
     property string textName: "title"
 
+    property var titleOverrides: ({})
+
     Component {
         id: gamesListDelegate
 
@@ -16,6 +18,14 @@ Item {
             id: gamesListRect
 
             property int rows: 1
+
+            //check if current game has cached achievements 
+            property bool hasCachedAchievements: {
+                var searchTitle = titleOverrides[model[textName]] || model[textName]
+                var gameId = api.memory.get("ra_gameid_" + searchTitle)
+                if (!gameId) { return false }
+                return !!api.memory.get("ra_cache_" + gameId)
+            }
 
             width: ListView.view.width
             height: ListView.view.height / ListView.view.rows
@@ -38,7 +48,7 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: parent.width * 0.02
+                    leftMargin: hasCachedAchievements && themeSettings.cacheIndicator ? parent.width * 0.017 : parent.width * 0.02
                 }
 
                 color: {
@@ -55,11 +65,39 @@ Item {
 
             }
 
+            //indicator for cached achievements
+            Rectangle {
+                id: cachedAchievementsDot
+                visible: hasCachedAchievements && themeSettings.cacheIndicator
+
+                width: gamesListText.font.pixelSize * 0.1
+                height: gamesListText.font.pixelSize * 0.7
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    //verticalCenterOffset: 10
+                    //horizontalCenter: gamesListFavorite.horizontalCenter
+                    left: parent.left
+                    leftMargin: parent.width * 0.065
+                }
+
+                color: gamesListRect.ListView.isCurrentItem
+                    ? 
+                        (model.favorite !== undefined && model.favorite ? 
+                            themeData.colorTheme[theme].background :
+                            themeData.colorTheme[theme].background
+                        )
+                    : (model.favorite !== undefined && model.favorite ? 
+                            themeData.colorTheme[theme].light :
+                            themeData.colorTheme[theme].light
+                        )
+            }
+
             Text {
                 id: gamesListText
 
                 anchors.left: gamesListFavorite.right
-                anchors.leftMargin: parent.width * 0.02
+                anchors.leftMargin: parent.width * 0.025
                 anchors.right: gamesListRect.right
                 anchors.rightMargin: parent.width * 0
                 

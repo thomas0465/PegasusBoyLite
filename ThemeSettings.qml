@@ -20,6 +20,7 @@ Item {
         "raUsername",
 	    "raApiKey",
         "enableRA",
+        "cacheIndicator",
 
         "lastPlayedDays",
         "itemListRows",
@@ -79,6 +80,7 @@ Item {
     property bool enableRA: false
     property string raUsername: ""
     property string raApiKey: ""
+    property bool cacheIndicator: true
 
 
     property string theme: "Black"
@@ -145,7 +147,7 @@ Item {
     property int menuadjust: 0
 
     property bool replacePar: true
-    property bool replaceBrac: true
+    property bool replaceBrac: false
     property string fontInput: "Roboto-Regular"
     property int mainFontSize: 20
     property string backgroundColor: "transparent"

@@ -621,6 +621,7 @@ FocusScope {
         GamesListDelegate {
             id: gamesListDelegate
             rows: gamesListLoader.item.rows
+            titleOverrides: achievementsPanel.fetcher.titleOverrides
         }
 
 AchievementsPanel {

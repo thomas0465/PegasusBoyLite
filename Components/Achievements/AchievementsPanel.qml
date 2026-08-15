@@ -9,6 +9,7 @@ FocusScope {
     id: achievementsPanelRoot
 
     property alias listView: listView
+    property alias fetcher: fetcher
 
 	SoundEffect {
 		id: navSound;

@@ -91,14 +91,12 @@ Item {
                         { "value": "Ari-Bold" },
                         { "value": "Determination" },
                         { "value": "Dogica" },
-                        //{ "value": "Hack-Regular" },
                         { "value": "Lemonmilk-Regular" },
                         { "value": "Minecraft" },
                         { "value": "m6x11"},
                         { "value": "Pixellari" },
                         { "value": "Roboto-Regular" },
-                        { "value": "VCR_OSD" },
-                        { "value": "ShareTechMono" }
+                        { "value": "VCR_OSD" }
                     ]
                 },
                                 {
@@ -301,7 +299,6 @@ Item {
 
         {
             "name": "Footer",
-            "visible": false,
             "settings": [
 
                 {
@@ -353,7 +350,6 @@ Item {
 	},
         {
             "name": "Shaders",
-            "visible": false,
             "settings": [
                 {
                     "name": "Shaders - Global",
@@ -474,7 +470,6 @@ Item {
                     "name": "Enable RetroAchievements",
                     "id": "enableRA",
                     "description": "Enable RetroAchievements, press page down to load RetroAchievements for a game. 
-
 Configure collection and game name overrides by editing the config file in the assets folder.",
                     "type": "bool",
                     "default": "Disable",
@@ -493,6 +488,13 @@ Configure collection and game name overrides by editing the config file in the a
                     "type": "text",
                     "default": "",
                 },
+                {
+                    "name": "Show cached games indicator",
+                    "id": "cacheIndicator",
+                    "description": "Show an indicator on the Main List for games that have locally saved achievement data",
+                    "type": "bool",
+                    "default": "enable",
+                },  
                 {
                     "name": "Clear Achievement Cache",
                     "id": "clearRACache",
