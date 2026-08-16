@@ -48,7 +48,7 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: hasCachedAchievements && themeSettings.cacheIndicator ? parent.width * 0.017 : parent.width * 0.02
+                    leftMargin: hasCachedAchievements && themeSettings.cacheIndicator ? parent.width * 0.01 : parent.width * 0.02
                 }
 
                 color: {
