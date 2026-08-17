@@ -48,7 +48,7 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: hasCachedAchievements && themeSettings.cacheIndicator ? parent.width * 0.01 : parent.width * 0.02
+                    leftMargin: themeSettings.cacheIndicator ? parent.width * 0.02 : parent.width * 0.02
                 }
 
                 color: {
@@ -70,7 +70,7 @@ Item {
                 id: cachedAchievementsDot
                 visible: hasCachedAchievements && themeSettings.cacheIndicator
 
-                width: gamesListText.font.pixelSize * 0.1
+                width: gamesListText.font.pixelSize * 0.15
                 height: gamesListText.font.pixelSize * 0.7
 
                 anchors {
@@ -78,7 +78,7 @@ Item {
                     //verticalCenterOffset: 10
                     //horizontalCenter: gamesListFavorite.horizontalCenter
                     left: parent.left
-                    leftMargin: parent.width * 0.065
+                    leftMargin: parent.width * 0.075
                 }
 
                 color: gamesListRect.ListView.isCurrentItem
@@ -97,7 +97,7 @@ Item {
                 id: gamesListText
 
                 anchors.left: gamesListFavorite.right
-                anchors.leftMargin: parent.width * 0.025
+                anchors.leftMargin: themeSettings.cacheIndicator ? parent.width * 0.035 : parent.width * 0.025
                 anchors.right: gamesListRect.right
                 anchors.rightMargin: parent.width * 0
                 

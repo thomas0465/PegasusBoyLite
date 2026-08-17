@@ -202,6 +202,10 @@ FocusScope {
         }
 
         source: "https://media.retroachievements.org" + fetcher.imageIcon
+        //onStatusChanged: {
+        //        if (status === Image.Error)
+        //        source =  "../../assets/images/2.png"
+        //                        }
         fillMode: Image.PreserveAspectFit
         asynchronous: true
         smooth: true
@@ -303,7 +307,7 @@ Rectangle{
             left: gameIcon.right
             leftMargin: parent.width * 0.025
             bottom: fetcher.subsetsList.length > 1 ? subsetDots.top: gameIcon.bottom
-            verticalCenter: gameIcon.verticalCenter 
+            //verticalCenter: gameIcon.verticalCenter 
         }
     
 
@@ -438,6 +442,12 @@ Rectangle{
                 }
 
                 source: delegateRoot.badgeUrl
+                //offline fallback
+                onStatusChanged: {
+                    if (status === Image.Error)
+                    source = delegateRoot.unlocked ?  "../../assets/images/1.png" :  "../../assets/images/2.png"
+                }
+
                 fillMode: Image.PreserveAspectFit
                 asynchronous: true
                 smooth: true
