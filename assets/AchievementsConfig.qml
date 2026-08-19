@@ -86,17 +86,19 @@ n64 zelda:	nintendo 64
 	//-----------------------------------------------------------------
 	//left value is the exact file name to match, case sensitive
 	//right is the RetroAchievements game name to match
+	//replace periods in file names with spaces (ex 'Mario (v2.1)' > 'Mario (v2 1)')
 	
 	property string titleOverridesText: "
 
 For Who The Frog Bell Tolls (English Translation):	Kaeru no Tame ni Kane wa Naru
 The Legendary Starfy (Starfy 1 Translation):		Densetsu no Stafy
 The Second Reality Project 2 Reloaded [112 VH]:		The Second Reality Project 2 Reloaded: Zycloboo's Challenge
-Zelda Revival (v1.1):					The Legend of Zelda: Zelda Revival
+Zelda Revival (v1 1):					The Legend of Zelda: Zelda Revival
 SMB2 - Return to Subcon:				Super Mario Bros. 2 Squared: Return to Subcon
 SMB3 - 3Mix:						Super Mario Bros. 3Mix 
 Metroid - V I T A L I T Y:				V I T A L I T Y
 Peach's Adventure [61 N]:				Super Mario Bros. Peach's Adventure
 A Link to the Past - Allhallows Eve:			The Legend of Zelda: Allhallow's Eve
+Pokemon Mariomon (v1 5 2):				Super Mariomon
 
 	"}
