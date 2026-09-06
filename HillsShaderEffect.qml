@@ -9,10 +9,6 @@ Item {
     property color bottomColor: "#ffffff"
     property color topColor: "#ffffff"
 
-    property color waveColor1: "#acacac"
-    property color waveColor2: "#7c7c7c"
-    property color waveColor3: "#555555"
-
     property real waveOpacity1: 0.8
     property real waveOpacity2: 0.8
     property real waveOpacity3: 1
@@ -30,9 +26,6 @@ Item {
         property real u_time: rootItem.time
         property color u_bottomColor: rootItem.bottomColor
         property color u_topColor: rootItem.topColor
-        property color u_waveColor1: rootItem.waveColor1
-        property color u_waveColor2: rootItem.waveColor2
-        property color u_waveColor3: rootItem.waveColor3
         property real u_waveOpacity1: rootItem.waveOpacity1
         property real u_waveOpacity2: rootItem.waveOpacity2
         property real u_waveOpacity3: rootItem.waveOpacity3
@@ -46,9 +39,6 @@ Item {
             uniform lowp float u_time;
             uniform lowp vec4 u_bottomColor;
             uniform lowp vec4 u_topColor;
-            uniform lowp vec4 u_waveColor1;
-            uniform lowp vec4 u_waveColor2;
-            uniform lowp vec4 u_waveColor3;
             uniform lowp float u_waveOpacity1;
             uniform lowp float u_waveOpacity2;
             uniform lowp float u_waveOpacity3;
@@ -86,11 +76,18 @@ Item {
                 float m2 = smoothstep(y2 - edge, y2 + edge, uv.y);
                 float m3 = smoothstep(y3 - edge, y3 + edge, uv.y);
 
-                vec3 bg = mix(u_bottomColor.rgb, u_topColor.rgb, 1.0 - uv.y);
+                // Background vertical gradient
+                vec3 bg = u_topColor.rgb;
                 vec4 color = vec4(bg, 1.0);
-                vec4 layer1 = vec4(u_waveColor1.rgb, u_waveOpacity1 * m1);
-                vec4 layer2 = vec4(u_waveColor2.rgb, u_waveOpacity2 * m2);
-                vec4 layer3 = vec4(u_waveColor3.rgb, u_waveOpacity3 * m3);
+
+                // Calculate solid colors for wave 1 and wave 2 from top and bottom colors
+                vec3 solidWave1 = mix(u_topColor.rgb, u_bottomColor.rgb, 0.32);
+                vec3 solidWave2 = mix(u_topColor.rgb, u_bottomColor.rgb, 0.50);
+                vec3 solidWave3 = u_bottomColor.rgb;
+
+                vec4 layer1 = vec4(solidWave1, u_waveOpacity1 * m1);
+                vec4 layer2 = vec4(solidWave2, u_waveOpacity2 * m2);
+                vec4 layer3 = vec4(solidWave3, u_waveOpacity3 * m3);
 
                 color = alphaBlend(layer1, color);
                 color = alphaBlend(layer2, color);

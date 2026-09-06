@@ -6,22 +6,44 @@ import "Logger.js" as Logger
 
 Item {
     id: rootWindow
-    
-    HillsShaderEffect{
-        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
-        rotation: themeSettings.shaderHillsInvert ? 180 : 0
-    }
+
+        function lightenColor(color, amount) {
+            // amount: 0.0 = unchanged, 1.0 = pure white
+            return Qt.rgba(
+                color.r + (1.0 - color.r) * amount,
+                color.g + (1.0 - color.g) * amount,
+                color.b + (1.0 - color.b) * amount,
+                color.a
+            )
+        }
+
+        property color backgroundMainColor: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor
+
+        property color resolvedBottomColor: themeSettings.backgroundGradientColor == "transparent" ?
+                        backgroundMainColor : themeSettings.backgroundGradientColor
+
+        property color resolvedTopColorBase: themeSettings.backgroundColor == "transparent" ?
+                        backgroundMainColor  : themeSettings.backgroundColor
+
+        property color resolvedTopColor: (resolvedTopColorBase === resolvedBottomColor)
+            ? lightenColor(resolvedTopColorBase, 0.1)
+            : resolvedTopColorBase
 
         HillsShaderEffect {
-        anchors.fill: parent
-        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
-        rotation: themeSettings.shaderHillsInvert ? 180 : 0
+            anchors.fill: parent
+            opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
+            rotation: themeSettings.shaderHillsInvert ? 180 : 0
 
-        bottomColor: themeSettings.backgroundColor == "transparent" ? 
-                        themeData.colorTheme[theme].background : themeSettings.backgroundColor
+            bottomColor: resolvedBottomColor
+            topColor: resolvedTopColor
+            Rectangle{
+                anchors.fill: parent
+                color: "#414141ff"
+                opacity: 0.2
+            }
+           
+        }
 
-        
-    }
 
 
     SoundEffect {
@@ -75,13 +97,14 @@ Item {
                         ; color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor}
     }
 
+
     Rectangle {
         id: background
         width: parent.width
         height: parent.height
-        color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor
+        color: backgroundMainColor
         gradient: themeSettings.backgroundGradientColor == "transparent" ? null: backgroundGradient
-        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 0.8 : 1
+        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 0 : 1
     }
 
     property alias menuItem: menuLoader.item
