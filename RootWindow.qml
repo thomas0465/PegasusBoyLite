@@ -4,17 +4,19 @@ import QtMultimedia 5.9
 
 import "Logger.js" as Logger
 
-
 Item {
     id: rootWindow
-
-	SoundEffect {
-		id: forSound;
-		source: 'assets/sound/click.wav';
-		volume: .15;
-	}
+    
+    HillsShaderEffect{
+        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
+    }
 
 
+    SoundEffect {
+        id: forSound;
+        source: 'assets/sound/click.wav';
+        volume: .15;
+    }
 
     Keys.onPressed: {
 
@@ -26,7 +28,7 @@ Item {
                     forSound.play();
                 }
      	    
-	        }else if(menuLoader.item.currentIndex >= 0){
+            }else if(menuLoader.item.currentIndex >= 0){
                 menuItem.menuListView.decrementCurrentIndex()
                 if((themeSettings.soundsmenu)){
                     forSound.play();
@@ -43,7 +45,7 @@ Item {
                 //    forSound.play();
                 //}
      	    
-	        }else if(menuLoader.item.currentIndex >= 0){
+            }else if(menuLoader.item.currentIndex >= 0){
                 menuItem.menuListView.decrementCurrentIndex()
                 if((themeSettings.soundsmenu)){
                     forSound.play();
@@ -53,13 +55,13 @@ Item {
         }
     }
 
-Gradient {
-    id: backgroundGradient
-    GradientStop { position: themeSettings.backgroundGradientInvert ? 0 : 1
-                    ; color: themeSettings.backgroundGradientColor}
-    GradientStop { position: themeSettings.backgroundGradientInvert ? 1 : 0
-                    ; color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor}
-}
+    Gradient {
+        id: backgroundGradient
+        GradientStop { position: themeSettings.backgroundGradientInvert ? 0 : 1
+                        ; color: themeSettings.backgroundGradientColor}
+        GradientStop { position: themeSettings.backgroundGradientInvert ? 1 : 0
+                        ; color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor}
+    }
 
     Rectangle {
         id: background
@@ -67,6 +69,7 @@ Gradient {
         height: parent.height
         color: themeSettings.backgroundColor == "transparent" ? themeData.colorTheme[theme].background : themeSettings.backgroundColor
         gradient: themeSettings.backgroundGradientColor == "transparent" ? null: backgroundGradient
+        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 0.8 : 1
     }
 
     property alias menuItem: menuLoader.item
@@ -75,10 +78,9 @@ Gradient {
         focus: false
         width: parent.width
         height: 0
-        //height: parent.height * 0.1
         sourceComponent: menuComponent
-	y: themeSettings.menuadjust      
-	asynchronous: true
+        y: themeSettings.menuadjust      
+        asynchronous: true
     }
 
     Component {
@@ -93,7 +95,6 @@ Gradient {
     Loader {
         id: subHeaderLoader
         focus: false
-
     }
 
     property alias contentItem: contentLoader.item
@@ -115,7 +116,6 @@ Gradient {
         id: collectionsMenu
 
         Item {
-
             anchors.fill: parent.fill
 
             Loader {
@@ -125,7 +125,6 @@ Gradient {
 
                 onStatusChanged: {
                     if (collectionsMenuModelLoader.status == Loader.Ready) {
-                        //Logger.info("RootWindow:collectionsMenuModelLoader:LoaderReady")
                         gamesListMenuLoader.active = true
                     }
                 }
@@ -135,7 +134,6 @@ Gradient {
                 id: collectionsMenuProxyModel
 
                 SortFilterProxyModel {
-
                     sourceModel: themeData.collectionsListModel
                     delayed: false
                     sorters: [
@@ -143,11 +141,6 @@ Gradient {
                             roleName: "sortBy"
                         }
                     ]
-
-                    Component.onCompleted: {
-                        //Logger.info("collections proxy model: " + sourceModel.count)
-                        //gamesListMenuLoader.active = true
-                    }
                 }
             }
 
@@ -167,16 +160,10 @@ Gradient {
                     subMenuEnable: true
                     subMenuModel: collectionsMenuModelLoader.item
                     subMenuIndex: themeSettings.menuIndex_subMenu
-                    //gamesListModel: themeData.collectionsListModel.get(collectionsMenuListView.currentIndex).games
                     gamesListModel: currentCollection.games
                     menuName: rootWindow.state
-
-                    Component.onCompleted: {
-                        //Logger.info("RootWindow:collectionsMenu:onCompleted");
-                    }
                 }
             }
-
         }
     }
 
@@ -193,16 +180,7 @@ Gradient {
                 size = themeSettings.menusize
                 showall = themeSettings.collectionAllGames
             }
-
-            Component.onDestruction:{
-                //themeSettings.collectionAllGames != showall
-                //if(themeSettings.menusize != size){
-                //    menuLoader.active = !menuLoader.active
-                //    menuLoader.active = !menuLoader.active
-                //}
-            }
         }
-        
     }
 
     states: [
@@ -216,26 +194,6 @@ Gradient {
                 }
             ]
         },
-        //State {
-        //    name: "favorites"
-        //    when: menuItem.currentIndex == 1
-        //    changes: [
-        //        PropertyChanges {
-        //            target: contentLoader
-        //            sourceComponent: favoritesMenu
-        //        }
-        //    ]
-        //},
-        //State {
-        //    name: "lastplayed"
-        //    when: menuItem.currentIndex == 2
-        //    changes: [
-        //        PropertyChanges {
-        //            target: contentLoader
-        //            sourceComponent: lastPlayedMenu
-        //        }
-        //    ]
-        //},
         State {
             name: "settings"
             when: menuItem.currentIndex == 1
@@ -247,14 +205,12 @@ Gradient {
     ]
 
     onStateChanged: {
-        //Logger.info("rootWindow:stateChanged:state:" + state);
         if (menuItem !== null) {
             themeSettings["menuIndex_main"] = menuItem.currentIndex;
         }
     }
 
     Component.onCompleted: {
-       //Logger.info("rootWindow:onCompleted");
         if (menuItem !== null) {
             menuItem.currentIndex = themeSettings["menuIndex_main"];
         }

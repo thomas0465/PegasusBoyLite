@@ -31,13 +31,27 @@ Item {
             height: ListView.view.height / ListView.view.rows
 
             color: {
-                if (activeFocus) 
-                { return ListView.isCurrentItem ? 
-                    themeData.colorTheme[theme].primary : themeData.colorTheme[theme].background };
+                var c;
+                if (activeFocus) {
+                    c = ListView.isCurrentItem ? 
+                        themeData.colorTheme[theme].primary : themeData.colorTheme[theme].background;
+                } else {
+                    c = ListView.isCurrentItem ? 
+                        themeData.colorTheme[theme].light : "transparent";
+                }
+
+                if (c === "transparent") return "transparent";
+
+                // Converts "#RRGGBB" to "#80RRGGBB" (80 in hex is 50% opacity)
+                var hex = c.toString();
+                if (hex.indexOf("#") === 0 && themeSettings.transparent) {
+                    if (hex.length === 7) return "#80" + hex.substring(1); // #RRGGBB -> #80RRGGBB
+                    if (hex.length === 9) return "#80" + hex.substring(3); // Replace existing alpha
+                }
                 
-                return ListView.isCurrentItem ?
-                    themeData.colorTheme[theme].light :  "transparent" ;
+                return c;
             }
+
 
             Rectangle {
                 id: gamesListFavorite

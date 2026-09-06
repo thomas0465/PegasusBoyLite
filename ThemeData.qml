@@ -131,6 +131,13 @@ Item {
             light: "#bfbfbf",
             dark: "#2b2b2b",
         },
+        "Game Boy": {
+            background: "#8b956d",
+            primary: "#525a37",
+            secondary: "#525a37",
+            light: "#525a37",
+            dark: "#2b2b2b",
+        },
     }
 
     property var languageNames: {

@@ -47,6 +47,7 @@ Item {
         "shaderAberrationAmount",
         "shaderGlowEnable",
         "shaderGlowAmount",
+        "shaderHillsEnable",
 
         "menuIndex_main",
         "menuIndex_subMenu",
@@ -74,7 +75,8 @@ Item {
         "replaceBrac",
 	    "backgroundColor",
         "backgroundGradientColor",
-        "backgroundGradientInvert"
+        "backgroundGradientInvert",
+        "transparent"
     ]
 
     property bool enableRA: false
@@ -131,6 +133,7 @@ Item {
     property int shaderAberrationAmount: 10
     property bool shaderGlowEnable: true
     property int shaderGlowAmount: 6
+    property bool shaderHillsEnable: true
 
     property bool soundslist:true
     property bool soundsmenu:true
@@ -153,6 +156,7 @@ Item {
     property string backgroundColor: "transparent"
     property string backgroundGradientColor: "transparent"
     property bool backgroundGradientInvert: false
+    property bool transparent: false
 
     FontLoader {
     id: customFont

@@ -735,27 +735,31 @@ AchievementsPanel {
         	//collections scroll bar
         Rectangle {
 
-            width: gamesListLoader.width * 0.035
+            width: gamesListLoader.width
             height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) : 0
 
             anchors {
             top: parent.top
             left: parent.left
+            rightMargin:5
             leftMargin: parent.width * 0.02
             }
 
 
-            opacity: 1
+            
             color: "transparent"
+                            opacity: themeSettings.transparent ? 0.5 : 1
 
             Rectangle {
 
-                width: gamesListLoader.width * 0.035
+                width: gamesListLoader.width * 0.0376
                 height: Math.round(parent.height * .5)
 
                 y: ((parent.height - (parent.height * .5)) * ((collectionsMenuLoader.item.currentIndex + 1) /  (collectionsMenuLoader.item.listView.count)));
 
                 opacity: (themeSettings.collectionscroll && collectionsMenuLoader.item.listView.count - 1 >= themeSettings.subMenuColumns) ? 1: 0;
+
+
                 color: (viewcreated) ? themeData.colorTheme[theme].light: themeData.colorTheme[theme].background
             }
             

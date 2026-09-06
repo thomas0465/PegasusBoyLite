@@ -26,6 +26,7 @@ Item {
                         { "value": "Dark Blue" },
                         { "value": "Purple" },
             			{ "value": "Vampire" },
+                        { "value": "Game Boy"}
                     ]
                 },
 
@@ -35,20 +36,34 @@ Item {
                     "description": "The color of the background",
                     "type": "list",
                     "default": "Theme Default",
-                    "options": [
-                        { "label": "Theme Default", "value": "transparent"},
-                        { "label": "White", "value": "#ffffff" },
-                        { "label": "Light Gray", "value": "#c1c1c1" },
-                        { "label": "Dark Gray", "value": "#313131" },
-                        { "label": "Black", "value": "#000000" },
-                        { "label": "Light Purple", "value": "#7b39b5" },
-                        { "label": "Dark Purple", "value": "#1e0534" },
-                        { "label": "Red", "value": "#7f1919" },
-                        { "label": "Green", "value": "#07891a" },
-                        { "label": "Dark Green", "value": "#06400f" },
-                        { "label": "Light Blue", "value": "#098393" },
-                        { "label": "Dark Blue", "value": "#0e0846" },
-                    ]
+                    "options": 
+[
+    { "label": "Theme Default", "value": "transparent" },
+    { "label": "White", "value": "#ffffff" },
+    { "label": "Light Gray", "value": "#c1c1c1" },
+    { "label": "Gray", "value": "#838383" },
+    { "label": "Dark Gray", "value": "#313131" },
+    { "label": "Black", "value": "#000000" },
+    { "label": "Lavender", "value": "#8f71ff" },
+    { "label": "Light Purple", "value": "#7b39b5" },
+    { "label": "Dark Purple", "value": "#1e0534" },
+    { "label": "Light Blue", "value": "#098393" },
+    { "label": "Wave Blue", "value": "#0066cc" },
+    { "label": "Dark Blue", "value": "#09005b" },
+    { "label": "Teal", "value": "#00a896" },
+    { "label": "Dark Teal", "value": "#023e38" },
+    { "label": "Phosphor Green", "value": "#33ff33" },
+    { "label": "Green", "value": "#07891a" },
+    { "label": "Dark Green", "value": "#013201" },
+    { "label": "Game Boy", "value": "#8b956d" },
+    { "label": "Amber", "value": "#ffb000" },
+    { "label": "Red", "value": "#640000" },
+    { "label": "Rose Pink", "value": "#e84393" },
+    { "label": "Vaporwave Pink", "value": "#ff0080" },
+
+
+]
+                    
                 },
                 
                 {
@@ -58,18 +73,31 @@ Item {
                     "type": "list",
                     "default": "None",
                     "options": [
-                        { "label": "None", "value": "transparent"},
-                        { "label": "White", "value": "#ffffff" },
-                        { "label": "Light Gray", "value": "#c1c1c1" },
-                        { "label": "Dark Gray", "value": "#313131" },
-                        { "label": "Black", "value": "#000000" },
-                        { "label": "Light Purple", "value": "#7b39b5" },
-                        { "label": "Dark Purple", "value": "#1e0534" },
-                        { "label": "Red", "value": "#7f1919" },
-                        { "label": "Green", "value": "#07891a" },
-                        { "label": "Dark Green", "value": "#06400f" },
-                        { "label": "Light Blue", "value": "#098393" },
-                        { "label": "Dark Blue", "value": "#0e0846" },
+
+    { "label": "Theme Default", "value": "transparent" },
+    { "label": "White", "value": "#ffffff" },
+    { "label": "Light Gray", "value": "#c1c1c1" },
+    { "label": "Gray", "value": "#838383" },
+    { "label": "Dark Gray", "value": "#313131" },
+    { "label": "Black", "value": "#000000" },
+    { "label": "Lavender", "value": "#8f71ff" },
+    { "label": "Light Purple", "value": "#7b39b5" },
+    { "label": "Dark Purple", "value": "#1e0534" },
+    { "label": "Light Blue", "value": "#098393" },
+    { "label": "Wave Blue", "value": "#0066cc" },
+    { "label": "Dark Blue", "value": "#09005b" },
+    { "label": "Teal", "value": "#00a896" },
+    { "label": "Dark Teal", "value": "#023e38" },
+    { "label": "Phosphor Green", "value": "#33ff33" },
+    { "label": "Green", "value": "#07891a" },
+    { "label": "Dark Green", "value": "#013201" },
+    { "label": "Game Boy", "value": "#8b956d" },
+    { "label": "Amber", "value": "#ffb000" },
+    { "label": "Red", "value": "#640000" },
+    { "label": "Rose Pink", "value": "#e84393" },
+    { "label": "Vaporwave Pink", "value": "#ff0080" },
+
+
                     ]
                 },
 
@@ -79,6 +107,13 @@ Item {
                     "description": "Invert the background gradient to start at the top",
                     "type": "bool",
                     "default": "Disable",
+                },
+                {
+                    "name": "Transparent Elements",
+                    "id": "transparent",
+                    "description": "Make the selected option and scroll bar on the Main List transparent",
+                    "type": "bool",
+                    "default": "Disabled",
                 },
                                                 {
                     "name": "Font",
@@ -94,8 +129,12 @@ Item {
                         { "value": "Lemonmilk-Regular" },
                         { "value": "Minecraft" },
                         { "value": "Nexa" },
+                        { "value": "Pixelify" },
                         { "value": "Pixellari" },
+                        { "value": "Roboto-Medium" },
                         { "value": "Roboto-Regular" },
+                        { "value": "Tajawal" },
+                        { "value": "Tiny5" },
                         { "value": "VCR_OSD" },
                         
                     ]
@@ -358,6 +397,13 @@ Item {
                     "description": "Enable or disable shaders",
                     "type": "bool",
                     "default": "Disable",
+                },
+                {
+                    "name": "Shaders - Hills",
+                    "id": "shaderHillsEnable",
+                    "description": "Enable the hills shader",
+                    "type": "bool",
+                    "default": "Enable",
                 },
                 {
                     "name": "Curvature - Enable",

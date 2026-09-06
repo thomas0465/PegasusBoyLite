@@ -425,8 +425,23 @@ Rectangle{
             property string badgeUrl: "https://media.retroachievements.org/Badge/"
                 + modelData.BadgeName + (unlocked ? ".png" : "_lock.png")
 
-            color: ListView.isCurrentItem ? themeData.colorTheme[theme].primary : "transparent"
+            color: {
+                var c;
+                if (ListView.isCurrentItem) {
+                       c = themeData.colorTheme[theme].primary 
+                } else {
+                    return "transparent";
+                }
 
+                // Converts "#RRGGBB" to "#80RRGGBB" (80 in hex is 50% opacity)
+                var hex = c.toString();
+                if (hex.indexOf("#") === 0 && themeSettings.transparent) {
+                    if (hex.length === 7) return "#80" + hex.substring(1); // #RRGGBB -> #80RRGGBB
+                    if (hex.length === 9) return "#80" + hex.substring(3); // Replace existing alpha
+                }
+                
+                return c;
+            }
 
             Image {
                 id: badgeImage

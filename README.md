@@ -50,8 +50,5 @@ Distributed under the GNU General Public License v3.0+. See [COPYING](COPYING) f
 - [Pegaus Boy by gtaforever00](https://github.com/gtaforever00/pegasus-boy)
 - [Pegasus](https://pegasus-frontend.org/)
 - [Libretro shaders](https://github.com/libretro/slang-shaders)
-- [Libretro assets](https://github.com/libretro/retroarch-assets)
-  License: [CC BY 4.0](assets/retroarch-assets/COPYING)
-- [Hack font](https://github.com/source-foundry/Hack)
-  License: [MIT License](assets/fonts/Hack/LICENSE.md)
+- Hills background effect adapted from [Pegasus Beacon Lite Theme](https://github.com/ZagonAb/pegasus-beacon-lite)
 
