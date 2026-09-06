@@ -25,7 +25,7 @@ Item {
         width: (singleimageview == 2) ? root.width: parent.width/1.05;
         height: (singleimageview == 2) ? root.height: (parent.height +marginoffset)/2;
         x:(singleimageview == 2) ? parent.width - (root.width): 0;
-        y:(singleimageview == 2) ? -(root.height - marginoffset - parent.height - 13): parent.height/2 + 5 + (marginoffset/2);
+        y:(singleimageview == 2) ? -(root.height - marginoffset - parent.height - 12): parent.height/2 + 5 + (marginoffset/2);
 
         asynchronous: true
         fillMode: Image.PreserveAspectFit
@@ -40,7 +40,7 @@ Item {
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
         border.width: parent.width * 0.002
-        opacity: themeSettings.imageBorder ? 1 : 0
+        opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
     }
 
     }
@@ -51,7 +51,7 @@ Item {
         width: (singleimageview == 1) ? root.width: parent.width/1.05;
         height: (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2;
         x:(singleimageview == 1) ? parent.width - (root.width): 0;
-        y:(singleimageview == 1) ? -(root.height - marginoffset - parent.height - 13): 0
+        y:(singleimageview == 1) ? -(root.height - marginoffset - parent.height - 12): 0
 
         asynchronous: true
         fillMode: Image.PreserveAspectFit
@@ -65,7 +65,7 @@ Item {
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
         border.width: parent.width * 0.002
-        opacity: themeSettings.imageBorder ? 1 : 0
+        opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
     }
     }
 
