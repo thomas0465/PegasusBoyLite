@@ -752,7 +752,7 @@ AchievementsPanel {
 
             Rectangle {
 
-                width: gamesListLoader.width * 0.0376
+                width: (gamesListLoader.width * 0.04) - 3
                 height: Math.round(parent.height * .5)
 
                 y: ((parent.height - (parent.height * .5)) * ((collectionsMenuLoader.item.currentIndex + 1) /  (collectionsMenuLoader.item.listView.count)));

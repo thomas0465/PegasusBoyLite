@@ -82,7 +82,7 @@ Item {
             dark: "#03071e",
         },
         "Light Blue": {
-            background: "#302442",
+            background: "#063d3b",
             primary: "#7ebcde",
             secondary: "#3e7d9f",
             light: "#7ebcde",
@@ -110,6 +110,7 @@ Item {
             light: "#e9ecef",
             dark: "#000000",
         },
+
          "Black": {
             background: "#000000",
             primary: "#e9ecef",
@@ -125,16 +126,16 @@ Item {
             dark: "#cbcdcb",
         },
         "Gray": {
-            background: "#2b2b2b",
+            background: "#000000",
             primary: "#bfbfbf",
             secondary: "#6d6d6d",
             light: "#bfbfbf",
-            dark: "#2b2b2b",
+            dark: "#000000",
         },
         "Game Boy": {
             background: "#8b956d",
             primary: "#525a37",
-            secondary: "#525a37",
+            secondary: "#78815c",
             light: "#525a37",
             dark: "#2b2b2b",
         },

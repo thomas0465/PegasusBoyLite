@@ -4,14 +4,16 @@ Item {
     id: rootItem
     anchors.fill: parent
 
-    property real theme2: 0
     property real time: 0
 
-    property color waveColor1: "#c5c5c5"
+    property color bottomColor: "#ffffff"
+    property color topColor: "#ffffff"
+
+    property color waveColor1: "#acacac"
     property color waveColor2: "#7c7c7c"
     property color waveColor3: "#555555"
 
-    property real waveOpacity1: 0.5
+    property real waveOpacity1: 0.8
     property real waveOpacity2: 0.8
     property real waveOpacity3: 1
 
@@ -26,7 +28,8 @@ Item {
         anchors.fill: parent
 
         property real u_time: rootItem.time
-        property real u_theme: rootItem.theme2
+        property color u_bottomColor: rootItem.bottomColor
+        property color u_topColor: rootItem.topColor
         property color u_waveColor1: rootItem.waveColor1
         property color u_waveColor2: rootItem.waveColor2
         property color u_waveColor3: rootItem.waveColor3
@@ -41,7 +44,8 @@ Item {
 
             varying highp vec2 qt_TexCoord0;
             uniform lowp float u_time;
-            uniform lowp float u_theme;
+            uniform lowp vec4 u_bottomColor;
+            uniform lowp vec4 u_topColor;
             uniform lowp vec4 u_waveColor1;
             uniform lowp vec4 u_waveColor2;
             uniform lowp vec4 u_waveColor3;
@@ -49,7 +53,6 @@ Item {
             uniform lowp float u_waveOpacity2;
             uniform lowp float u_waveOpacity3;
 
-            // Added missing alphaBlend implementation
             vec4 alphaBlend(vec4 top, vec4 bottom) {
                 vec4 result;
                 result.a = top.a + bottom.a * (1.0 - top.a);
@@ -75,15 +78,15 @@ Item {
                 float w3 = cos(x * 0.8  + u_time * 0.07 + 0.5) * 0.050 +
                            sin(x * 1.7  + u_time * 0.04 + 3.8) * 0.020;
 
-                float y1 = 0.42 + w1;
-                float y2 = 0.54 + w2;
-                float y3 = 0.66 + w3;
+                float y1 = 0.32 + w1;
+                float y2 = 0.5 + w2;
+                float y3 = 0.68 + w3;
                 float edge = 0.002;
                 float m1 = smoothstep(y1 - edge, y1 + edge, uv.y);
                 float m2 = smoothstep(y2 - edge, y2 + edge, uv.y);
                 float m3 = smoothstep(y3 - edge, y3 + edge, uv.y);
 
-                vec3 bg = mix(vec3(1.0), vec3(1.0), u_theme);
+                vec3 bg = mix(u_bottomColor.rgb, u_topColor.rgb, 1.0 - uv.y);
                 vec4 color = vec4(bg, 1.0);
                 vec4 layer1 = vec4(u_waveColor1.rgb, u_waveOpacity1 * m1);
                 vec4 layer2 = vec4(u_waveColor2.rgb, u_waveOpacity2 * m2);

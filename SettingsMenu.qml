@@ -201,7 +201,7 @@ FocusScope {
             Item {
                 id: settingsInfo
 
-                property int rows: 4
+                property int rows: 10
 
 
 
@@ -222,7 +222,7 @@ FocusScope {
                     anchors.fill: parent
 
                     font.family: themeSettings.font.customFont
-                    font.pixelSize:parent.height  * 0.1
+                    font.pixelSize:settingsInfo.height  * 0.14
                     color: themeData.colorTheme[theme].primary
 
                     wrapMode: Text.WordWrap
@@ -243,7 +243,7 @@ FocusScope {
                     anchors.bottom: parent.bottom
 
                     font.family: themeSettings.font.customFont
-                    font.pixelSize: parent.height * .08
+                    font.pixelSize: settingsInfo.height * .12
                     color: themeData.colorTheme[theme].light
 
 
@@ -356,7 +356,7 @@ Component.onCompleted: viewcreated = true;
 
                 focus: false
 
-                height: parent.height * 0.4
+                height: parent.height * 0.55
 
                 anchors {
                     left: settingsListView.right

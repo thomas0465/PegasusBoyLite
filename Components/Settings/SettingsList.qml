@@ -10,7 +10,7 @@ FocusScope {
         id: settingsListView
         focus: parent.focus
 
-        property int rows: 9
+        rows: 5
 
         width: parent.width
         height: parent.height

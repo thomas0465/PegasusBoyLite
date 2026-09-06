@@ -31,7 +31,7 @@ Item {
                 },
 
                                 {
-                    "name": "Background - Color",
+                    "name": "Background",
                     "id": "backgroundColor",
                     "description": "The color of the background",
                     "type": "list",
@@ -67,14 +67,14 @@ Item {
                 },
                 
                 {
-                    "name": "Gradient - Color",
+                    "name": "Gradient",
                     "id": "backgroundGradientColor",
                     "description": "The color of the background gradient",
                     "type": "list",
                     "default": "None",
                     "options": [
 
-    { "label": "Theme Default", "value": "transparent" },
+    { "label": "None", "value": "transparent" },
     { "label": "White", "value": "#ffffff" },
     { "label": "Light Gray", "value": "#c1c1c1" },
     { "label": "Gray", "value": "#838383" },
@@ -101,21 +101,14 @@ Item {
                     ]
                 },
 
-                                {
-                    "name": "Gradient - Invert",
-                    "id": "backgroundGradientInvert",
-                    "description": "Invert the background gradient to start at the top",
-                    "type": "bool",
-                    "default": "Disable",
-                },
+                //                {
+                //    "name": "Gradient - Invert",
+                //    "id": "backgroundGradientInvert",
+                //    "description": "Invert the background gradient to start at the top",
+                //    "type": "bool",
+                //    "default": "Disable",
+                //},
                 {
-                    "name": "Transparent Elements",
-                    "id": "transparent",
-                    "description": "Make the selected option and scroll bar on the Main List transparent",
-                    "type": "bool",
-                    "default": "Disabled",
-                },
-                                                {
                     "name": "Font",
                     "id": "fontInput",
                     "description": "Text Font",
@@ -133,11 +126,25 @@ Item {
                         { "value": "Pixellari" },
                         { "value": "Roboto-Medium" },
                         { "value": "Roboto-Regular" },
-                        { "value": "Tajawal" },
                         { "value": "Tiny5" },
                         { "value": "VCR_OSD" },
+                        { "value": "Waukegan"},
                         
                     ]
+                },
+                                {
+                    "name": "Transparent Elements",
+                    "id": "transparent",
+                    "description": "Make the selected option and scroll bar on the Main List transparent",
+                    "type": "bool",
+                    "default": "Disabled",
+                },
+                 {
+                    "name": "Image Borders",
+                    "id": "imageBorder",
+                    "description": "Show a border around game images",
+                    "type": "bool",
+                    "default": "Disable",
                 },
                                 {
 		    "name": "Main List - Font Size",
@@ -399,11 +406,18 @@ Item {
                     "default": "Disable",
                 },
                 {
-                    "name": "Shaders - Hills",
+                    "name": "Hills - Enable",
                     "id": "shaderHillsEnable",
                     "description": "Enable the hills shader",
                     "type": "bool",
                     "default": "Enable",
+                },
+                {
+                    "name": "  • Hills - Invert",
+                    "id": "shaderHillsInvert",
+                    "description": "Invert the hills shader",
+                    "type": "bool",
+                    "default": "Disable",
                 },
                 {
                     "name": "Curvature - Enable",
@@ -413,7 +427,7 @@ Item {
                     "default": "Enable",
                 },
                 {
-		    "name": "Curvature - Amount",
+		            "name": "  • Curvature - Amount",
                     "id": "shaderCurvatureAmount",
                     "description": "The intensity of the screen curvature",
                     "type": "range",
@@ -430,14 +444,14 @@ Item {
                     "default": "Enable",
                 },
                 {
-                    "name": "Scanlines - Grid",
+                    "name": "  • Scanlines - Grid",
                     "id": "shaderScanlinesGrid",
                     "description": "Enable vertical scanlines to make a grid",
                     "type": "bool",
                     "default": "Disable",
                 },
                 {
-                    "name": "Scanlines - Distance",
+                    "name": "  • Scanlines - Distance",
                     "id": "shaderScanlinesImageSize",
                     "description": "The distance between scanlines",
                     "type": "range",
@@ -448,7 +462,7 @@ Item {
 
                 },
                 {
-                    "name": "Scanlines - Opacity",
+                    "name": "  • Scanlines - Opacity",
                     "id": "shaderScanlinesOpacity",
                     "description": "The Opacity of the scanlines",
                     "type": "range",
@@ -458,7 +472,7 @@ Item {
                     "step": 3,
                 },
                 {
-                    "name": "Scanlines - Highlight",
+                    "name": "  • Scanlines - Highlight",
                     "id": "shaderScanlinesGlow",
                     "description": "Add glow to make scanlines visible on dark colors",
                     "type": "range",
@@ -468,7 +482,7 @@ Item {
                     "step": 1,
                 },
                                 {
-                    "name": "Scanlines - Curve",
+                    "name": "  • Scanlines - Curve",
                     "id": "shaderScanlinesCurve",
                     "description": "Curve the scanlines with the curvature",
                     "type": "bool",
@@ -482,7 +496,7 @@ Item {
                     "default": "Enable",
                 },                
                 {
-                    "name": "Aberration - Amount",
+                    "name": "  • Aberration - Amount",
                     "id": "shaderAberrationAmount",
                     "description": "The amount of chromatic aberration",
                     "type": "range",
@@ -499,7 +513,7 @@ Item {
                     "default": "Enable",
                 },                 
                 {
-                    "name": "Glow - Amount",
+                    "name": "  • Glow - Amount",
                     "id": "shaderGlowAmount",
                     "description": "The amount of glow",
                     "type": "range",
@@ -516,8 +530,7 @@ Item {
                 {
                     "name": "Enable RetroAchievements",
                     "id": "enableRA",
-                    "description": "Enable RetroAchievements, press page down to load RetroAchievements for a game. 
-Configure collection and game name overrides by editing the config file in the assets folder.",
+                    "description": "Enable RA, press page down to load achievements. Configure system & game overrides in config file in assets folder",
                     "type": "bool",
                     "default": "Disable",
                 },  

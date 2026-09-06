@@ -112,10 +112,6 @@ FocusScope {
             optionsRoot.actionFeedback = "Cleared " + keys.length + " cached entries, press Enter to return"
         }
 
-        // Component.onCompleted: {
-        //     state = settingModel.type;
-        // }
-
         onSettingModelChanged: {
             // settingsListView.model = settingModel.options;
             // settingType = settingModel.type;
@@ -131,6 +127,7 @@ FocusScope {
             // Logger.info("Setting type: " + settingModel.type);
         }
 
+        //side options list
         ItemList {
             id: settingsListView
             focus: true
@@ -139,14 +136,13 @@ FocusScope {
             width: parent.width
             height: parent.height
             anchors.fill: parent
-            rows: 4
+            rows: 6
             model: []
             delegate: settingsOptionsDelegate.delegate
 
             property string settingId: ""
 
             function setIndex() {
-                Logger.debug("SettingsOptions:setIndex:model:" + model);
                 if (model === undefined || model == [] || optionsRoot.settingModel == []) { return }
 
                 var currentValue = themeSettings[optionsRoot.settingModel.id];
@@ -168,29 +164,21 @@ FocusScope {
                 if (optionsRoot.settingModel.type == "bool") {
                     value = (value) ? "Enable" : "Disable"
                 }
-                //Logger.debug("SettingsOptions:setIndex:value:"+ value);
                 var index = utils.findIndexByValue(model, value);
-                //if (index >= 0 || index !== undefined) { currentIndex = index };
                 settingsListView.currentIndex = index;
             }
 
-            // Component.onCompleted: setIndex()
-            //onModelChanged: {
             onSettingIdChanged: {
-                //Logger.debug("SettingsOptions:onModelChanged:initiated");
-                //Logger.debug("SettingsOptions:onModelChanged:id:" + optionsRoot.settingModel.id);
                 setIndex();
             }
 
-            //onModelChanged: {
-            //    Logger.info("SettingsOptions:onModelChanged:model:" + model.count);
-            //}
         }
 
         SettingsOptionsDelegate {
             id: settingsOptionsDelegate
             rows: settingsListView.rows
             textName: ""
+            settingModel: optionsRoot.settingModel
         }
 
         //action box
@@ -202,7 +190,7 @@ FocusScope {
             Text {
                 anchors {
                     top: parent.top
-                    topMargin: parent.height * -0.7
+                    topMargin: parent.height * -0.2
                     left: parent.left
                     leftMargin: parent.width * -0.05
                     right: parent.right
@@ -214,7 +202,7 @@ FocusScope {
                     ? optionsRoot.actionFeedback
                     : "Press Enter to run"
                 font.family: themeSettings.font.customFont
-                font.pixelSize: parent.height * 0.11
+                font.pixelSize: parent.height * 0.1
                 color: optionsRoot.actionFeedback !== ""
                     ? themeData.colorTheme[theme].primary
                     : themeData.colorTheme[theme].light
@@ -234,7 +222,7 @@ FocusScope {
                     left: parent.left
                     right: parent.right
                     top: parent.top
-                    topMargin: parent.height * -0.7
+                    topMargin: parent.height * -0.2
                     leftMargin: parent.width * -0.05
                     rightMargin: parent.width * 0.02
                 }
@@ -256,7 +244,9 @@ FocusScope {
                     clip: true
                     font.family: themeSettings.font.customFont
                     font.pixelSize: parent.height * 0.5
-                    color: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key') ? themeData.colorTheme[theme].light : themeData.colorTheme[theme].primary
+                    color: themeData.colorTheme[theme].primary
+
+                    opacity: (!textInput.activeFocus && optionsRoot.settingModel.name == 'API Key'&& themeSettings.raApiKey !== "") ? 0 : 1
 
                     // Saves continuously as you type
                     // regardless of platform-specific input quirks.
@@ -343,11 +333,11 @@ FocusScope {
             },
             State {
                 name: "text"
-                // No ItemList model needed - textEntryBox handles everything.
+                // No ItemList model needed - textEntryBox
             },
             State {
                 name: "action"
-                // No ItemList model needed - actionBox handles everything.
+                // No ItemList model needed - actionBox
             },
             State {
                 name: ""

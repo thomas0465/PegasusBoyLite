@@ -53,8 +53,12 @@ Item {
             }
 
 
+            //favorites indicator
             Rectangle {
                 id: gamesListFavorite
+
+                                opacity: gamesListRect.ListView.isCurrentItem
+                    ? 1 : (themeSettings.transparent? 0.5 : 1)
 
                 width: height
                 height: gamesListText.font.pixelSize * 0.7
@@ -83,6 +87,8 @@ Item {
             Rectangle {
                 id: cachedAchievementsDot
                 visible: hasCachedAchievements && themeSettings.cacheIndicator
+                opacity: gamesListRect.ListView.isCurrentItem
+                    ? 1 : (themeSettings.transparent? 0.5 : 1)
 
                 width: gamesListText.font.pixelSize * 0.15
                 height: gamesListText.font.pixelSize * 0.7
@@ -119,6 +125,7 @@ Item {
 
                 font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.4 + ( themeSettings.mainFontSize - 20)
+  
 
 		        wrapMode:(themeSettings.wordwrap) ? Text.WordWrap: Text.NoWrap
 

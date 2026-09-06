@@ -9,6 +9,18 @@ Item {
     
     HillsShaderEffect{
         opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
+        rotation: themeSettings.shaderHillsInvert ? 180 : 0
+    }
+
+        HillsShaderEffect {
+        anchors.fill: parent
+        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
+        rotation: themeSettings.shaderHillsInvert ? 180 : 0
+
+        bottomColor: themeSettings.backgroundColor == "transparent" ? 
+                        themeData.colorTheme[theme].background : themeSettings.backgroundColor
+
+        
     }
 
 

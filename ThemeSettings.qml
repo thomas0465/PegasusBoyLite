@@ -48,6 +48,7 @@ Item {
         "shaderGlowEnable",
         "shaderGlowAmount",
         "shaderHillsEnable",
+        "shaderHillsInvert",
 
         "menuIndex_main",
         "menuIndex_subMenu",
@@ -76,7 +77,8 @@ Item {
 	    "backgroundColor",
         "backgroundGradientColor",
         "backgroundGradientInvert",
-        "transparent"
+        "transparent",
+        "imageBorder"
     ]
 
     property bool enableRA: false
@@ -134,6 +136,7 @@ Item {
     property bool shaderGlowEnable: true
     property int shaderGlowAmount: 6
     property bool shaderHillsEnable: true
+    property bool shaderHillsInvert: false
 
     property bool soundslist:true
     property bool soundsmenu:true
@@ -157,11 +160,20 @@ Item {
     property string backgroundGradientColor: "transparent"
     property bool backgroundGradientInvert: false
     property bool transparent: false
+    property bool imageBorder: false
 
     FontLoader {
-    id: customFont
-    source: "./assets/fonts/" + themeSettings.fontInput +".ttf"
-}
+        id: customFont
+        source: "./assets/fonts/" + themeSettings.fontInput +".ttf"
+
+        onStatusChanged: {
+            var ttfPath = "./assets/fonts/" + themeSettings.fontInput + ".ttf"
+            
+            if (status === FontLoader.Error && source == ttfPath) {
+                source = "./assets/fonts/" + themeSettings.fontInput + ".otf"
+            }
+        }
+    }
 
 property var font: ({
     "customFont": customFont.name
