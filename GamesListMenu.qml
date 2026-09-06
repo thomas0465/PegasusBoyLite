@@ -787,14 +787,14 @@ AchievementsPanel {
 	//for image big view, darken the background
         Rectangle {
         id: mediabackground
-	    opacity:  (singleimageview2 == 0) ? 0 : 0.7
+	    opacity:  (singleimageview2 == 0) ? 0 : 0.85
         width: root.width
 	    height: root.height
 	    x: 0
 		//V option to not darken submenu
 	    //y:(subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) : parent.height * (themeSettings.subMenuEmptyHeight / 100)
         y:0
-	    color: themeData.colorTheme[theme].background
+	    color: "#000000"
         }
 
 
