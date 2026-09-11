@@ -22,8 +22,8 @@ Item {
     Image {
         id: gamesMediaScreenshot
 
-        width: (singleimageview == 2) ? root.width: parent.width/1.05;
-        height: (singleimageview == 2) ? root.height: (parent.height +marginoffset)/2;
+        width: Math.floor((singleimageview == 2) ? root.width: parent.width/1.05) ;
+        height:Math.floor((singleimageview == 2) ? root.height: (parent.height +marginoffset)/2);
         x:(singleimageview == 2) ? parent.width - (root.width): 0;
         y:(singleimageview == 2) ? -(root.height - marginoffset - parent.height - 12): parent.height/2 + 5 + (marginoffset/2);
 
@@ -32,17 +32,19 @@ Item {
 
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
         opacity: (singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0);
+        z:2
 
 Rectangle {
-    width: parent.paintedWidth
-    height: parent.paintedHeight
+    width: Math.ceil(parent.paintedWidth +1)
+    height: Math.ceil(parent.paintedHeight + 1) 
     anchors.centerIn: parent
     color: "transparent"
     border.color: themeData.colorTheme[theme].primary
-    border.width: Math.max(1, Math.min(parent.paintedWidth, parent.paintedHeight) * 0.008)
-
+    border.width: Math.max(1, parent.width * 0.005)
+    
     visible: parent.status === Image.Ready
     opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
+    z: 1
 }
 
     }
@@ -50,8 +52,8 @@ Rectangle {
 
     Image {
         id: gamesMediaTitle
-        width: (singleimageview == 1) ? root.width: parent.width/1.05;
-        height: (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2;
+        width: Math.floor((singleimageview == 1) ? root.width: parent.width/1.05);
+        height: Math.floor( (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2) ;
         x:(singleimageview == 1) ? parent.width - (root.width): 0;
         y:(singleimageview == 1) ? -(root.height - marginoffset - parent.height - 12): 0
 
@@ -61,12 +63,12 @@ Rectangle {
         opacity: (singleimageview == 2) ? 0: 1;
 
 Rectangle {
-    width: parent.paintedWidth
-    height: parent.paintedHeight
+    width: Math.ceil(parent.paintedWidth + 1 )
+    height: Math.ceil(parent.paintedHeight + 1 )
     anchors.centerIn: parent
     color: "transparent"
     border.color: themeData.colorTheme[theme].primary
-    border.width: Math.max(1, Math.min(parent.paintedWidth, parent.paintedHeight) * 0.008)
+    border.width: Math.max(1, parent.width * 0.005)
 
     visible: parent.status === Image.Ready
     opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
