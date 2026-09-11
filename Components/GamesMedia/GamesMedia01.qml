@@ -33,17 +33,17 @@ Item {
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
         opacity: (singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0);
 
-    Rectangle {
-        width: parent.paintedWidth
-        height: parent.paintedHeight
-        anchors.centerIn: parent
-        color: "transparent"
-        border.color: themeData.colorTheme[theme].primary
-        border.width: parent.width * 0.002
+Rectangle {
+    width: parent.paintedWidth
+    height: parent.paintedHeight
+    anchors.centerIn: parent
+    color: "transparent"
+    border.color: themeData.colorTheme[theme].primary
+    border.width: Math.max(1, Math.min(parent.paintedWidth, parent.paintedHeight) * 0.008)
 
-        visible: parent.status === Image.Ready
-        opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
-    }
+    visible: parent.status === Image.Ready
+    opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
+}
 
     }
 
@@ -60,17 +60,17 @@ Item {
        	source: (imagetype) ? primary || secondary: secondary|| primary
         opacity: (singleimageview == 2) ? 0: 1;
 
-    Rectangle {
-        width: parent.paintedWidth
-        height: parent.paintedHeight
-        anchors.centerIn: parent
-        color: "transparent"
-        border.color: themeData.colorTheme[theme].primary
-        border.width: parent.width * 0.002
+Rectangle {
+    width: parent.paintedWidth
+    height: parent.paintedHeight
+    anchors.centerIn: parent
+    color: "transparent"
+    border.color: themeData.colorTheme[theme].primary
+    border.width: Math.max(1, Math.min(parent.paintedWidth, parent.paintedHeight) * 0.008)
 
-        visible: parent.status === Image.Ready
-        opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
-    }
+    visible: parent.status === Image.Ready
+    opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
+}
     }
 
 

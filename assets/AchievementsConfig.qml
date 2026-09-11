@@ -92,13 +92,27 @@ n64 zelda:	nintendo 64
 
 For Who The Frog Bell Tolls (English Translation):	Kaeru no Tame ni Kane wa Naru
 The Legendary Starfy (Starfy 1 Translation):		Densetsu no Stafy
-The Second Reality Project 2 Reloaded [112 VH]:		The Second Reality Project 2 Reloaded: Zycloboo's Challenge
-Zelda Revival (v1 1):					The Legend of Zelda: Zelda Revival
+
 SMB2 - Return to Subcon:				Super Mario Bros. 2 Squared: Return to Subcon
 SMB3 - 3Mix:						Super Mario Bros. 3Mix 
+
 Metroid - V I T A L I T Y:				V I T A L I T Y
-Peach's Adventure [61 N]:				Super Mario Bros. Peach's Adventure
+Metroid - Hyper Metroid:				Hyper Metroid
+
 A Link to the Past - Allhallows Eve:			The Legend of Zelda: Allhallow's Eve
+A Link to the Past - Parallel Worlds:			The Legend of Zelda: Parallel Worlds
+
+Zelda Revival (v1 1):					The Legend of Zelda: Zelda Revival
+
 Pokemon Mariomon (v1 5 2):				Super Mariomon
+
+1st RetroAchievements Vanilla Level Design Contest [41 H] (v1 0): RetroAchievements Vanilla Level Design Contest Vol. 1
+11th Vanilla Level Design Contest [116 H] (1 4):	The 11th Annual Vanilla Level Design Contest
+Peach's Adventure [61 N]:				Super Mario Bros. Peach's Adventure
+The Second Reality Project 2 Reloaded [112 VH]:		The Second Reality Project 2 Reloaded: Zycloboo's Challenge
+K-16 [25 H] (v1 3):					K-16: Story of Steel
+
+
+
 
 	"}

@@ -31,7 +31,7 @@ Item {
         interval: 8
         running: true
         repeat: true
-        onTriggered: rootItem.time += 0.2
+        onTriggered: rootItem.time = Math.fmod(rootItem.time + 0.2, 628.3)
     }
 
     ShaderEffect {
