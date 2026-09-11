@@ -28,7 +28,7 @@ Item {
     property color fadeColor: themeSettings.shaderHillsFadeColor
 
     Timer {
-        interval: 32
+        interval: 8
         running: true
         repeat: true
         onTriggered: rootItem.time += 0.2

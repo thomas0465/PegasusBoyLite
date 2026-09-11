@@ -36,11 +36,8 @@ Item {
 
             bottomColor: resolvedBottomColor
             topColor: resolvedTopColor
-            Rectangle{
-                anchors.fill: parent
-                color: "#414141ff"
-                opacity: 0
-            }
+
+
            
         }
 
@@ -106,6 +103,10 @@ Item {
         gradient: themeSettings.backgroundGradientColor == "transparent" ? null: backgroundGradient
         opacity: themeSettings.shaderHillsEnable? 0 : 1
     }
+
+      Rectangle{ anchors.fill: parent 
+color: "#000000" 
+opacity: themeSettings.darkenbg / 100 }
 
     property alias menuItem: menuLoader.item
     Loader {
@@ -250,4 +251,6 @@ Item {
             menuItem.currentIndex = themeSettings["menuIndex_main"];
         }
     }
+
+
 }

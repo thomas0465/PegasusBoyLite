@@ -66,7 +66,7 @@ Item {
                     }
                     return getColorValue()
                     }
-                border.width: parent.width * 0.001
+                border.width: 1
                 border.color: "#ffffff"
             }
 

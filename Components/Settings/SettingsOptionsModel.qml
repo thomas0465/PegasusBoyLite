@@ -108,6 +108,17 @@ Item {
                 //    "type": "bool",
                 //    "default": "Disable",
                 //},
+
+                {
+		            "name": "Darken Background",
+                    "id": "darkenbg",
+                    "description": "Darken the background",
+                    "type": "range",
+                    "default": "0",
+                    "min": 0,
+                    "max": 100,
+                    "step": 5,
+                },
                 
                
 

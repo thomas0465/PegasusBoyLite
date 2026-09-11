@@ -47,6 +47,7 @@ Item {
         "shaderAberrationAmount",
         "shaderGlowEnable",
         "shaderGlowAmount",
+
         "shaderHillsEnable",
         "shaderHillsInvert",
         "shaderHillsFade",
@@ -82,7 +83,8 @@ Item {
         "backgroundGradientColor",
         "backgroundGradientInvert",
         "transparent",
-        "imageBorder"
+        "imageBorder",
+        "darkenbg"
     ]
 
     property bool enableRA: false
@@ -169,6 +171,7 @@ Item {
     property bool backgroundGradientInvert: false
     property bool transparent: false
     property bool imageBorder: false
+    property int darkenbg: 0
 
     FontLoader {
         id: customFont
