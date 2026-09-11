@@ -31,7 +31,7 @@ Item {
 
         HillsShaderEffect {
             anchors.fill: parent
-            opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 1 : 0
+            opacity: themeSettings.shaderHillsEnable? 1 : 0
             rotation: themeSettings.shaderHillsInvert ? 180 : 0
 
             bottomColor: resolvedBottomColor
@@ -104,7 +104,7 @@ Item {
         height: parent.height
         color: backgroundMainColor
         gradient: themeSettings.backgroundGradientColor == "transparent" ? null: backgroundGradient
-        opacity: themeSettings.shaderEnable && themeSettings.shaderHillsEnable? 0 : 1
+        opacity: themeSettings.shaderHillsEnable? 0 : 1
     }
 
     property alias menuItem: menuLoader.item

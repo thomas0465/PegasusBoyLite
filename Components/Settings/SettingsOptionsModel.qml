@@ -7,7 +7,7 @@ Item {
 
     property var settingsModel: [
         {
-            "name": "Style",
+             "name": "Style",
             "settings": [
                 {
                     "name": "Theme",
@@ -108,303 +108,9 @@ Item {
                 //    "type": "bool",
                 //    "default": "Disable",
                 //},
-                {
-                    "name": "Font",
-                    "id": "fontInput",
-                    "description": "Text Font",
-                    "type": "list",
-                    "default": "Roboto-Regular",
-                    "options": [
-                        { "value": "Alagard" },
-                        { "value": "Ari-Bold" },
-                        { "value": "Determination" },
-                        { "value": "KiwiSoda" },
-                        { "value": "Lemonmilk-Regular" },
-                        { "value": "Minecraft" },
-                        { "value": "Nexa" },
-                        { "value": "Pixelify" },
-                        { "value": "Pixellari" },
-                        { "value": "Roboto-Medium" },
-                        { "value": "Roboto-Regular" },
-                        { "value": "Tiny5" },
-                        { "value": "VCR_OSD" },
-                        { "value": "Waukegan"},
-                        
-                    ]
-                },
-                                {
-                    "name": "Transparent Elements",
-                    "id": "transparent",
-                    "description": "Make the selected option and scroll bar on the Main List transparent",
-                    "type": "bool",
-                    "default": "Disabled",
-                },
-                 {
-                    "name": "Image Borders",
-                    "id": "imageBorder",
-                    "description": "Show a border around game images",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-                                {
-		    "name": "Main List - Font Size",
-                    "id": "mainFontSize",
-                    "description": "The font size for the Main List",
-                    "type": "range",
-                    "default": "20",
-                    "min": 1,
-                    "max": 25,
-                    "step": 1,
-                },
-
-                {
-                    "name": "Main List - Rows",
-                    "id": "itemListRows",
-                    "description": "The number of rows to show on the Main List",
-                    "type": "range",
-                    "default": "9",
-                    "min": 4,
-                    "max": 12,
-                    "step": 1,
-                },
-                {
-                    "name": "Main List - Width",
-                    "id": "itemListWidth",
-                    "description": "The width of the Main List as a percentage of the screen",
-                    "type": "range",
-                    "default": "40",
-                    "min": 35,
-                    "max": 65,
-                    "step": 5,
-                },
-                {
-		            "name": "Sub-Menu - Font Size",
-                    "id": "menusize",
-                    "description": "The font size for the Sub-Menu (updates on reloading the Main List)",
-                    "type": "range",
-                    "default": "16",
-                    "min": 10,
-                    "max": 25,
-                    "step": 1,
-                },
-                {
-                    "name": "Sub-Menu - Columns",
-                    "id": "subMenuColumns",
-                    "description": "The number of Sub-Menu items to show on screen",
-                    "type": "range",
-                    "default": "4",
-                    "min": 3,
-                    "max": 8,
-                    "step": 1,
-                },
-                {
-                    "name": "Sub-Menu - Height",
-                    "id": "subMenuHeight",
-                    "description": "The height of the Sub-Menu",
-                    "type": "range",
-                    "default": "6",
-                    "min": 4,
-                    "max": 12,
-                    "step": 1,
-                },
-                {
-                    "name": "Sub-Menu - Margin",
-                    "id": "subMenuMargin",
-                    "description": "The margin between the Main List and Sub-Menu",
-                    "type": "range",
-                    "default": "0",
-                    "min": -5,
-                    "max": 10,
-                    "step": 1,
-                },
                 
-                {
-		    "name": "Top Margin",
-                    "id": "menuadjust",
-                    "description": "Adjust the screen to be closer to the top of the screen",
-                    "type": "range",
-                    "default": "0",
-                    "min": -25,
-                    "max": 20,
-                    "step": 1,
-                },
+               
 
-            ]
-        },
-        {
-            "name": "General",
-            "settings": [
-                {
-                    "name": "Sounds - Menu",
-                    "id": "soundsmenu",
-                    "description": "Enable sounds when navigating the Menu and favoriting games",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                {
-                    "name": "Sounds - Main List",
-                    "id": "soundslist",
-                    "description": "Enable sounds when navigating the Main List",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                {
-                    "name": "Collections - All Games",
-                    "id": "collectionAllGames",
-                    "description": "Show All games collection in the games list (may require restart)",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-                {
-                    "name": "Collections - Recent Date Range",
-                    "id": "lastPlayedDays",
-                    "description": "How many days to show games on the recent list. Select 0 to disable (may require restart)",
-                    "type": "list",
-                    "default": "0",
-                    "options": [
-                        { "value": "0" },
-		                { "value": "1" },
-                        { "value": "3" },
-                        { "value": "7" },
-                        { "value": "14" },
- 			            { "value": "30" },
-                    ]
-                },
-                {
-                    "name": "Collections - Short Names",
-                    "id": "collectionShortNames",
-                    "description": "Use collection short names",
-                    "type": "bool",
-                    "default": "Enable",
-                },
-
-                {
-                    "name": "Collections - Scroll Bar",
-                    "id": "collectionscroll",
-                    "description": "Show the small scroll Bar next to the Sub-Menu for collections",
-                    "type": "bool",
-                    "default": "Enable",
-               },      
-                               {
-                   "name": "Wrap - Main List",
-                   "id": "listwrap",
-                   "description": "Press up at the top of the Main List to go to the bottom, and vice versa",
-                   "type": "bool",
-                   "default": "Enable",
-                },
-                                {
-                   "name": "Wrap - Sub-Menu",
-                   "id": "subMenuWrap",
-                   "description": "Press left on the left-most collection to go to the right-most, and vice versa",
-                   "type": "bool",
-                   "default": "Enable",
-                },
-               {
-                   "name": "Word Wrap",
-                   "id": "wordwrap",
-                   "description": "Wrap long game names in the Main List",
-                   "type": "bool",
-                   "default": "Enable",
-                },          
-                {
-                    "name": "Favorites on Top",
-                    "id": "gamesFavoritesOnTop",
-                    "description": "Show favorites at the top of the Main List",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-
-                {
-                    "name": "Remove Text in ()",
-                    "id": "replacePar",
-                    "description": "Remove text in parenthises when showing game names",
-                    "type": "bool",
-                    "default": "Enable",
-                },
-                {
-                    "name": "Remove Text in []",
-                    "id": "replaceBrac",
-                    "description": "Remove text in brackets when showing game names",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-                {
-                    "name": "Primary Image",
-                    "id": "primaryAsset",
-                    "description": "Show Title Screen or Box Art first",
-                    "type": "list",
-                    "default": "Title Screen",
-                    "options": [
-			            { "value": "Title Screen" },
-                        { "value": "Box Art" },
-                    ]
-                },
-
-            ]
-        },
-
-
-        {
-            "name": "Footer",
-            "settings": [
-
-                {
-		    "name": "Footer Font Size",
-                    "id": "footerfontsize",
-                    "description": "The font size for the Footer",
-                    "type": "range",
-                    "default": "20",
-                    "min": 1,
-                    "max": 25,
-                    "step": 1,
-                },
-
-                {
-		            "name": "Footer Offset",
-                    "id": "footeroffset",
-                    "description": "Offset of the footer from the bottom",
-                    "type": "range",
-                    "default": "0",
-                    "min": -5,
-                    "max": 30,
-                    "step": 1,
-                },
-                
-                {
-                    "name": "Show Clock",
-                    "id": "showClock",
-                    "description": "Display the time",
-                    "type": "bool",
-                    "default": "Enable",
-               },
-                {
-                    "name": "Show Counter",
-                    "id": "gamesListCounter",
-                    "description": "Display a counter in the games list",
-                    "type": "bool",
-                    "default": "Enable",
-               },
-
-                {
-                    "name": "Show Battery",
-                    "id": "showBattery",
-                    "description": "Display the Battery Percentage",
-                    "type": "bool",
-                    "default": "Enable",
-               },
-
-		]
-	},
-        {
-            "name": "Shaders",
-            "settings": [
-                {
-                    "name": "Shaders - Global",
-                    "id": "shaderEnable",
-                    "description": "Enable or disable shaders",
-                    "type": "bool",
-                    "default": "Disable",
-                },
                 {
                     "name": "Hills - Enable",
                     "id": "shaderHillsEnable",
@@ -484,6 +190,312 @@ Item {
 ]
                     
                 },
+            
+            ],
+        },
+        {
+            "name": "General",
+            "settings": [
+                {
+                    "name": "Sounds - Menu",
+                    "id": "soundsmenu",
+                    "description": "Enable sounds when navigating the Menu and favoriting games",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                {
+                    "name": "Sounds - Main List",
+                    "id": "soundslist",
+                    "description": "Enable sounds when navigating the Main List",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                {
+                    "name": "Collections - All Games",
+                    "id": "collectionAllGames",
+                    "description": "Show All games collection in the games list (may require restart)",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+                {
+                    "name": "Collections - Recent Date Range",
+                    "id": "lastPlayedDays",
+                    "description": "How many days to show games on the recent list. Select 0 to disable (may require restart)",
+                    "type": "list",
+                    "default": "0",
+                    "options": [
+                        { "value": "0" },
+		                { "value": "1" },
+                        { "value": "3" },
+                        { "value": "7" },
+                        { "value": "14" },
+ 			            { "value": "30" },
+                    ]
+                },
+                {
+                    "name": "Collections - Short Names",
+                    "id": "collectionShortNames",
+                    "description": "Use collection short names",
+                    "type": "bool",
+                    "default": "Enable",
+                },
+
+                {
+                    "name": "Collections - Scroll Bar",
+                    "id": "collectionscroll",
+                    "description": "Show the small scroll Bar next to the Sub-Menu for collections",
+                    "type": "bool",
+                    "default": "Enable",
+               },      
+                               {
+                   "name": "Wrap - Main List",
+                   "id": "listwrap",
+                   "description": "Press up at the top of the Main List to go to the bottom, and vice versa",
+                   "type": "bool",
+                   "default": "Enable",
+                },
+                                {
+                   "name": "Wrap - Sub-Menu",
+                   "id": "subMenuWrap",
+                   "description": "Press left on the left-most collection to go to the right-most, and vice versa",
+                   "type": "bool",
+                   "default": "Enable",
+                },
+               {
+                   "name": "Word Wrap",
+                   "id": "wordwrap",
+                   "description": "Wrap long game names in the Main List",
+                   "type": "bool",
+                   "default": "Enable",
+                },      
+                                
+                                {
+                    "name": "Transparent Elements",
+                    "id": "transparent",
+                    "description": "Make the selected option and scroll bar on the Main List transparent",
+                    "type": "bool",
+                    "default": "Disabled",
+                },
+                 {
+                    "name": "Image Borders",
+                    "id": "imageBorder",
+                    "description": "Show a border around game images",
+                    "type": "bool",
+                    "default": "Disable",
+                },    
+                {
+                    "name": "Favorites on Top",
+                    "id": "gamesFavoritesOnTop",
+                    "description": "Show favorites at the top of the Main List",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+
+                {
+                    "name": "Remove Text in ()",
+                    "id": "replacePar",
+                    "description": "Remove text in parenthises when showing game names",
+                    "type": "bool",
+                    "default": "Enable",
+                },
+                {
+                    "name": "Remove Text in []",
+                    "id": "replaceBrac",
+                    "description": "Remove text in brackets when showing game names",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+                {
+                    "name": "Primary Image",
+                    "id": "primaryAsset",
+                    "description": "Show Title Screen or Box Art first",
+                    "type": "list",
+                    "default": "Title Screen",
+                    "options": [
+			            { "value": "Title Screen" },
+                        { "value": "Box Art" },
+                    ]
+                },
+
+            ]
+        },
+           {
+            "name": "Elements",
+            "settings": [
+
+                {
+                    "name": "Font",
+                    "id": "fontInput",
+                    "description": "Text Font",
+                    "type": "list",
+                    "default": "Roboto-Regular",
+                    "options": [
+                        { "value": "Alagard" },
+                        { "value": "Ari-Bold" },
+                        { "value": "Determination" },
+                        { "value": "KiwiSoda" },
+                        { "value": "Lemonmilk-Regular" },
+                        { "value": "Minecraft" },
+                        { "value": "Nexa" },
+                        { "value": "Pixelify" },
+                        { "value": "Pixellari" },
+                        { "value": "Roboto-Medium" },
+                        { "value": "Roboto-Regular" },
+                        { "value": "Tiny5" },
+                        { "value": "VCR_OSD" },
+                        { "value": "Waukegan"},
+                        
+                    ]
+                },
+
+                 {
+		    "name": "Font Size - Main List",
+                    "id": "mainFontSize",
+                    "description": "The font size for the Main List",
+                    "type": "range",
+                    "default": "20",
+                    "min": 1,
+                    "max": 25,
+                    "step": 1,
+                },
+                {
+		            "name": "Font Size - Sub-Menu",
+                    "id": "menusize",
+                    "description": "The font size for the Sub-Menu (updates on reloading the Main List)",
+                    "type": "range",
+                    "default": "16",
+                    "min": 10,
+                    "max": 25,
+                    "step": 1,
+                },
+                                {
+		    "name": "Font Size - Footer",
+                    "id": "footerfontsize",
+                    "description": "The font size for the Footer",
+                    "type": "range",
+                    "default": "20",
+                    "min": 1,
+                    "max": 25,
+                    "step": 1,
+                },
+
+
+                
+               
+
+                                {
+                    "name": "Main List - Rows",
+                    "id": "itemListRows",
+                    "description": "The number of rows to show on the Main List",
+                    "type": "range",
+                    "default": "9",
+                    "min": 4,
+                    "max": 12,
+                    "step": 1,
+                },
+                {
+                    "name": "Main List - Width",
+                    "id": "itemListWidth",
+                    "description": "The width of the Main List as a percentage of the screen",
+                    "type": "range",
+                    "default": "40",
+                    "min": 35,
+                    "max": 65,
+                    "step": 5,
+                },
+                                
+
+                {
+                    "name": "Sub-Menu - Columns",
+                    "id": "subMenuColumns",
+                    "description": "The number of Sub-Menu items to show on screen",
+                    "type": "range",
+                    "default": "4",
+                    "min": 3,
+                    "max": 8,
+                    "step": 1,
+                },
+                {
+                    "name": "Sub-Menu - Height",
+                    "id": "subMenuHeight",
+                    "description": "The height of the Sub-Menu",
+                    "type": "range",
+                    "default": "6",
+                    "min": 4,
+                    "max": 12,
+                    "step": 1,
+                },
+                {
+                    "name": "Sub-Menu - Margin",
+                    "id": "subMenuMargin",
+                    "description": "The margin between the Main List and Sub-Menu",
+                    "type": "range",
+                    "default": "0",
+                    "min": -5,
+                    "max": 10,
+                    "step": 1,
+                },
+
+                 {
+                    "name": "Footer - Show Clock",
+                    "id": "showClock",
+                    "description": "Display the time",
+                    "type": "bool",
+                    "default": "Enable",
+               },
+                {
+                    "name": "Footer - Show Counter",
+                    "id": "gamesListCounter",
+                    "description": "Display a counter in the games list",
+                    "type": "bool",
+                    "default": "Enable",
+               },
+
+                {
+                    "name": "Footer - Show Battery",
+                    "id": "showBattery",
+                    "description": "Display the Battery Percentage",
+                    "type": "bool",
+                    "default": "Enable",
+               },
+
+                {
+		            "name": "Footer - Offset",
+                    "id": "footeroffset",
+                    "description": "Offset of the footer from the bottom",
+                    "type": "range",
+                    "default": "0",
+                    "min": -5,
+                    "max": 30,
+                    "step": 1,
+                },
+                
+                {
+		    "name": "Top Margin",
+                    "id": "menuadjust",
+                    "description": "Adjust the screen to be closer to the top of the screen",
+                    "type": "range",
+                    "default": "0",
+                    "min": -25,
+                    "max": 20,
+                    "step": 1,
+                },
+
+            ]
+        },
+
+       
+        {
+            "name": "Shaders",
+            "settings": [
+                {
+                    "name": "Shaders - Global",
+                    "id": "shaderEnable",
+                    "description": "Enable or disable shaders",
+                    "type": "bool",
+                    "default": "Disable",
+                },
+                
 
 
                 {
@@ -641,9 +653,6 @@ Item {
             settingsModel.forEach((x) => {
                 settingsListModel.append(x);
             })
-            
-            Logger.info("SettingsOptionsModel:settingsListModel:count:" + settingsListModel.count)
-            Logger.info("SettingsOptionsModel:settingsListModel:element:" + settingsListModel.get(0).name)
         }
     }
 

@@ -36,7 +36,7 @@ FocusScope {
         anchors.fill: parent
 
         property int fontSize: 28
-        property int columns: 4
+        property int columns: 5
 
         onColumnsChanged: {
             var col = themeSettings.subMenuColumns;
