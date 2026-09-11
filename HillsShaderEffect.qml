@@ -27,12 +27,17 @@ Item {
     //color of the fade
     property color fadeColor: themeSettings.shaderHillsFadeColor
 
-    Timer {
-        interval: 8
-        running: true
-        repeat: true
-        onTriggered: rootItem.time = Math.fmod(rootItem.time + 0.2, 628.3)
+Timer {
+    interval:64
+    running: true
+    repeat: true
+    onTriggered: {
+        var t = rootItem.time + 0.2;
+        if (t >= 628.4)
+            t -= 628.4;
+        rootItem.time = t;
     }
+}
 
     ShaderEffect {
         anchors.fill: parent
@@ -111,7 +116,7 @@ Item {
                            sin(x * 0.5  - u_time * 0.03 + 2.5) * 0.030;
 
                 float w3 = cos(x * 0.8  + u_time * 0.07 + 0.5) * 0.050 +
-                           sin(x * 1.7  + u_time * 0.04 + 3.8) * 0.020;
+                           sin(x * 1.0  + u_time * 0.04 + 3.8) * 0.020;
 
                 float y1 = 0.32 + w1;
                 float y2 = 0.5 + w2;

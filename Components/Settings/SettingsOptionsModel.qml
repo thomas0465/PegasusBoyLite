@@ -123,16 +123,16 @@ Item {
                
 
                 {
-                    "name": "Hills - Enable",
+                    "name": "Hills",
                     "id": "shaderHillsEnable",
-                    "description": "Enable the hills shader",
+                    "description": "Enable the Hills background",
                     "type": "bool",
                     "default": "Enable",
                 },
                 {
                     "name": "  • Hills - Invert",
                     "id": "shaderHillsInvert",
-                    "description": "Invert the hills shader",
+                    "description": "Invert the Hills background",
                     "type": "bool",
                     "default": "Disable",
                 },  
@@ -144,17 +144,17 @@ Item {
                     "default": "15",
                     "min": 0,
                     "max": 100,
-                    "step": 1,
+                    "step": 5,
                 },               
                 {
-		            "name": "  • Hills - Fade",
+		            "name": "  • Hills - Fade Intensity",
                     "id": "shaderHillsFade",
                     "description": "Intensity of Fade between waves",
                     "type": "range",
                     "default": "15",
                     "min": 0,
                     "max": 100,
-                    "step": 1,
+                    "step": 5,
                 },
                 {
                     "name": "  • Hills - Fade Height",
@@ -162,9 +162,9 @@ Item {
                     "description": "Height of Fade between waves",
                     "type": "range",
                     "default": "5",
-                    "min": 0,
-                    "max": 20,
-                    "step": 1,
+                    "min": 1,
+                    "max": 51,
+                    "step": 2,
                 },
 
                                                 {
@@ -500,7 +500,7 @@ Item {
             "name": "Shaders",
             "settings": [
                 {
-                    "name": "Shaders - Global",
+                    "name": "Shaders",
                     "id": "shaderEnable",
                     "description": "Enable or disable shaders",
                     "type": "bool",
@@ -510,7 +510,7 @@ Item {
 
 
                 {
-                    "name": "Curvature - Enable",
+                    "name": "Curvature",
                     "id": "shaderCurvatureEnable",
                     "description": "Enable the screen curvature shader",
                     "type": "bool",
@@ -527,7 +527,7 @@ Item {
                     "step": 20,
                 },
                 {
-                    "name": "Scanlines - Enable",
+                    "name": "Scanlines",
                     "id": "shaderScanlinesEnable",
                     "description": "Enable the scanline shader",
                     "type": "bool",
@@ -579,7 +579,7 @@ Item {
                     "default": "Disable",
                 },  
                 {
-                    "name": "Aberration - Enable",
+                    "name": "Aberration",
                     "id": "shaderAberrationEnable",
                     "description": "Enable the chromatic aberration shader",
                     "type": "bool",
@@ -596,7 +596,7 @@ Item {
                     "step": 1,
                 },
                 {
-                    "name": "Glow - Enable",
+                    "name": "Glow",
                     "id": "shaderGlowEnable",
                     "description": "Enable the glow shader",
                     "type": "bool",
