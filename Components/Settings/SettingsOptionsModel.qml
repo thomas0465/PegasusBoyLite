@@ -418,7 +418,74 @@ Item {
                     "description": "Invert the hills shader",
                     "type": "bool",
                     "default": "Disable",
+                },  
+                {
+		            "name": "  • Hills - Lighten",
+                    "id": "shaderHillsLighten",
+                    "description": "If gradient is not set, how much to lighten the background",
+                    "type": "range",
+                    "default": "15",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                },               
+                {
+		            "name": "  • Hills - Fade",
+                    "id": "shaderHillsFade",
+                    "description": "Intensity of Fade between waves",
+                    "type": "range",
+                    "default": "15",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
                 },
+                {
+                    "name": "  • Hills - Fade Height",
+                    "id": "shaderHillsFadeHeight",
+                    "description": "Height of Fade between waves",
+                    "type": "range",
+                    "default": "5",
+                    "min": 0,
+                    "max": 20,
+                    "step": 1,
+                },
+
+                                                {
+                    "name": "  • Hills - Fade Color",
+                    "id": "shaderHillsFadeColor",
+                    "description": "Color of Fade between waves",
+                    "type": "list",
+                    "default": "White",
+                    "options": 
+[
+    { "label": "White", "value": "#ffffff" },
+    { "label": "Light Gray", "value": "#c1c1c1" },
+    { "label": "Gray", "value": "#838383" },
+    { "label": "Dark Gray", "value": "#313131" },
+    { "label": "Black", "value": "#000000" },
+    { "label": "Lavender", "value": "#8f71ff" },
+    { "label": "Light Purple", "value": "#7b39b5" },
+    { "label": "Dark Purple", "value": "#1e0534" },
+    { "label": "Light Blue", "value": "#098393" },
+    { "label": "Wave Blue", "value": "#0066cc" },
+    { "label": "Dark Blue", "value": "#09005b" },
+    { "label": "Teal", "value": "#00a896" },
+    { "label": "Dark Teal", "value": "#023e38" },
+    { "label": "Phosphor Green", "value": "#33ff33" },
+    { "label": "Green", "value": "#07891a" },
+    { "label": "Dark Green", "value": "#013201" },
+    { "label": "Game Boy", "value": "#8b956d" },
+    { "label": "Amber", "value": "#ffb000" },
+    { "label": "Red", "value": "#640000" },
+    { "label": "Rose Pink", "value": "#e84393" },
+    { "label": "Vaporwave Pink", "value": "#ff0080" },
+
+
+]
+                    
+                },
+
+
                 {
                     "name": "Curvature - Enable",
                     "id": "shaderCurvatureEnable",

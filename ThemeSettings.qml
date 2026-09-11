@@ -49,6 +49,10 @@ Item {
         "shaderGlowAmount",
         "shaderHillsEnable",
         "shaderHillsInvert",
+        "shaderHillsFade",
+        "shaderHillsLighten",
+        "shaderHillsFadeColor",
+        "shaderHillsFadeHeight",
 
         "menuIndex_main",
         "menuIndex_subMenu",
@@ -137,6 +141,10 @@ Item {
     property int shaderGlowAmount: 6
     property bool shaderHillsEnable: true
     property bool shaderHillsInvert: false
+    property int shaderHillsFade: 10
+    property int shaderHillsLighten: 15
+    property string shaderHillsFadeColor: "White"
+    property int shaderHillsFadeHeight: 5
 
     property bool soundslist:true
     property bool soundsmenu:true

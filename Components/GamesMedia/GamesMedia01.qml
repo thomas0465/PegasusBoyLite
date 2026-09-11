@@ -40,6 +40,8 @@ Item {
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
         border.width: parent.width * 0.002
+
+        visible: parent.status === Image.Ready
         opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
     }
 
@@ -65,6 +67,8 @@ Item {
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
         border.width: parent.width * 0.002
+
+        visible: parent.status === Image.Ready
         opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
     }
     }

@@ -26,7 +26,7 @@ Item {
                         backgroundMainColor  : themeSettings.backgroundColor
 
         property color resolvedTopColor: (resolvedTopColorBase === resolvedBottomColor)
-            ? lightenColor(resolvedTopColorBase, 0.1)
+            ? lightenColor(resolvedTopColorBase, themeSettings.shaderHillsLighten / 100)
             : resolvedTopColorBase
 
         HillsShaderEffect {
@@ -39,7 +39,7 @@ Item {
             Rectangle{
                 anchors.fill: parent
                 color: "#414141ff"
-                opacity: 0.2
+                opacity: 0
             }
            
         }

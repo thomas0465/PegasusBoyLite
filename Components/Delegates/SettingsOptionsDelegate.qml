@@ -41,7 +41,8 @@ Item {
                 // Check if setting ID is a color setting or contains "Color"
                 return settingModel.id === "backgroundColor" || 
                        settingModel.id === "backgroundGradientColor" || 
-                       settingModel.id === "theme"  
+                       settingModel.id === "theme" ||
+                       settingModel.id === "shaderHillsFadeColor"
             }
 
             // Color Swatch Preview
