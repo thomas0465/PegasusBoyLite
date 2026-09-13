@@ -19,7 +19,6 @@ Item {
                         { "value": "White" },
                         { "value": "Gray" },
                         { "value": "Black" },
-                        { "value": "Binary" },
                         { "value": "Green" },
                         { "value": "Amber" },
                         { "value": "Light Blue"},

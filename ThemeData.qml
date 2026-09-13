@@ -74,14 +74,14 @@ Item {
             light: "#A38500",
             dark: "#7A6400",
         },
-        "Dark Blue": {
-            background: "#03071e",
-            primary: "#d0dde2",
-            secondary: "#a4afbdff",
-            light: "#a4afbdff",
-            dark: "#03071e",
-        },
         "Light Blue": {
+            background: "#6b9aa9",
+            primary: "#001261",
+            secondary: "#a4afbd",
+            light: "#001261",
+            dark: "#6b9aa9",
+        },
+        "Dark Blue": {
             background: "#063d3b",
             primary: "#7ebcde",
             secondary: "#3e7d9f",
@@ -103,30 +103,22 @@ Item {
             dark: "#151619ff",
         },         
         
-        "Binary": {
+         "Black": {
             background: "#000000",
             primary: "#e9ecef",
             secondary: "#6c757d",
             light: "#e9ecef",
             dark: "#000000",
         },
-
-         "Black": {
-            background: "#000000",
-            primary: "#e9ecef",
-            secondary: "#6c757d",
-            light: "#6c757d",
-            dark: "#000000",
-        },
         "White": {
             background: "#ffffff",
-            primary: "#323432",
+            primary: "#000000",
             secondary: "#858585",
-            light: "#323432",
+            light: "#000000",
             dark: "#cbcdcb",
         },
         "Gray": {
-            background: "#000000",
+            background: "#6d6d6d",
             primary: "#bfbfbf",
             secondary: "#6d6d6d",
             light: "#bfbfbf",
