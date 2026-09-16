@@ -143,7 +143,7 @@ Item {
     property int shaderGlowAmount: 6
     property bool shaderHillsEnable: true
     property bool shaderHillsInvert: false
-    property int shaderHillsFade: 10
+    property int shaderHillsFade: 45
     property int shaderHillsLighten: 15
     property string shaderHillsFadeColor: "White"
     property int shaderHillsFadeHeight: 5

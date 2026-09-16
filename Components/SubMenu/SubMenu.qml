@@ -36,6 +36,10 @@ FocusScope {
         anchors.fill: parent
 
         property int fontSize: 28
+        // Size that actually fits the cell, as computed by calculateFontSizeModel
+        property int fittedFontSize: 28
+        // How much larger than the fitted size menusize is allowed to push the text
+        property real maxFontScale: 2.0
         property int columns: 5
 
         onColumnsChanged: {
@@ -90,7 +94,7 @@ FocusScope {
             //Logger.info("SubMenu:resizeFont:list:typeof:" + (typeof collectionNames))
 
 
-            fontSize = utils.calculateFontSizeModel(subMenuListFont.font, 
+            fittedFontSize = utils.calculateFontSizeModel(subMenuListFont.font, 
                 (subMenuListView.width / subMenuListView.columns) * 1.5,
                 subMenuListView.height, 
                 collectionNames.map((x) => x[subMenuDelegate.textName])
@@ -100,7 +104,24 @@ FocusScope {
                 // model.map((x) => x.name)
                 // model.toVarArray().map((x) => x.name)
             );
-            if(fontSize > themeSettings.menusize){fontSize = themeSettings.menusize}
+
+            applyMenuSize()
+        }
+
+        // menusize is a target pixel size, not just a cap: it can grow the text
+        // past the auto-fitted size, up to fittedFontSize * maxFontScale.
+        function applyMenuSize() {
+            var target = themeSettings.menusize + 10
+            if (target === undefined || target <= 0) {
+                fontSize = fittedFontSize
+                return
+            }
+            fontSize = Math.max(1, Math.min(target, Math.round(fittedFontSize * maxFontScale)))
+        }
+
+        Connections {
+            target: themeSettings
+            function onMenusizeChanged() { subMenuListView.applyMenuSize() }
         }
 
         onHeightChanged: resizeFont()

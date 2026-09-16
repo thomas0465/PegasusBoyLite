@@ -21,11 +21,13 @@ Item {
                         { "value": "Black" },
                         { "value": "Green" },
                         { "value": "Amber" },
+                        { "value": "Red"},
                         { "value": "Light Blue"},
                         { "value": "Dark Blue" },
                         { "value": "Purple" },
             			{ "value": "Vampire" },
-                        { "value": "Game Boy"}
+                        { "value": "Sepia"},
+                        
                     ]
                 },
 
@@ -46,19 +48,31 @@ Item {
     { "label": "Lavender", "value": "#8f71ff" },
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
-    { "label": "Light Blue", "value": "#098393" },
-    { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Dark Blue", "value": "#09005b" },
+    { "label": "Wave Blue", "value": "#0066cc" },
+    { "label": "Light Blue", "value": "#098393" },
+    { "label": "Cyan", "value": "#00e5ff" },
+    { "label": "Ice Blue", "value": "#a8e6ff" },
+    { "label": "Mint", "value": "#3ee6b0" },
     { "label": "Teal", "value": "#00a896" },
     { "label": "Dark Teal", "value": "#023e38" },
     { "label": "Phosphor Green", "value": "#33ff33" },
     { "label": "Green", "value": "#07891a" },
     { "label": "Dark Green", "value": "#013201" },
     { "label": "Game Boy", "value": "#8b956d" },
-    { "label": "Amber", "value": "#ffb000" },
+    { "label": "Yellow", "value": "#ffb000" },
+    { "label": "Dark Yellow", "value": "#8a7400" },
     { "label": "Red", "value": "#640000" },
-    { "label": "Rose Pink", "value": "#e84393" },
+    { "label": "Rose Pink", "value": "#e77cb0" },
     { "label": "Vaporwave Pink", "value": "#ff0080" },
+
+
+
+
+
+
+
+
 
 
 ]
@@ -72,7 +86,6 @@ Item {
                     "type": "list",
                     "default": "None",
                     "options": [
-
     { "label": "None", "value": "transparent" },
     { "label": "White", "value": "#ffffff" },
     { "label": "Light Gray", "value": "#c1c1c1" },
@@ -82,19 +95,24 @@ Item {
     { "label": "Lavender", "value": "#8f71ff" },
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
-    { "label": "Light Blue", "value": "#098393" },
-    { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Dark Blue", "value": "#09005b" },
+    { "label": "Wave Blue", "value": "#0066cc" },
+    { "label": "Light Blue", "value": "#098393" },
+    { "label": "Cyan", "value": "#00e5ff" },
+    { "label": "Ice Blue", "value": "#a8e6ff" },
+    { "label": "Mint", "value": "#3ee6b0" },
     { "label": "Teal", "value": "#00a896" },
     { "label": "Dark Teal", "value": "#023e38" },
     { "label": "Phosphor Green", "value": "#33ff33" },
     { "label": "Green", "value": "#07891a" },
     { "label": "Dark Green", "value": "#013201" },
     { "label": "Game Boy", "value": "#8b956d" },
-    { "label": "Amber", "value": "#ffb000" },
+    { "label": "Yellow", "value": "#ffb000" },
+    { "label": "Dark Yellow", "value": "#8a7400" },
     { "label": "Red", "value": "#640000" },
-    { "label": "Rose Pink", "value": "#e84393" },
+    { "label": "Rose Pink", "value": "#e77cb0" },
     { "label": "Vaporwave Pink", "value": "#ff0080" },
+
 
 
                     ]
@@ -128,13 +146,13 @@ Item {
                     "type": "bool",
                     "default": "Enable",
                 },
-                {
-                    "name": "  • Hills - Invert",
-                    "id": "shaderHillsInvert",
-                    "description": "Invert the Hills background",
-                    "type": "bool",
-                    "default": "Disable",
-                },  
+                //{
+                //    "name": "  • Hills - Invert",
+                //    "id": "shaderHillsInvert",
+                //    "description": "Invert the Hills background",
+                //    "type": "bool",
+                //    "default": "Disable",
+                //},  
                 {
 		            "name": "  • Hills - Lighten",
                     "id": "shaderHillsLighten",
@@ -150,7 +168,7 @@ Item {
                     "id": "shaderHillsFade",
                     "description": "Intensity of Fade between waves",
                     "type": "range",
-                    "default": "15",
+                    "default": "45",
                     "min": 0,
                     "max": 100,
                     "step": 5,
@@ -174,6 +192,7 @@ Item {
                     "default": "White",
                     "options": 
 [
+    { "label": "None", "value": "transparent" },
     { "label": "White", "value": "#ffffff" },
     { "label": "Light Gray", "value": "#c1c1c1" },
     { "label": "Gray", "value": "#838383" },
@@ -182,21 +201,23 @@ Item {
     { "label": "Lavender", "value": "#8f71ff" },
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
-    { "label": "Light Blue", "value": "#098393" },
-    { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Dark Blue", "value": "#09005b" },
+    { "label": "Wave Blue", "value": "#0066cc" },
+    { "label": "Light Blue", "value": "#098393" },
+    { "label": "Cyan", "value": "#00e5ff" },
+    { "label": "Ice Blue", "value": "#a8e6ff" },
+    { "label": "Mint", "value": "#3ee6b0" },
     { "label": "Teal", "value": "#00a896" },
     { "label": "Dark Teal", "value": "#023e38" },
     { "label": "Phosphor Green", "value": "#33ff33" },
     { "label": "Green", "value": "#07891a" },
     { "label": "Dark Green", "value": "#013201" },
     { "label": "Game Boy", "value": "#8b956d" },
-    { "label": "Amber", "value": "#ffb000" },
+    { "label": "Yellow", "value": "#ffb000" },
+    { "label": "Dark Yellow", "value": "#8a7400" },
     { "label": "Red", "value": "#640000" },
-    { "label": "Rose Pink", "value": "#e84393" },
+    { "label": "Rose Pink", "value": "#e77cb0" },
     { "label": "Vaporwave Pink", "value": "#ff0080" },
-
-
 ]
                     
                 },
@@ -371,11 +392,11 @@ Item {
                 {
 		            "name": "Font Size - Sub-Menu",
                     "id": "menusize",
-                    "description": "The font size for the Sub-Menu (updates on reloading the Main List)",
+                    "description": "The font size for the Sub-Menu",
                     "type": "range",
                     "default": "16",
-                    "min": 10,
-                    "max": 25,
+                    "min": 1,
+                    "max": 40,
                     "step": 1,
                 },
                                 {
@@ -435,16 +456,16 @@ Item {
                     "max": 12,
                     "step": 1,
                 },
-                {
-                    "name": "Sub-Menu - Margin",
-                    "id": "subMenuMargin",
-                    "description": "The margin between the Main List and Sub-Menu",
-                    "type": "range",
-                    "default": "0",
-                    "min": -5,
-                    "max": 10,
-                    "step": 1,
-                },
+                //{
+                //    "name": "Sub-Menu - Margin",
+                //    "id": "subMenuMargin",
+                //    "description": "The margin between the Main List and Sub-Menu",
+                //    "type": "range",
+                //    "default": "0",
+                //    "min": -5,
+                //    "max": 10,
+                //    "step": 1,
+                //},
 
                  {
                     "name": "Footer - Show Clock",

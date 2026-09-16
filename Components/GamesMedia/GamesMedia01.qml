@@ -24,8 +24,8 @@ Item {
 
         width: (singleimageview == 2) ? root.width: parent.width/1.05;
         height: (singleimageview == 2) ? root.height: (parent.height +marginoffset)/2;
-        x:(singleimageview == 2) ? parent.width - (root.width): 0;
-        y:(singleimageview == 2) ? -(root.height - marginoffset - parent.height - 12): parent.height/2 + 5 + (marginoffset/2);
+        x: (singleimageview == 2) ? parent.width - (root.width): 0;
+        y: (singleimageview == 2) ? -(root.height - marginoffset - parent.height - 23): parent.height/2 + 5 + (marginoffset/2);
 
         asynchronous: true
         fillMode: Image.PreserveAspectFit
@@ -34,12 +34,17 @@ Item {
         opacity: (singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0);
 
     Rectangle {
-        width: Math.ceil(parent.paintedWidth) + 1
-        height: Math.ceil(parent.paintedHeight) + 1
-        anchors.centerIn: parent
+        property int bw: Math.max(Math.round(parent.width * 0.002), 2)
+
+        // Sit the frame *outside* the painted image so the border never
+        // paints over the top/bottom rows of pixels.
+        width: Math.ceil(parent.paintedWidth) + bw * 2
+        height: Math.ceil(parent.paintedHeight) + bw * 2
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
-        border.width: Math.max(parent.width * 0.002,2)
+        border.width: bw
 
         visible: parent.status === Image.Ready
         opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
@@ -52,8 +57,8 @@ Item {
         id: gamesMediaTitle
         width: (singleimageview == 1) ? root.width: parent.width/1.05;
         height: (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2;
-        x:(singleimageview == 1) ? parent.width - (root.width): 0;
-        y:(singleimageview == 1) ? -(root.height - marginoffset - parent.height - 12): 0
+        x: (singleimageview == 1) ? parent.width - (root.width): 0;
+        y: (singleimageview == 1) ? -(root.height - marginoffset - parent.height - 23): -5
 
         asynchronous: true
         fillMode: Image.PreserveAspectFit
@@ -61,12 +66,15 @@ Item {
         opacity: (singleimageview == 2) ? 0: 1;
 
     Rectangle {
-        width: Math.ceil(parent.paintedWidth) + 1
-        height: Math.ceil(parent.paintedHeight) + 1
-        anchors.centerIn: parent
+        property int bw: Math.max(Math.round(parent.width * 0.002), 2)
+
+        width: Math.ceil(parent.paintedWidth) + bw * 2
+        height: Math.ceil(parent.paintedHeight) + bw * 2
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
-        border.width: Math.max(parent.width * 0.002,2)
+        border.width: bw
 
         visible: parent.status === Image.Ready
         opacity: themeSettings.imageBorder && singleimageview == 0 ? 1 : 0
