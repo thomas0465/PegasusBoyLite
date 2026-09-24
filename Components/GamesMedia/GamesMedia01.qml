@@ -23,7 +23,7 @@ Item {
         id: gamesMediaScreenshot
 
         width: (singleimageview == 2) ? root.width: parent.width/1.05;
-        height: (singleimageview == 2) ? root.height: (parent.height +marginoffset)/2;
+        height: (singleimageview == 2) ? root.height: (parent.height +marginoffset)/2
         x: (singleimageview == 2) ? parent.width - (root.width): 0;
         y: (singleimageview == 2) ? -(root.height - marginoffset - parent.height - 23): parent.height/2 + 5 + (marginoffset/2);
 
@@ -39,7 +39,7 @@ Item {
         // Sit the frame *outside* the painted image so the border never
         // paints over the top/bottom rows of pixels.
         width: Math.ceil(parent.paintedWidth) + bw * 2
-        height: Math.ceil(parent.paintedHeight) + bw * 2
+        height: Math.ceil(parent.paintedHeight) + bw * 2 - 1
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
         color: "transparent"
@@ -56,7 +56,7 @@ Item {
     Image {
         id: gamesMediaTitle
         width: (singleimageview == 1) ? root.width: parent.width/1.05;
-        height: (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2;
+        height: (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2
         x: (singleimageview == 1) ? parent.width - (root.width): 0;
         y: (singleimageview == 1) ? -(root.height - marginoffset - parent.height - 23): -5
 
@@ -69,9 +69,9 @@ Item {
         property int bw: Math.max(Math.round(parent.width * 0.002), 2)
 
         width: Math.ceil(parent.paintedWidth) + bw * 2
-        height: Math.ceil(parent.paintedHeight) + bw * 2
+        height: Math.ceil(parent.paintedHeight) + bw * 2 - 1
         x: Math.round((parent.width - width) / 2)
-        y: Math.round((parent.height - height) / 2)
+        y: Math.round((parent.height - height) / 2 )
         color: "transparent"
         border.color: themeData.colorTheme[theme].primary
         border.width: bw
