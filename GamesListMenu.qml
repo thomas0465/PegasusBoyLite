@@ -578,10 +578,10 @@ FocusScope {
                     }
                 }
 
-                Component.onDestruction: { 
-                    themeSettings["menuIndex_gamesList_name"] = collectionsMenuRoot.currentGame.title
-                    themeSettings["menuIndex_gamesList"] = currentIndex
-                }
+                //Component.onDestruction: { 
+                //    themeSettings["menuIndex_gamesList_name"] = collectionsMenuRoot.currentGame.title
+                //    themeSettings["menuIndex_gamesList"] = currentIndex
+                //}
 
             }
         }

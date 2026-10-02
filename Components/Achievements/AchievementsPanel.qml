@@ -51,6 +51,7 @@ FocusScope {
 
     function close() {
         contentOpen = false
+        achloading = false
         closed()
     }
 
@@ -73,7 +74,7 @@ FocusScope {
             achievementsPanelRoot.forceActiveFocus()
         }
         onAchievementsError: {
-            achievementsPanelRoot.contentOpen = false
+            achievementsPanelRoot.achloading = false
             closed()
             
         }

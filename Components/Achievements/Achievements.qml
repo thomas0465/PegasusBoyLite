@@ -106,6 +106,7 @@ Item {
     //--------------------------------------------------------------------
     // Resolves consoles -> game -> achievements.
     function fetchAchievementsForGame(game) {
+        showStatus("stop")
         //showStatus("Loading...")
         var searchTitle = titleOverrides[game.title] || game.title
 
@@ -391,6 +392,7 @@ Item {
             statusTimer.restart()
         }else{
             statusVisible = false
+            statusTimer.stop()
         }
     }
 
