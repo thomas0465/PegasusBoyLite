@@ -352,25 +352,6 @@ FocusScope {
         }
 
  Keys.onReleased: {
-            //if (api.keys.isPageUp(event)) {
-            //    event.accepted = true;
-            //    var count = gamesListLoader.item.model.count;
-            //    var index = gamesListLoader.item.currentIndex - 10;
-            //    if (index < 0) {index = 0;}
-            //    gamesListLoader.item.currentIndex = index;
-            //    return;
-            //}
-
-            //if (api.keys.isPageDown(event)) {
-            //    event.accepted = true;
-            //    var count = gamesListLoader.item.model.count;
-            //    var index = gamesListLoader.item.currentIndex + 10;
-            //    if (index >= count) {index = count - 1;}
-            //    gamesListLoader.item.currentIndex = index;
-            //    return;
-            //}
-
-
     if (api.keys.isPageUp(event) && singleimageview2 == 0 && themeSettings.enableRA) {
         event.accepted = true
         achievementsPanel.open(currentGame)
@@ -399,10 +380,6 @@ FocusScope {
 
             onStatusChanged: {
                 if (collectionsMenuLoader.status == Loader.Ready) {
-                    //Logger.info("GamesListMenu:collectionsMenuLoader:LoaderReady")
-
-                    //Logger.info("GamesListMenu:collectionsMenuListView:onCompleted:index:" + item.model.get(themeSettings["menuIndex_subMenu"]).name)
-
                     let index = 0
                     if (item.model.get(themeSettings["menuIndex_subMenu"]).name === themeSettings["menuIndex_subMenu_name"]) {
                         index = themeSettings["menuIndex_subMenu"]
@@ -453,9 +430,6 @@ FocusScope {
                 Component.onCompleted: {
                     Logger.info("GamesListMenu:collectionsMenuListView:onCompleted")
                 }
-                
-                
-                
             }
         }
 
@@ -466,7 +440,6 @@ FocusScope {
 
             onStatusChanged: {
                 if (gamesListModelLoader.status == Loader.Ready) {
-                    //Logger.info("GamesListMenu:gamesListModelLoader:LoaderReady")
                     gamesListLoader.active = true
                 }
 
@@ -528,19 +501,6 @@ FocusScope {
                         sortOrder: Qt.DescendingOrder
                     }
                 ]
-
-                //onModelReset: {
-                //    Logger.info("GamesListMenu:gamesListProxyModel:modelReset")
-                //}
-
-                //onLayoutChanged: {
-                //    Logger.info("GamesListMenu:gamesListProxyModel:layoutChanged")
-                //}
-
-                //Component.onCompleted: {
-                //    Logger.info("GamesListMenu:gamesListProxyModel:onComplete")
-                //}
-
             }
         }
 
@@ -562,6 +522,26 @@ FocusScope {
 
         }
 
+        // --- Input blocker when loading ach---
+        Item {
+            anchors.fill: gamesListLoader
+            z: 999
+            visible: achievementsPanel.achloading
+            focus: visible
+
+            Keys.onPressed: function(event) {
+                if (event.key === Qt.Key_Up || event.key === Qt.Key_Down || event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
+                    event.accepted = true; // Block only Up and Down
+                }
+            }
+            Keys.onReleased: function(event) {
+                if (event.key === Qt.Key_Up || event.key === Qt.Key_Down || event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
+                    event.accepted = true;
+                }
+            }
+        }
+        //------------------------------------------------------
+
         Component {
             id: gamesListView
             ItemList {
@@ -575,26 +555,17 @@ FocusScope {
 
                 Component.onCompleted: {
                     let index = 0;
-                    //Logger.info("GamesListMenu:gamesListView:onCompleted:modelAtIndex:" + model.get(themeSettings["menuIndex_gamesList"]).title)
-                    
                     if (model.get(themeSettings["menuIndex_gamesList"]).title === themeSettings["menuIndex_gamesList_name"]) {
                         index = themeSettings["menuIndex_gamesList"]
                     }
-                    
-                    //Logger.info("GameListMenu:gameListView:onCompleted:savedIndex:" + index);
-                    
                     moveIndex(index);
 
-                    
                     if(!pagecreated){
                         viewcreated = true
                     }
-			
                 }
 
                onCurrentIndexChanged:{
-                    //Logger.info("gamesListView:modelEpoch:" + model.get(currentIndex).lastPlayedEpoch)
-            
                     if(viewcreated && themeSettings.soundslist && keyup){
                         navSound.play()
                     }
@@ -604,9 +575,7 @@ FocusScope {
                     }
                 }
 
-
                 Component.onDestruction: { 
-                    //Logger.debug("GamesListMenu:gamesListView:currentGame:" + collectionsMenuRoot.currentGame.title) 
                     themeSettings["menuIndex_gamesList_name"] = collectionsMenuRoot.currentGame.title
                     themeSettings["menuIndex_gamesList"] = currentIndex
                 }
@@ -626,20 +595,20 @@ AchievementsPanel {
     onClosed: gamesListLoader.item.forceActiveFocus()
 }
 
-                    Timer {
-        interval: 1000
-        running: true
-        repeat: true
+Timer {
+    interval: 1000
+    running: true
+    repeat: true
 
-        onTriggered: {
-            var date = new Date();
-            var options = {
-                hour: "numeric",
-                minute: "numeric",
-            }
-            t.text = date.toLocaleTimeString('en-US')
+    onTriggered: {
+        var date = new Date();
+        var options = {
+            hour: "numeric",
+            minute: "numeric",
         }
+        t.text = date.toLocaleTimeString('en-US')
     }
+}
 
 
 
@@ -744,7 +713,7 @@ AchievementsPanel {
 
             
             color: "transparent"
-                            opacity: themeSettings.transparent ? 0.5 : 1
+            opacity: themeSettings.transparent ? 0.5 : 1
 
             Rectangle {
 
@@ -776,7 +745,6 @@ AchievementsPanel {
             y: parent.height
             color: themeData.colorTheme[theme].light
             opacity: 0
-        //    opacity: (themeSettings.gamesListCounter || themeSettings.showClock || themeSettings.showBattery) ? 1 : 0
         }
 
 
@@ -787,8 +755,6 @@ AchievementsPanel {
         width: root.width
 	    height: root.height
 	    x: 0
-		//V option to not darken submenu
-	    //y:(subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) : parent.height * (themeSettings.subMenuEmptyHeight / 100)
         y:0
 	    color: "#000000"
         }
@@ -821,13 +787,5 @@ AchievementsPanel {
                 contentOpen: achievementsPanel.contentOpen
         	}
         }
-
-        Component.onCompleted: {
-            //Logger.info("GamesListMenu:collectionsMenuRoot:onComplete")
-        }
-
     }
-
-
-
 }

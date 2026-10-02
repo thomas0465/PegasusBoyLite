@@ -20,6 +20,7 @@ FocusScope {
     signal closed()
 
     property bool contentOpen: false
+    property bool achloading: false
     property bool enlargeBadge: false
     property int lastRAIndex: 0
 
@@ -44,6 +45,7 @@ FocusScope {
     anchors.bottom:parent.bottom
 
     function open(game) {
+        achloading = true
         fetcher.fetchAchievementsForGame(game)
     }
 
@@ -67,10 +69,13 @@ FocusScope {
             }
 
             achievementsPanelRoot.contentOpen = true
+            achievementsPanelRoot.achloading = false
             achievementsPanelRoot.forceActiveFocus()
         }
         onAchievementsError: {
             achievementsPanelRoot.contentOpen = false
+            closed()
+            
         }
     }
 

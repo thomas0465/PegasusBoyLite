@@ -6,7 +6,7 @@ Item {
     id: achRoot
 
     signal achievementsReady()
-    signal achievementsError(string reason)
+    signal achievementsError()
 
     property string statusMessage: ""
     property bool statusVisible: false
@@ -106,6 +106,7 @@ Item {
     //--------------------------------------------------------------------
     // Resolves consoles -> game -> achievements.
     function fetchAchievementsForGame(game) {
+        //showStatus("Loading...")
         var searchTitle = titleOverrides[game.title] || game.title
 
         var shortNames = []
@@ -114,6 +115,7 @@ Item {
         }
 
         var onFail = function(reason) {
+            achievementsError()
             loadCachedAchievements(api.memory.get("ra_gameid_" + searchTitle), reason)
         }
 
@@ -138,7 +140,9 @@ Item {
             }
 
             if (!ids.length) {
+                achievementsError()
                 showStatus("No console match for " + hintsTried.join(", "))
+                
             }
             return ids
         }
@@ -187,6 +191,7 @@ Item {
                 .replace(/[ \t]+$/g, "")
                 //remove () and [] on displayed title
                 + "\" not found. Tried " + names.join(", "))
+            achievementsError()
             callback(null)
             return
         }
@@ -270,6 +275,7 @@ Item {
         getJson(url, function(data) {
             if (data.Title == null) {
                 showStatus("Achievements not found for account, check if your Username is correct")
+                achievementsError()
                 return
             }
             api.memory.set("ra_cache_" + gameId, JSON.stringify(data))
@@ -295,7 +301,7 @@ Item {
                 break
             }
         }
-
+        showStatus("stop")
         achievementsReady()
     }
 
@@ -305,6 +311,7 @@ Item {
         var cached = gameId ? api.memory.get("ra_cache_" + gameId) : null
         if (!cached) {
             showStatus(reason)
+            achievementsError()
             return
         }
         var data = JSON.parse(cached)
@@ -324,6 +331,8 @@ Item {
 
         applyGameData(gameId, data)
         showStatus("Offline - Showing cached achievements")
+
+        achievementsReady()
     }
 
     function buildAchievementsList(data) {
@@ -376,9 +385,13 @@ Item {
     //--------------------------------------------------------------------
     //show Status message
     function showStatus(msg) {
-        statusMessage = msg
-        statusVisible = true
-        statusTimer.restart()
+        if(msg != 'stop'){
+            statusMessage = msg
+            statusVisible = true
+            statusTimer.restart()
+        }else{
+            statusVisible = false
+        }
     }
 
     Timer {
