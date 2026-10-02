@@ -74,7 +74,7 @@ Item {
             FontLoader {
                 id: customFont2
 
-                source: "../../assets/fonts/" + settingModel.options.get(index).value + ".ttf" 
+                source: (settingModel.id === "fontInput") ? ("../../assets/fonts/" + modelData + ".ttf") : ""
 
                 onStatusChanged: {
                     var ttfPath = "../../assets/fonts/" + settingModel.options.get(index).value + ".ttf"

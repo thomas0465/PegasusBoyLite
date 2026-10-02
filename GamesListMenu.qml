@@ -545,7 +545,7 @@ FocusScope {
         }
         //------------------------------------------------------
 
-        Component {
+Component {
             id: gamesListView
             ItemList {
                 focus: true
@@ -558,17 +558,25 @@ FocusScope {
 
                 Component.onCompleted: {
                     let index = 0;
-                    if (model.get(themeSettings["menuIndex_gamesList"]).title === themeSettings["menuIndex_gamesList_name"]) {
-                        index = themeSettings["menuIndex_gamesList"]
+                    let savedIndex = themeSettings["menuIndex_gamesList"];
+                    let savedName = themeSettings["menuIndex_gamesList_name"];
+
+                    // Ensure model is ready and index is within bounds
+                    if (model && model.count > 0 && savedIndex >= 0 && savedIndex < model.count) {
+                        // If no saved name exists yet, or if the title matches, restore the index
+                        if (!savedName || model.get(savedIndex).title === savedName) {
+                            index = savedIndex;
+                        }
                     }
+                    
                     moveIndex(index);
 
-                    if(!pagecreated){
-                        viewcreated = true
+                    if (!pagecreated) {
+                        viewcreated = true;
                     }
                 }
 
-               onCurrentIndexChanged:{
+                onCurrentIndexChanged: {
                     if(viewcreated && themeSettings.soundslist && keyup){
                         navSound.play()
                     }
@@ -578,11 +586,11 @@ FocusScope {
                     }
                 }
 
-                //Component.onDestruction: { 
-                //    themeSettings["menuIndex_gamesList_name"] = collectionsMenuRoot.currentGame.title
-                //    themeSettings["menuIndex_gamesList"] = currentIndex
-                //}
-
+                Component.onDestruction: { 
+                    // Uncommented so the game title is properly saved for future loads
+                    themeSettings["menuIndex_gamesList_name"] = collectionsMenuRoot.currentGame.title;
+                    themeSettings["menuIndex_gamesList"] = currentIndex;
+                }
             }
         }
 
