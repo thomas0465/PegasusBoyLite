@@ -115,47 +115,45 @@ FocusScope {
                 }
 
                 if(newLeftIndex >= 0){
-                collectionsMenuLoader.item.listView.currentIndex = newLeftIndex
+                    collectionsMenuLoader.item.listView.currentIndex = newLeftIndex
 
-                if(gamesListLoader.item.currentIndex >= 0 && setplace){
-                    place = gamesListLoader.item.currentIndex
+                    if(gamesListLoader.item.currentIndex >= 0 && setplace){
+                        place = gamesListLoader.item.currentIndex
+                    }
+
+                    if(currentCollection.name == "♥ Favorites"){
+                        favFilter = true
+                    }
+                    if(currentCollection.name != "♥ Favorites"){
+                        favFilter = false
+                    }
+
+                    if(currentCollection.name == "Recent"){
+                        recentFilter = true
+                    }
+                    if(currentCollection.name != "Recent"){
+                        recentFilter = false
+                    }
+
+                    // Hacky force refresh of game media
+                    gamesMediaLoader.active = false
+                    gamesMediaLoader.active = true
+                    gamesListLoader.active = false
+                    gamesListLoader.active = true
+                    if(themeSettings.soundsmenu){
+                        navSound.play();
+                    }
                 }
 
-                if(currentCollection.name == "♥ Favorites"){
-                    favFilter = true
+                if(newLeftIndex >= 0){
+                    gamesListLoader.item.currentIndex = place;
                 }
-                if(currentCollection.name != "♥ Favorites"){
-                    favFilter = false
-                }
-
-                if(currentCollection.name == "Recent"){
-                    recentFilter = true
-                }
-                if(currentCollection.name != "Recent"){
-                    recentFilter = false
-                }
-
-                // Hacky force refresh of game media
-                gamesMediaLoader.active = false
-                gamesMediaLoader.active = true
-                gamesListLoader.active = false
-                gamesListLoader.active = true
-                if(themeSettings.soundsmenu){
-                    navSound.play();
-                }
-                }
-
-                gamesListLoader.item.currentIndex = place;
-
                 if(place >= gamesListModelLoader.item.count -1) {
                     gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
                     setplace = false
                 }
 
                 viewcreated = true
-
-                Logger.debug("GamesListMenu:keys:left:currentSubMenu:" + currentCollection.name)
-
                 return;
             }
 
@@ -170,49 +168,47 @@ FocusScope {
                 }
 
                 if(newRightIndex < collectionsMenuLoader.item.listView.count){
-                collectionsMenuLoader.item.listView.currentIndex = newRightIndex
-                
+                    collectionsMenuLoader.item.listView.currentIndex = newRightIndex
+                    
+                    if(gamesListLoader.item.currentIndex > 0 && setplace){
+                        place = gamesListLoader.item.currentIndex
+                    }
 
-                if(gamesListLoader.item.currentIndex > 0 && setplace){
-                    place = gamesListLoader.item.currentIndex
+                    if(currentCollection.name == "♥ Favorites"){
+                        favFilter = true
+                    }
+                    if(currentCollection.name != "♥ Favorites"){
+                        favFilter = false
+                    }
+
+                    if(currentCollection.name == "Recent"){
+                        recentFilter = true
+                    }
+                    if(currentCollection.name != "Recent"){
+                        recentFilter = false
+                    }
+
+                    // Hacky force refresh of game media
+                    gamesMediaLoader.active = false
+                    gamesMediaLoader.active = true
+                    gamesListLoader.active = false
+                    gamesListLoader.active = true
+
+                    if(themeSettings.soundsmenu){
+                        navSound.play();
+                    }
                 }
 
-                if(currentCollection.name == "♥ Favorites"){
-                    favFilter = true
-                }
-                if(currentCollection.name != "♥ Favorites"){
-                    favFilter = false
+                if(newRightIndex < collectionsMenuLoader.item.listView.count){
+                    gamesListLoader.item.currentIndex = place;
                 }
 
-                if(currentCollection.name == "Recent"){
-                    recentFilter = true
-                }
-                if(currentCollection.name != "Recent"){
-                    recentFilter = false
-                }
-
-                // Hacky force refresh of game media
-                gamesMediaLoader.active = false
-                gamesMediaLoader.active = true
-                gamesListLoader.active = false
-                gamesListLoader.active = true
-
-                if(themeSettings.soundsmenu){
-                    navSound.play();
-                }
-                }
-
-                gamesListLoader.item.currentIndex = place;
                 if(place > gamesListModelLoader.item.count -1) {
                     gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
                     setplace = false
                 }
 
                 viewcreated = true
-
-                Logger.debug("GamesListMenu:keys:right:currentSubMenu:" + currentCollection.name)
-
-
                 return;
             }
 
