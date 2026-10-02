@@ -44,7 +44,14 @@ Item {
             }
 
             for (var i=0; i < collections.count; ++i) {
-                collectionsListModel.append(collections.get(i))
+                const collection = collections.get(i)
+
+                // Skip any collection with "hidden" in its name
+                if (collection.name.toLowerCase().indexOf("hidden") !== -1) {
+                    continue
+                }
+
+                collectionsListModel.append(collection)
             }
         }
     }

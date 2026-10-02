@@ -70,16 +70,30 @@ NGage:		Nokia N-Gage
 N-Gage:		Nokia N-Gage
 wasm4:		WASM-4
 
-homebrew:	game boy,game boy color,game boy advance
-gb hacks:	game boy,game boy color,game boy advance
-nes hacks:	nes/famicom
-nes mario:	nes/famicom
-snes hacks:	SNES/Super Famicom
-snes mario:	SNES/Super Famicom
-n64 hacks:	nintendo 64
-n64 mario:	nintendo 64
-n64 zelda:	nintendo 64
-
+HiddenGB:		game boy,game boy color
+HiddenGBA:		game boy advance
+HiddenNES:		nes/famicom
+HiddenSNES:		SNES/Super Famicom
+HiddenGenesis:		mega drive
+HiddenSegaCD:		Sega CD
+HiddenGBHomebrew:	game boy,game boy color
+HiddenGBAHomebrew:	game boy advance
+HiddenNESHomebrew:	nes/famicom
+HiddenSNESHomebrew:	SNES/Super Famicom
+HiddenGBHacks:		game boy,game boy color
+HiddenGBAHacks:		game boy advance
+HiddenNESHacks:		nes/famicom
+HiddenSNESHacks:	SNES/Super Famicom
+HiddenNESMarioHacks:	nes/famicom
+HiddenSNESMarioHacks:	SNES/Super Famicom
+HiddenN64:		nintendo 64
+HiddenPS1:		playstation
+HiddenN64Hacks:		nintendo 64
+HiddenN64MarioHacks:	nintendo 64
+HiddenN64ZeldaHacks:	nintendo 64
+HiddenGamecube:		gamecube
+HiddenPS2:		ps2
+HiddenDreamcast:	dreamcast
 	
 	"
 	//Game Title Override
