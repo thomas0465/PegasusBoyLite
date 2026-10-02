@@ -147,11 +147,13 @@ FocusScope {
 
                 if(newLeftIndex >= 0){
                     gamesListLoader.item.currentIndex = place;
+
+                    if(place >= gamesListModelLoader.item.count -1) {
+                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
+                        setplace = false
+                    }
                 }
-                if(place >= gamesListModelLoader.item.count -1) {
-                    gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
-                    setplace = false
-                }
+
 
                 viewcreated = true
                 return;
@@ -201,12 +203,13 @@ FocusScope {
 
                 if(newRightIndex < collectionsMenuLoader.item.listView.count){
                     gamesListLoader.item.currentIndex = place;
+
+                    if(place > gamesListModelLoader.item.count -1) {
+                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
+                        setplace = false
+                    }
                 }
 
-                if(place > gamesListModelLoader.item.count -1) {
-                    gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
-                    setplace = false
-                }
 
                 viewcreated = true
                 return;
