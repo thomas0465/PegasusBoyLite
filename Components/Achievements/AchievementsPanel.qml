@@ -24,6 +24,8 @@ FocusScope {
     property bool enlargeBadge: false
     property int lastRAIndex: 0
 
+    property real headerBottomY: Math.max(gameIcon.y + gameIcon.height, panelTitleBox.y + panelTitleBox.height)
+
     Component.onCompleted: {
         var saved = api.memory.get("lastRAIndex")
         if (saved !== undefined) {
@@ -283,7 +285,8 @@ FocusScope {
         spacing: parent.height * 0.025
 
         anchors {
-            bottom: gameIcon.bottom
+            bottom: panelTitleBox.bottom
+            bottomMargin: - panelTitleBox.height * 0.05
             left: panelTitleBox.left
             leftMargin: gameIcon.height * 0.03
             //horizontalCenter: parent.horizontalCenter
@@ -312,10 +315,15 @@ Rectangle{
             right: panelTitleNumBottom.left
             left: gameIcon.right
             leftMargin: parent.width * 0.025
-            bottom: fetcher.subsetsList.length > 1 ? subsetDots.top: gameIcon.bottom
-            //verticalCenter: gameIcon.verticalCenter 
+            //verticalCenter: gameIcon.verticalCenter
         }
-    
+
+        property real dotsRowHeight: gameIcon.width * 0.1
+        height: Math.max(
+            fetcher.subsetsList.length > 1 ? (gameIcon.height - dotsRowHeight) : gameIcon.height,
+            panelTitle.contentHeight * 1.1
+        )
+
 
     Text {
         id: panelTitle
@@ -361,16 +369,14 @@ Rectangle{
         visible: contentOpen
 
         anchors {
-            top: gameIcon.bottom
-            topMargin: parent.height * 0.02
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
             leftMargin: parent.width * 0.04
             rightMargin: parent.width * 0.04
-
         }
-        
+
+        y: achievementsPanelRoot.headerBottomY + parent.height * 0.02
+        height: parent.height - y
 
         clip: true
         model: fetcher.achievementsList
