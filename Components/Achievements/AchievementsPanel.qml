@@ -286,7 +286,7 @@ FocusScope {
 
         anchors {
             bottom: panelTitleBox.bottom
-            bottomMargin: - panelTitleBox.height * 0.05
+            bottomMargin: (panelTitle.overflows ? 0: - panelTitleBox.height * 0.1)
             left: panelTitleBox.left
             leftMargin: gameIcon.height * 0.03
             //horizontalCenter: parent.horizontalCenter
@@ -315,30 +315,52 @@ Rectangle{
             right: panelTitleNumBottom.left
             left: gameIcon.right
             leftMargin: parent.width * 0.025
+            rightMargin: parent.width * 0.025
+            topMargin: -parent.height * 0.005
             //verticalCenter: gameIcon.verticalCenter
         }
 
         property real dotsRowHeight: gameIcon.width * 0.1
-        height: Math.max(
-            fetcher.subsetsList.length > 1 ? (gameIcon.height - dotsRowHeight) : gameIcon.height,
-            panelTitle.contentHeight * 1.1
-        )
+        property real normalHeight: fetcher.subsetsList.length > 1 ? (gameIcon.height - dotsRowHeight) : gameIcon.height
+        height: Math.max(normalHeight, panelTitle.contentHeight * 1.1)
 
 
     Text {
         id: panelTitle
         visible: contentOpen
 
+        property bool overflows: panelTitle.implicitHeight > panelTitleBox.normalHeight
+
         anchors {
             left: parent.left
             right: parent.right
-            verticalCenter: parent.verticalCenter 
         }
+
+        states: [
+            State {
+                name: "centered"
+                when: !panelTitle.overflows
+                AnchorChanges {
+                    target: panelTitle
+                    anchors.verticalCenter: panelTitleBox.verticalCenter
+                    anchors.top: undefined
+                }
+            },
+            State {
+                name: "top"
+                when: panelTitle.overflows
+                AnchorChanges {
+                    target: panelTitle
+                    anchors.top: parent.top 
+                    anchors.verticalCenter: undefined
+                }
+            }
+        ]
 
         text:fetcher.gameTitle.replace(/~.*?~/g, "").replace(/^( *)[ ]/g,"")
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.5 + ( themeSettings.mainFontSize - 20) 
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.5 + ( themeSettings.mainFontSize - 20)
         font.bold: false
         color: themeData.colorTheme[theme].primary
     }
