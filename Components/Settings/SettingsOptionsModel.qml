@@ -640,7 +640,7 @@ Item {
                 {
                     "name": "Enable RetroAchievements",
                     "id": "enableRA",
-                    "description": "Enable RA, use 'Scroll page up' to load achievements. Configure system & game overrides in config file in assets folder",
+                    "description": "Press 'Scroll page up' to load achievements on a game. Configure system & game overrides in config file in assets folder",
                     "type": "bool",
                     "default": "Disable",
                 },  
@@ -654,7 +654,7 @@ Item {
                 {
                     "name": "API Key",
                     "id": "raApiKey",
-                    "description": "RetroAchievements web API key",
+                    "description": "RetroAchievements web API key, under Settings - Applications",
                     "type": "text",
                     "default": "",
                 },

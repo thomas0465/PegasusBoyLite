@@ -1,9 +1,11 @@
-	// Editable data for the RetroAchievements integration
-	// Do not include more than one colon : in the line, put both values on one line
+// Editable data for the RetroAchievements system and game name overrides
+// Use : to seperate values, 1 key value pair per line
 
-	//Collection Name Override
-	//-----------------------------------------------------------------
-	//Left value is the short name collection name to match
+
+//-----------------------------------------------------------------
+//Collection Name Override
+//-----------------------------------------------------------------
+	//Left value is the collection short name to match
 	//Right side is the full console name, not case sensitive
 	//Check Assets/RetroAchievements Systems.txt for the exact expected system name
 	
@@ -54,6 +56,7 @@ DC:		dreamcast
 Pico:		Sega Pico
 GG: 		Game Gear
 
+ps:		playstation
 psx:		playstation
 ps1:		playstation
 ps2:		playstation 2
@@ -93,14 +96,16 @@ HiddenN64MarioHacks:	nintendo 64
 HiddenN64ZeldaHacks:	nintendo 64
 HiddenGamecube:		gamecube
 HiddenPS2:		ps2
-HiddenDreamcast:	dreamcast
-	
-	"
-	//Game Title Override
-	//-----------------------------------------------------------------
-	//left value is the exact file name to match, case sensitive
+HiddenDreamcast:	dreamcast	
+"
+
+
+//-----------------------------------------------------------------
+//Game Title Override
+//-----------------------------------------------------------------
+	//left value is the exact file name to match without file type extension, case sensitive
 	//right is the RetroAchievements game name to match
-	//replace periods in file names with spaces (ex 'Mario (v2.1)' > 'Mario (v2 1)')
+	//replace periods in file names with spaces for example 'Mario (v2.1)' to 'Mario (v2 1)'
 	
 	property string titleOverridesText: "
 

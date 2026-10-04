@@ -109,7 +109,9 @@ FocusScope {
             }
             api.memory.set("ra_cache_index", JSON.stringify([]))
 
-            optionsRoot.actionFeedback = "Cleared " + keys.length + " cached entries, press Enter to return"
+            optionsRoot.actionFeedback = "Cleared " + keys.length + " cached entries
+
+Press Enter to return"
         }
 
         onSettingModelChanged: {
