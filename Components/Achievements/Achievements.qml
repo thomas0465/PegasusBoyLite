@@ -179,7 +179,7 @@ Item {
         var url = "https://retroachievements.org/API/API_GetConsoleIDs.php"
                 + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
 
-        getJson(url, function(data) {
+        getJson(false, url, function(data) {
             consoleList = data
             afterConsoleList()
         }, onFail)
@@ -250,7 +250,7 @@ Item {
         var url = "https://retroachievements.org/API/API_GetGameList.php"
                 + "?y=" + themeSettings.raApiKey + "&i=" + consoleId + "&f=1"
 
-        getJson(url, function(data) {
+        getJson(false, url, function(data) {
             gameListCache[consoleId] = data
             onGameList(data)
         }, onError)
@@ -271,47 +271,60 @@ Item {
     function switchSubset(direction) {
         if (subsetsList.length <= 1) { return }
 
+        showStatus("stop")
         var newIndex = currentSubsetIndex + direction
         if (newIndex < 0) { newIndex = subsetsList.length - 1 }
         if (newIndex >= subsetsList.length) { newIndex = 0 }
 
-        fetchGameAchievements(subsetsList[newIndex].id, false)
+        fetchGameAchievements(subsetsList[newIndex].id, false, true)
     }
 
-function fetchGameAchievements(gameId, showStatus) {
-    var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
-            + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
-            + "&g=" + gameId + "&u=" + themeSettings.raUsername;
+function fetchGameAchievements(gameId, enableStatus, subset) {
+        var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
+                + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
+                + "&g=" + gameId + "&u=" + themeSettings.raUsername;
 
-    getJson(url, function(data) {
-        if (data && data.Title != null) {
-            api.memory.set("ra_cache_" + gameId, JSON.stringify(data));
-            trackCacheKey("ra_cache_" + gameId);
-            applyGameData(gameId, data);
-            return;
-        }
+        getJson(subset, url, function(data) {
+            if (data && data.Title != null) {
+                api.memory.set("ra_cache_" + gameId, JSON.stringify(data));
+                trackCacheKey("ra_cache_" + gameId);
+                applyGameData(gameId, data);
+                return;
+            }
 
-        showStatus("RetroAchievements error: Check your username");
-        achievementsError();
+            showStatus("RetroAchievements error: Check your username");
+            achievementsError();
 
-    }, function(reason, isOffline) {
-        // If it is truly offline, load the cache
-        if (isOffline) {
-            loadCachedAchievements(gameId, reason, showStatus);
-            return;
-        }
+        }, function(reason, isOffline) {
+            // If it is truly offline, load the cache
+            if (isOffline) {
+                loadCachedAchievements(gameId, reason, enableStatus);
+                return;
+            }
 
-        // Otherwise, it's an API key or username error — show status, DO NOT load cache
-        showStatus(reason);
-        achievementsError();
-    });
-}
+            // Otherwise, it's an API key or username error — show status, DO NOT load cache
+            showStatus(reason);
+            achievementsError();
+        });
+    }
 
-    //shared path to open achievements panel
+//shared path to open achievements panel
     function applyGameData(gameId, data) {
         gameTitle = data.Title
         imageIcon = data.ImageIcon
         achievementsList = buildAchievementsList(data)
+
+        // Restore subsetsList from memory if available
+        var storedSubsets = api.memory.get("ra_subsets_" + gameId)
+        if (storedSubsets) {
+            try {
+                subsetsList = JSON.parse(storedSubsets)
+            } catch (e) {
+                subsetsList = [{ id: gameId, title: data.Title }]
+            }
+        } else if (!subsetsList || subsetsList.length === 0) {
+            subsetsList = [{ id: gameId, title: data.Title }]
+        }
 
         currentSubsetIndex = 0
         for (var i = 0; i < subsetsList.length; i++) {
@@ -373,7 +386,7 @@ function fetchGameAchievements(gameId, showStatus) {
 
 
 
-    function getJson(url, callback, onError) {
+    function getJson(subset, url, callback, onError) {
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
 
@@ -382,7 +395,7 @@ function fetchGameAchievements(gameId, showStatus) {
                 return
             }
 
-            if (xhr.status !== 200) {
+            if (xhr.status !== 200 && subset !== true) {
                 var reason = "RetroAchievements error: Check your API key or username (HTTP " + xhr.status + ")"
 
                 // Try to get the actual error message from the API
