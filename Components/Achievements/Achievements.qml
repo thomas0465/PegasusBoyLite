@@ -103,17 +103,23 @@ Item {
         showStatus("Cache cleared, deleted " + keys.length + " entries")
     }
 
-    //--------------------------------------------------------------------
-    // Resolves consoles -> game -> achievements.
+
+// Resolves consoles -> game -> achievements.
     function fetchAchievementsForGame(game) {
         showStatus("stop")
-        //showStatus("Loading...")
         if (!themeSettings.raUsername || !themeSettings.raApiKey) {
             showStatus("RetroAchievements username or API key is not set")
             achievementsError()
             return
         }
         var searchTitle = titleOverrides[game.title] || game.title
+        var cachedGameId = api.memory.get("ra_gameid_" + searchTitle)
+
+        // If we have a cached game ID, skip online console/game lookups entirely
+        if (cachedGameId) {
+            fetchGameAchievements(cachedGameId, true)
+            return
+        }
 
         var shortNames = []
         for (var i = 0; i < game.collections.count; i++) {
@@ -148,7 +154,6 @@ Item {
             if (!ids.length) {
                 achievementsError()
                 showStatus("No console match for " + hintsTried.join(", "))
-                
             }
             return ids
         }
@@ -162,7 +167,7 @@ Item {
 
                 api.memory.set("ra_gameid_" + searchTitle, gameId)
                 trackCacheKey("ra_gameid_" + searchTitle)
-                fetchGameAchievements(gameId)
+                fetchGameAchievements(gameId, true)
             }, onFail)
         }
 
@@ -270,10 +275,10 @@ Item {
         if (newIndex < 0) { newIndex = subsetsList.length - 1 }
         if (newIndex >= subsetsList.length) { newIndex = 0 }
 
-        fetchGameAchievements(subsetsList[newIndex].id)
+        fetchGameAchievements(subsetsList[newIndex].id, false)
     }
 
-function fetchGameAchievements(gameId) {
+function fetchGameAchievements(gameId, showStatus) {
     var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
             + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
             + "&g=" + gameId + "&u=" + themeSettings.raUsername;
@@ -292,7 +297,7 @@ function fetchGameAchievements(gameId) {
     }, function(reason, isOffline) {
         // If it is truly offline, load the cache
         if (isOffline) {
-            loadCachedAchievements(gameId, reason);
+            loadCachedAchievements(gameId, reason, showStatus);
             return;
         }
 
@@ -321,7 +326,7 @@ function fetchGameAchievements(gameId) {
 
     //--------------------------------------------------------------------
     // Falls back to the last successfully-fetched payload for this game ID
-    function loadCachedAchievements(gameId, reason) {
+    function loadCachedAchievements(gameId, reason, showStatusCache) {
         var cached = gameId ? api.memory.get("ra_cache_" + gameId) : null
         if (!cached) {
             showStatus(reason)
@@ -344,8 +349,9 @@ function fetchGameAchievements(gameId) {
         }
 
         applyGameData(gameId, data)
-        showStatus("Offline - Showing cached achievements")
-
+        if(showStatusCache){
+            showStatus("Offline - Showing cached achievements")
+        }
         achievementsReady()
     }
 
