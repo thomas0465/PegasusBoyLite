@@ -61,7 +61,7 @@ Item {
                     ? 1 : (themeSettings.transparent? 0.5 : 1)
 
                 width: height
-                height: gamesListText.font.pixelSize * 0.7
+                height: gamesListText.font.pixelSize * 0.5
 
                 anchors {
                     verticalCenter: parent.verticalCenter
@@ -91,14 +91,14 @@ Item {
                     ? 1 : (themeSettings.transparent? 0.5 : 1)
 
                 width: gamesListText.font.pixelSize * 0.15
-                height: gamesListText.font.pixelSize * 0.7
+                height: gamesListFavorite.height
 
                 anchors {
                     verticalCenter: parent.verticalCenter
                     //verticalCenterOffset: 10
                     //horizontalCenter: gamesListFavorite.horizontalCenter
                     left: parent.left
-                    leftMargin: parent.width * 0.075
+                    leftMargin: parent.width * 0.065
                 }
 
                 color: gamesListRect.ListView.isCurrentItem

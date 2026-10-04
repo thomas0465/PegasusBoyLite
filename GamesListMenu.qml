@@ -37,7 +37,29 @@ FocusScope {
     property bool setplace: true
 
     property bool keyup: true
-    
+
+    // Snapshot of which titles were favorited
+    property var favoritesSnapshot: ({})
+
+    function captureFavoritesSnapshot() {
+        var snap = {}
+        for (var i = 0; i < gamesListModel.count; i++) {
+            var g = gamesListModel.get(i)
+            if (g.favorite) {
+                snap[g.title] = true
+            }
+        }
+        favoritesSnapshot = snap
+    }
+
+    onFavFilterChanged: {
+        if (favFilter) { captureFavoritesSnapshot() }
+    }
+
+    onFilterOnlyFavoritesChanged: {
+        if (filterOnlyFavorites) { captureFavoritesSnapshot() }
+    }
+
 
 	SoundEffect {
 		id: navSound;
@@ -255,12 +277,8 @@ FocusScope {
                         favSound.play();
                     }
                     gamesListModel.get(gamesListModelLoader.item.mapToSource(gamesListLoader.item.currentIndex)).favorite =
-                        !gamesListModel.get(gamesListModelLoader.item.mapToSource(gamesListLoader.item.currentIndex)).favorite  
-                    if(collectionsMenuLoader.item.listView.currentIndex == 0){
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
-                    }
-                } 
+                        !gamesListModel.get(gamesListModelLoader.item.mapToSource(gamesListLoader.item.currentIndex)).favorite
+                }
                 keyup = false
                 return;
             }
@@ -388,13 +406,8 @@ FocusScope {
                         index = themeSettings["menuIndex_subMenu"]
                     }
                     item.moveIndex(index)
-                    
-                    if(currentCollection.name == "♥ Favorites"){
-                        favFilter = true
-                    }
-                    if(currentCollection.name != "♥ Favorites"){
-                        favFilter = false
-                    }
+
+                    favFilter = (index === 0)
 
                     if(currentCollection.name == "Recent"){
                         recentFilter = true
@@ -457,10 +470,10 @@ FocusScope {
 
                 delayed: false
                 filters: [
-                    ValueFilter {
+                    ExpressionFilter {
+
                         enabled: (collectionsMenuRoot.filterOnlyFavorites || favFilter)
-                        roleName: "favorite"
-                        value: true
+                        expression: !!favoritesSnapshot[modelData.title]
                     },
                     RangeFilter {
                         enabled: (collectionsMenuRoot.filterByDate || recentFilter)
