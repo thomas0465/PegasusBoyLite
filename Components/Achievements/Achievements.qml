@@ -108,6 +108,11 @@ Item {
     function fetchAchievementsForGame(game) {
         showStatus("stop")
         //showStatus("Loading...")
+        if (!themeSettings.raUsername || !themeSettings.raApiKey) {
+            showStatus("RetroAchievements username or API key is not set")
+            achievementsError()
+            return
+        }
         var searchTitle = titleOverrides[game.title] || game.title
 
         var shortNames = []
@@ -116,12 +121,12 @@ Item {
         }
 
         var onFail = function(reason) {
+            showStatus(reason)
             achievementsError()
-            loadCachedAchievements(api.memory.get("ra_gameid_" + searchTitle), reason)
         }
 
         var matchConsoles = function() {
-            var ids = []
+            var ids = [];
             var hintsTried = []
 
             for (var i = 0; i < shortNames.length; i++) {
@@ -268,26 +273,34 @@ Item {
         fetchGameAchievements(subsetsList[newIndex].id)
     }
 
-    function fetchGameAchievements(gameId) {
-        var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
-                + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
-                + "&g=" + gameId + "&u=" + themeSettings.raUsername
+function fetchGameAchievements(gameId) {
+    var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
+            + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
+            + "&g=" + gameId + "&u=" + themeSettings.raUsername;
 
-        getJson(url, function(data) {
-            if (data.Title == null) {
-                showStatus("Achievements not found for account, check if your Username is correct")
-                achievementsError()
-                return
-            }
-            api.memory.set("ra_cache_" + gameId, JSON.stringify(data))
-            trackCacheKey("ra_cache_" + gameId)
-            applyGameData(gameId, data)
+    getJson(url, function(data) {
+        if (data && data.Title != null) {
+            api.memory.set("ra_cache_" + gameId, JSON.stringify(data));
+            trackCacheKey("ra_cache_" + gameId);
+            applyGameData(gameId, data);
+            return;
+        }
 
-        //on failure to load url, try to fallback to cached acheievement data
-        }, function(reason) {
-            loadCachedAchievements(gameId, reason)
-        })
-    }
+        showStatus("RetroAchievements error: Check your username");
+        achievementsError();
+
+    }, function(reason, isOffline) {
+        // If it is truly offline, load the cache
+        if (isOffline) {
+            loadCachedAchievements(gameId, reason);
+            return;
+        }
+
+        // Otherwise, it's an API key or username error — show status, DO NOT load cache
+        showStatus(reason);
+        achievementsError();
+    });
+}
 
     //shared path to open achievements panel
     function applyGameData(gameId, data) {
@@ -352,34 +365,74 @@ Item {
         return arr
     }
 
-    //--------------------------------------------------------------------
-    //get status
+
+
     function getJson(url, callback, onError) {
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState !== XMLHttpRequest.DONE) { return }
 
-            if (xhr.status !== 200) {
-                var reason = "Request failed (HTTP " + xhr.status + "). Check your Username and API key"
-                if (onError) {
-                    onError(reason)
-                } else {
-                    showStatus(reason)
-                }
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
                 return
             }
 
-            callback(JSON.parse(xhr.responseText))
+            if (xhr.status !== 200) {
+                var reason = "RetroAchievements error: Check your API key or username (HTTP " + xhr.status + ")"
+
+                // Try to get the actual error message from the API
+                try {
+                    var errorResponse = JSON.parse(xhr.responseText)
+
+                    if (errorResponse && errorResponse.message) {
+                        reason = "RetroAchievements error: " + errorResponse.message
+                    } else if (errorResponse && errorResponse.Error) {
+                        reason = "RetroAchievements error: " + errorResponse.Error
+                    }
+                } catch (e) {
+                    // Response wasn't JSON, so keep the generic HTTP message
+                }
+
+                if (onError) {
+                    onError(reason, false)
+                } else {
+                    showStatus(reason)
+                }
+
+                return
+            }
+
+            try {
+                var jsonResponse = JSON.parse(xhr.responseText)
+
+                // Handle API errors even when HTTP status is 200
+                if (jsonResponse && (jsonResponse.Error || jsonResponse.message)) {
+                    var errorMsg = "RetroAchievements error: " +
+                            (jsonResponse.message || jsonResponse.Error)
+
+                    showStatus(errorMsg)
+                    achievementsError()
+                    return
+                }
+
+                callback(jsonResponse)
+
+            } catch (e) {
+                var parseError = "Invalid JSON response from server"
+                showStatus(parseError)
+                achievementsError()
+            }
         }
+
         xhr.onerror = function() {
             var reason = "Offline - No cached achievements"
+
             if (onError) {
-                onError(reason)
+                onError(reason, true)
             } else {
                 showStatus(reason)
             }
         }
+
         xhr.send()
     }
 
