@@ -697,7 +697,7 @@ Timer {
             y:parent.height + 5
 
             anchors.left: parent.left
-            anchors.leftMargin: (themeSettings.showBattery) ? (parent.width * (themeSettings.itemListWidth / 100)) - (t2.width/1.2) - t3.width - 2.5 - 10:  (parent.width * (themeSettings.itemListWidth / 100)) - (t2.width/1.2)
+            anchors.leftMargin: (themeSettings.showBattery) ? (parent.width * (themeSettings.itemListWidth / 100)) - (t2.width/1) - t3.width - 2.5 - 10:  (parent.width * (themeSettings.itemListWidth / 100)) - (t2.width/1.2)
 
             color: "transparent"
             opacity: 1
