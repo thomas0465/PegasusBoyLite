@@ -18,11 +18,6 @@ Item {
     property var primary: (themeSettings.primaryAsset == "Title Screen") ? currentGame.assets.titlescreen : currentGame.assets.boxFront 
     property var secondary: (themeSettings.primaryAsset == "Title Screen") ? currentGame.assets.boxFront : currentGame.assets.titlescreen
 
-    // Both images show together: nothing is revealed until neither is still loading
-    // (an empty source or a failed load counts as done, so a single image still appears)
-    property bool imagesReady: gamesMediaScreenshot.status !== Image.Loading
-                               && gamesMediaTitle.status !== Image.Loading
-
 
     Image {
         id: gamesMediaScreenshot
@@ -36,7 +31,7 @@ Item {
         fillMode: Image.PreserveAspectFit
 
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
-        opacity: !imagesReady ? 0 : ((singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0));
+        opacity: (singleimageview == 1) ? 0: ((!enlargeBadge || !contentOpen) ? 1 : 0);
 
     Rectangle {
         property int bw: Math.max(Math.round(parent.width * 0.002), 2)
@@ -68,7 +63,7 @@ Item {
         asynchronous: true
         fillMode: Image.PreserveAspectFit
        	source: (imagetype) ? primary || secondary: secondary|| primary
-        opacity: (!imagesReady || singleimageview == 2) ? 0 : 1;
+        opacity: (singleimageview == 2) ? 0: 1;
 
     Rectangle {
         property int bw: Math.max(Math.round(parent.width * 0.002), 2)
