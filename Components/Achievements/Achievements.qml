@@ -15,8 +15,14 @@ Item {
     property string imageIcon: ""
     property var achievementsList: []
 
+    property var currentGame: null        // last base game passed to fetchAchievementsForGame
     property var subsetsList: []          // [{id, title}], base game always first
-    property int currentSubsetIndex: 0
+    property int currentSubsetIndex: 0    // subset currently displayed
+    property int pendingSubsetIndex: 0    // subset most recently requested (may be ahead of the display)
+
+    // Bumped on every fetchAchievementsForGame call. Responses to older calls
+    // are cached but never applied, so fast switching can't show stale data.
+    property int requestSerial: 0
 
     property int achievementsTotal: achievementsList.length
     property int achievementsUnlocked: {
@@ -103,90 +109,140 @@ Item {
         showStatus("Cache cleared, deleted " + keys.length + " entries")
     }
 
+    //--------------------------------------------------------------------
+    // Resolves consoles -> game -> achievements. Optional `subset` ({id, title})
+    // skips the title lookup and loads that subset through the same
+    // preload -> refresh -> offline-fallback flow.
+    function fetchAchievementsForGame(game, subset) {
+        var serial = ++requestSerial
+        var isSubset = !!subset
+        var cachedShown = false     // cached data is on screen, so the panel is open
 
-// Resolves consoles -> game -> achievements.
-    function fetchAchievementsForGame(game) {
         showStatus("stop")
+        if (!isSubset) { currentGame = game }
+
+        // Every failure ends here. Panel already open (subset switch or cached data
+        // on screen): only show the message and stay on what's displayed. Nothing on
+        // screen: also hand control back to the list. Offline over cached data says
+        // so, except when switching subsets.
+        var onError = function(message, offline) {
+            if (offline && cachedShown) {
+                if (!isSubset) { showStatus("Offline - Showing cached achievements") }
+            } else {
+                showStatus(message)
+            }
+
+            if (isSubset || cachedShown) {
+                pendingSubsetIndex = currentSubsetIndex
+            } else {
+                achievementsError()
+            }
+        }
+
         if (!themeSettings.raUsername || !themeSettings.raApiKey) {
-            showStatus("RetroAchievements username or API key is not set")
-            achievementsError()
+            onError("RetroAchievements username or API key is not set", false)
             return
         }
+
+        // Shows the last successfully-fetched payload for this game ID, if any
+        var showCached = function(gameId) {
+            var cached = api.memory.get("ra_cache_" + gameId)
+            if (!cached) { return false }
+
+            try {
+                applyGameData(gameId, JSON.parse(cached))
+                return true
+            } catch (e) {
+                return false    // invalid cache
+            }
+        }
+
+        // `preload`: show cached data right away; otherwise it is only the offline fallback
+        var loadAchievements = function(gameId, preload) {
+            cachedShown = preload && showCached(gameId)
+
+            var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
+                    + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
+                    + "&g=" + gameId + "&u=" + themeSettings.raUsername
+
+            getJson(serial, url, function(data, stale) {
+                if (data.Title == null) {
+                    if (!stale) { onError("RetroAchievements error: Check your username", false) }
+                    return
+                }
+
+                // Always store the fresh data, even if the user has moved on
+                api.memory.set("ra_cache_" + gameId, JSON.stringify(data))
+                trackCacheKey("ra_cache_" + gameId)
+
+                if (!stale) { applyGameData(gameId, data) }
+            }, function(message, offline) {
+                // Offline right after a fresh lookup: fall back to cached data
+                if (offline && !cachedShown) { cachedShown = showCached(gameId) }
+                onError(message, offline)
+            })
+        }
+
         var searchTitle = titleOverrides[game.title] || game.title
-        var cachedGameId = api.memory.get("ra_gameid_" + searchTitle)
 
-        // If we have a cached game ID, skip online console/game lookups entirely
-        if (cachedGameId) {
-            fetchGameAchievements(cachedGameId, true)
+        // Subsets already know their ID; base games use the cached title -> ID mapping.
+        // With an ID, the online console/game lookups are skipped entirely.
+        var knownId = isSubset ? subset.id : api.memory.get("ra_gameid_" + searchTitle)
+        if (knownId) {
+            loadAchievements(knownId, true)
             return
         }
 
-        var shortNames = []
-        for (var i = 0; i < game.collections.count; i++) {
-            shortNames.push(game.collections.get(i).shortName.toLowerCase())
-        }
-
-        var onFail = function(reason) {
-            showStatus(reason)
-            achievementsError()
-        }
-
-        var matchConsoles = function() {
-            var ids = [];
+        var findGame = function() {
+            var consoleIds = []
             var hintsTried = []
 
-            for (var i = 0; i < shortNames.length; i++) {
-                var hints = consoleNameHints[shortNames[i]]
+            for (var i = 0; i < game.collections.count; i++) {
+                var shortName = game.collections.get(i).shortName.toLowerCase()
+                var hints = consoleNameHints[shortName]
+
                 if (!hints) {
-                    hintsTried.push(shortNames[i] + " (no override configured)")
+                    hintsTried.push(shortName + " (no override configured)")
                     continue
                 }
                 for (var h = 0; h < hints.length; h++) {
                     hintsTried.push(hints[h])
                     for (var j = 0; j < consoleList.length; j++) {
                         if (consoleList[j].Name.toLowerCase() === hints[h].toLowerCase()) {
-                            ids.push(consoleList[j].ID)
+                            consoleIds.push(consoleList[j].ID)
                         }
                     }
                 }
             }
 
-            if (!ids.length) {
-                achievementsError()
-                showStatus("No console match for " + hintsTried.join(", "))
+            if (!consoleIds.length) {
+                onError("No console match for " + hintsTried.join(", "), false)
+                return
             }
-            return ids
-        }
 
-        var afterConsoleList = function() {
-            var consoleIds = matchConsoles()
-            if (!consoleIds.length) { return }
-
-            tryConsoles(consoleIds, 0, searchTitle, function(gameId) {
-                if (!gameId) { return }
-
-                api.memory.set("ra_gameid_" + searchTitle, gameId)
+            tryConsoles(consoleIds, 0, searchTitle, serial, function(foundId) {
+                api.memory.set("ra_gameid_" + searchTitle, foundId)
                 trackCacheKey("ra_gameid_" + searchTitle)
-                fetchGameAchievements(gameId, true)
-            }, onFail)
+                loadAchievements(foundId, false)
+            }, onError)
         }
 
         if (consoleList) {
-            afterConsoleList()
+            findGame()
             return
         }
 
         var url = "https://retroachievements.org/API/API_GetConsoleIDs.php"
                 + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
 
-        getJson(false, url, function(data) {
+        getJson(serial, url, function(data, stale) {
             consoleList = data
-            afterConsoleList()
-        }, onFail)
+            if (!stale) { findGame() }
+        }, onError)
     }
 
-    // Tries each console until a title match is found. Also looks for subsets
-    function tryConsoles(consoleIds, index, title, callback, onError) {
+    // Tries each console until the title matches, then saves the game's subset list
+    function tryConsoles(consoleIds, index, title, serial, onFound, onError) {
         if (index >= consoleIds.length) {
             var names = []
             for (var n = 0; n < consoleIds.length; n++) {
@@ -195,15 +251,13 @@ Item {
                 }
             }
 
-            showStatus("\"" +
+            onError("\"" +
                 title
                 .replace(/\(.*?\)/g, "")
                 .replace(/\[.*?\]/g, "")
                 .replace(/[ \t]+$/g, "")
                 //remove () and [] on displayed title
-                + "\" not found. Tried " + names.join(", "))
-            achievementsError()
-            callback(null)
+                + "\" not found. Tried " + names.join(", "), false)
             return
         }
 
@@ -217,7 +271,7 @@ Item {
             }
 
             if (!match) {
-                tryConsoles(consoleIds, index + 1, title, callback, onError)
+                tryConsoles(consoleIds, index + 1, title, serial, onFound, onError)
                 return
             }
 
@@ -228,8 +282,6 @@ Item {
                     subsets.push({ id: list[j].ID, title: list[j].Title })
                 }
             }
-            subsetsList = subsets
-            currentSubsetIndex = 0
 
             // Persist under every member's own ID so offline loads can
             // restore this list no matter which one they load from cache.
@@ -239,7 +291,7 @@ Item {
                 trackCacheKey("ra_subsets_" + subsets[k].id)
             }
 
-            callback(match.ID)
+            onFound(match.ID)
         }
 
         if (gameListCache[consoleId]) {
@@ -250,9 +302,9 @@ Item {
         var url = "https://retroachievements.org/API/API_GetGameList.php"
                 + "?y=" + themeSettings.raApiKey + "&i=" + consoleId + "&f=1"
 
-        getJson(false, url, function(data) {
+        getJson(serial, url, function(data, stale) {
             gameListCache[consoleId] = data
-            onGameList(data)
+            if (!stale) { onGameList(data) }
         }, onError)
     }
 
@@ -262,109 +314,54 @@ Item {
             .replace(/smb.* - /g, "")                          // replace 'SMB -', 'SMB2 -', etc
             .replace(/\(.*?\)/g, "")                           // ignore ()
             .replace(/\[.*?\]/g, "")                           // ignore []
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")  // strip accents
+            .normalize("NFD").replace(/[̀-ͯ]/g, "")  // strip accents
             .replace(/[^a-z0-9]/g, "")                         // ignore punctuation
     }
 
     //--------------------------------------------------------------------
-    // Cycles to the next/previous subset. Does nothing if the game has no subsets.
+    // Cycles to the next/previous subset through the same entry point as the
+    // base game. Steps from the last requested subset (not the displayed one)
+    // so rapid presses keep advancing. Does nothing if there are no subsets.
     function switchSubset(direction) {
-        if (subsetsList.length <= 1) { return }
+        if (subsetsList.length <= 1 || !currentGame) { return }
 
-        showStatus("stop")
-        var newIndex = currentSubsetIndex + direction
+        var newIndex = pendingSubsetIndex + direction
         if (newIndex < 0) { newIndex = subsetsList.length - 1 }
         if (newIndex >= subsetsList.length) { newIndex = 0 }
 
-        fetchGameAchievements(subsetsList[newIndex].id, false, true)
+        pendingSubsetIndex = newIndex
+        fetchAchievementsForGame(currentGame, subsetsList[newIndex])
     }
 
-function fetchGameAchievements(gameId, enableStatus, subset) {
-        var url = "https://retroachievements.org/API/API_GetGameInfoAndUserProgress.php"
-                + "?z=" + themeSettings.raUsername + "&y=" + themeSettings.raApiKey
-                + "&g=" + gameId + "&u=" + themeSettings.raUsername;
-
-        getJson(subset, url, function(data) {
-            if (data && data.Title != null) {
-                api.memory.set("ra_cache_" + gameId, JSON.stringify(data));
-                trackCacheKey("ra_cache_" + gameId);
-                applyGameData(gameId, data);
-                return;
-            }
-
-            showStatus("RetroAchievements error: Check your username");
-            achievementsError();
-
-        }, function(reason, isOffline) {
-            // If it is truly offline, load the cache
-            if (isOffline) {
-                loadCachedAchievements(gameId, reason, enableStatus);
-                return;
-            }
-
-            // Otherwise, it's an API key or username error — show status, DO NOT load cache
-            showStatus(reason);
-            achievementsError();
-        });
-    }
-
-//shared path to open achievements panel
+    // Shared path to open achievements panel
     function applyGameData(gameId, data) {
         gameTitle = data.Title
         imageIcon = data.ImageIcon
         achievementsList = buildAchievementsList(data)
 
-        // Restore subsetsList from memory if available
-        var storedSubsets = api.memory.get("ra_subsets_" + gameId)
-        if (storedSubsets) {
-            try {
-                subsetsList = JSON.parse(storedSubsets)
-            } catch (e) {
-                subsetsList = [{ id: gameId, title: data.Title }]
-            }
-        } else if (!subsetsList || subsetsList.length === 0) {
-            subsetsList = [{ id: gameId, title: data.Title }]
+        // Subset list is persisted per game ID; fall back to just this game
+        var list = [{ id: gameId, title: data.Title }]
+        var stored = api.memory.get("ra_subsets_" + gameId)
+        if (stored) {
+            try { list = JSON.parse(stored) } catch (e) { }
         }
 
-        currentSubsetIndex = 0
-        for (var i = 0; i < subsetsList.length; i++) {
-            if (subsetsList[i].id === gameId) {
-                currentSubsetIndex = i
-                break
-            }
+        // memory returns strings, JSON ids are numbers, so compare as strings
+        var index = -1
+        for (var i = 0; i < list.length; i++) {
+            if (String(list[i].id) === String(gameId)) { index = i; break }
         }
+        if (index === -1) {
+            // Nothing stored, or a leftover list from a different game
+            list = [{ id: gameId, title: data.Title }]
+            index = 0
+        }
+
+        subsetsList = list
+        currentSubsetIndex = index
+        pendingSubsetIndex = index
+
         showStatus("stop")
-        achievementsReady()
-    }
-
-    //--------------------------------------------------------------------
-    // Falls back to the last successfully-fetched payload for this game ID
-    function loadCachedAchievements(gameId, reason, showStatusCache) {
-        var cached = gameId ? api.memory.get("ra_cache_" + gameId) : null
-        if (!cached) {
-            showStatus(reason)
-            achievementsError()
-            return
-        }
-        var data = JSON.parse(cached)
-
-        // Restore whichever subset list was persisted the last time this
-        // was successfully fetched online
-        var storedSubsets = api.memory.get("ra_subsets_" + gameId)
-        if (storedSubsets) {
-            try {
-                subsetsList = JSON.parse(storedSubsets)
-            } catch (e) {
-                subsetsList = [{ id: gameId, title: data.Title }]
-            }
-        } else {
-            subsetsList = [{ id: gameId, title: data.Title }]
-        }
-
-        applyGameData(gameId, data)
-        if(showStatusCache){
-            showStatus("Offline - Showing cached achievements")
-        }
         achievementsReady()
     }
 
@@ -384,85 +381,68 @@ function fetchGameAchievements(gameId, enableStatus, subset) {
         return arr
     }
 
-
-
-    function getJson(subset, url, callback, onError) {
+    //--------------------------------------------------------------------
+    // GET + JSON parse. Calls exactly one of:
+    //   onSuccess(data, stale)       stale = a newer fetchAchievementsForGame call
+    //                                superseded this request; callers may still cache it
+    //   onError(message, offline)    never called for stale requests
+    function getJson(serial, url, onSuccess, onError) {
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
 
+        var finished = false
+        var finish = function(data, message, offline) {
+            if (finished) { return }
+            finished = true
+
+            var stale = serial !== requestSerial
+            if (!message) {
+                onSuccess(data, stale)
+            } else if (!stale) {
+                onError(message, offline)
+            }
+        }
+
+        // A network failure reports status 0 and also fires onerror; finish() runs once
+        var offlineMessage = "Offline - No cached achievements"
+
         xhr.onreadystatechange = function() {
-            if (xhr.readyState !== XMLHttpRequest.DONE) {
+            if (xhr.readyState !== XMLHttpRequest.DONE) { return }
+
+            if (xhr.status === 0) {
+                finish(null, offlineMessage, true)
                 return
             }
 
-            if (xhr.status !== 200 && subset !== true) {
-                var reason = "RetroAchievements error: Check your API key or username (HTTP " + xhr.status + ")"
+            var data = null
+            try { data = JSON.parse(xhr.responseText) } catch (e) { }
 
-                // Try to get the actual error message from the API
-                try {
-                    var errorResponse = JSON.parse(xhr.responseText)
+            // Prefer the API's own message, also for errors sent with HTTP 200
+            var apiError = data && (data.message || data.Error)
 
-                    if (errorResponse && errorResponse.message) {
-                        reason = "RetroAchievements error: " + errorResponse.message
-                    } else if (errorResponse && errorResponse.Error) {
-                        reason = "RetroAchievements error: " + errorResponse.Error
-                    }
-                } catch (e) {
-                    // Response wasn't JSON, so keep the generic HTTP message
-                }
-
-                if (onError) {
-                    onError(reason, false)
-                } else {
-                    showStatus(reason)
-                }
-
-                return
-            }
-
-            try {
-                var jsonResponse = JSON.parse(xhr.responseText)
-
-                // Handle API errors even when HTTP status is 200
-                if (jsonResponse && (jsonResponse.Error || jsonResponse.message)) {
-                    var errorMsg = "RetroAchievements error: " +
-                            (jsonResponse.message || jsonResponse.Error)
-
-                    showStatus(errorMsg)
-                    achievementsError()
-                    return
-                }
-
-                callback(jsonResponse)
-
-            } catch (e) {
-                var parseError = "Invalid JSON response from server"
-                showStatus(parseError)
-                achievementsError()
-            }
-        }
-
-        xhr.onerror = function() {
-            var reason = "Offline - No cached achievements"
-
-            if (onError) {
-                onError(reason, true)
+            if (xhr.status !== 200 || apiError) {
+                finish(null, "RetroAchievements error: " + (apiError ||
+                       "Check your API key or username (HTTP " + xhr.status + ")"), false)
+            } else if (data === null) {
+                finish(null, "Invalid JSON response from server", false)
             } else {
-                showStatus(reason)
+                finish(data, null, false)
             }
         }
+
+        xhr.onerror = function() { finish(null, offlineMessage, true) }
 
         xhr.send()
     }
 
     //--------------------------------------------------------------------
-    //show Status message
+    // Show status message
     function showStatus(msg) {
-        if(msg != 'stop'){
+        if (msg != 'stop') {
             statusMessage = msg
             statusVisible = true
             statusTimer.restart()
-        }else{
+        } else {
             statusVisible = false
             statusTimer.stop()
         }
@@ -470,7 +450,7 @@ function fetchGameAchievements(gameId, enableStatus, subset) {
 
     Timer {
         id: statusTimer
-        interval: 4000
+        interval: 2000
         onTriggered: achRoot.statusVisible = false
     }
 

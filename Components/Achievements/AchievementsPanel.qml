@@ -142,17 +142,6 @@ FocusScope {
             return
         }
 
-        //allow navigating collections
-        //if (event.key === Qt.Key_Right) {
-        //    achievementsPanelRoot.close()
-        //    return
-        //}
-
-        //if (event.key === Qt.Key_Left) {
-        //    achievementsPanelRoot.close()
-        //    return
-        //}
-
         if (event.key == Qt.Key_Left) {
             event.accepted = true
             fetcher.switchSubset(-1)
@@ -322,7 +311,7 @@ Rectangle{
 
         property real dotsRowHeight: gameIcon.width * 0.1
         property real normalHeight: fetcher.subsetsList.length > 1 ? (gameIcon.height - dotsRowHeight) : gameIcon.height
-        height: Math.max(normalHeight, panelTitle.contentHeight * 1.1)
+        height: Math.max(normalHeight, (fetcher.subsetsList.length > 1 ? panelTitle.contentHeight * 1.1 : panelTitle.contentHeight))
 
 
     Text {
@@ -381,6 +370,19 @@ Rectangle{
             bottom: parent.bottom
         }
 
+    }
+
+    Rectangle{
+        id: splitBar
+        visible: contentOpen
+        width: parent.width * .97
+        height: 2
+        color: themeData.colorTheme[theme].primary
+        z: 999
+        anchors{
+            left: parent.left
+            top:listView.top
+        }
     }
 
 
