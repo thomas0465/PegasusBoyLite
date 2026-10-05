@@ -296,79 +296,52 @@ FocusScope {
             if (api.keys.isPrevPage(event)) {
                 event.accepted = true;
 
-                //go to favs from other collection
-                if(collectionsMenuLoader.item.listView.currentIndex != 0){
-                    viewcreated = false
-                    pagecreated = true
-                    favFilter = true
-                    recentFilter = false
+                viewcreated = false
+                pagecreated = true
 
+                if (gamesListLoader.item.currentIndex >= 0 && setplace) {
+                    place = gamesListLoader.item.currentIndex
+                }
 
-                    if(gamesListLoader.item.currentIndex >= 0 && setplace){
-                        place = gamesListLoader.item.currentIndex
-                    
-                    }
-
+                if (collectionsMenuLoader.item.listView.currentIndex != 0) {
+                    //go to favs from other collection
                     placeCollection = collectionsMenuLoader.item.listView.currentIndex
-
                     collectionsMenuLoader.item.listView.currentIndex = 0
 
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
-                    
-                    gamesListLoader.item.currentIndex = place;
-
-                    if(place > gamesListModelLoader.item.count -1) {
-                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
-                event.accepted = true;
-
-                        setplace = false
+                    favFilter = true
+                    recentFilter = false
+                } else {
+                    //go from favs back to the previous collection
+                    var backIndex = placeCollection
+                    if (backIndex <= 0 || backIndex >= collectionsMenuLoader.item.listView.count) {
+                        backIndex = 1
                     }
-                
-                    viewcreated = true
-                    if(themeSettings.soundsmenu){
-                        navSound.play();
+                    if (backIndex < collectionsMenuLoader.item.listView.count) {
+                        placeCollection = backIndex
+                        collectionsMenuLoader.item.listView.currentIndex = backIndex
+
+                        favFilter = false
+                        recentFilter = (backIndex == 1 && themeSettings.lastPlayedDays > 0)
                     }
+                }
 
-                //go from favs to other collection
-                }else{
-                    viewcreated = false
-                    pagecreated = true
-                    favFilter = false
-                    
-                    if(placeCollection == 1 && themeSettings.lastPlayedDays > 0){
-                        recentFilter = true
-                    }else{
-                        recentFilter = false
-                    }
+                // Same forced refresh as left/right so the list is rebuilt from the new filter
+                gamesMediaLoader.active = false
+                gamesMediaLoader.active = true
+                gamesListLoader.active = false
+                gamesListLoader.active = true
 
-                    if(gamesListLoader.item.currentIndex >= 0 && setplace){
-                        place = gamesListLoader.item.currentIndex
-                    
-                    }
+                gamesListLoader.item.currentIndex = place
+                if (place > gamesListModelLoader.item.count - 1) {
+                    gamesListLoader.item.currentIndex = gamesListModelLoader.item.count - 1
+                    setplace = false
+                }
 
-                    collectionsMenuLoader.item.listView.currentIndex = placeCollection
-
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
-                    
-                    gamesListLoader.item.currentIndex = place;
-
-                    if(place > gamesListModelLoader.item.count -1) {
-                        gamesListLoader.item.currentIndex = gamesListModelLoader.item.count -1
-                event.accepted = true;
-
-                        setplace = false
-                    }
-                
-                    viewcreated = true
-                    if(themeSettings.soundsmenu){
-                        navSound.play();
-                    }
-
-                }   
-	            return
-            
+                viewcreated = true
+                if (themeSettings.soundsmenu) {
+                    navSound.play();
+                }
+                return
             }
         }
 
