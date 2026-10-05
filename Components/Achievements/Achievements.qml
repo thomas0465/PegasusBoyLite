@@ -8,6 +8,11 @@ Item {
     signal achievementsReady()
     signal achievementsError()
 
+    // Around an in-place list replacement (online refresh that changed the data),
+    // so the panel can keep its scroll position. Not emitted on the first load.
+    signal achievementsRefreshing()
+    signal achievementsRefreshed()
+
     property string statusMessage: ""
     property bool statusVisible: false
 
@@ -352,7 +357,9 @@ Item {
 
         if (refresh) {
             if (JSON.stringify(newList) !== JSON.stringify(achievementsList)) {
+                achievementsRefreshing()
                 achievementsList = newList
+                achievementsRefreshed()
             }
             showStatus("stop")
             return

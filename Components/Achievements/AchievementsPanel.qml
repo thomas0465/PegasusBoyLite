@@ -62,6 +62,22 @@ FocusScope {
         anchors.fill: parent
         z: 999
 
+        // Online refresh that changed the data: swapping the list model resets the
+        // view to the top (and would overwrite lastRAIndex with 0), so save the
+        // position before the swap and put it back right after, in the same frame.
+        property int savedIndex: 0
+        property real savedContentY: 0
+
+        onAchievementsRefreshing: {
+            savedIndex = listView.currentIndex
+            savedContentY = listView.contentY
+        }
+
+        onAchievementsRefreshed: {
+            listView.currentIndex = Math.min(savedIndex, listView.count - 1)
+            listView.contentY = savedContentY
+        }
+
         onAchievementsReady: {
             var maxIndex = fetcher.achievementsList.length - 1
 
@@ -80,6 +96,8 @@ FocusScope {
             closed()
             
         }
+
+        
     }
 
     Keys.onReleased: {
@@ -169,19 +187,6 @@ FocusScope {
             achievementsPanelRoot.close()
             return
         }
-    }
-
-    function switchSubset(direction) {
-        if (subsetsList.length <= 1) { return }
-
-        var newIndex = currentSubsetIndex + direction
-        if (newIndex < 0) { newIndex = subsetsList.length - 1 }
-        if (newIndex >= subsetsList.length) { newIndex = 0 }
-
-        currentSubsetIndex = newIndex
-        fetchGameAchievements(subsetsList[currentSubsetIndex].id)
-
-        var maxIndex = 2
     }
 
     Image {
