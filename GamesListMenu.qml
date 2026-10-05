@@ -157,9 +157,7 @@ FocusScope {
                         recentFilter = false
                     }
 
-                    // Hacky force refresh of game media
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
+                    // Force refresh of the games list (media stays loaded)
                     gamesListLoader.active = false
                     gamesListLoader.active = true
                     if(themeSettings.soundsmenu){
@@ -212,9 +210,7 @@ FocusScope {
                         recentFilter = false
                     }
 
-                    // Hacky force refresh of game media
-                    gamesMediaLoader.active = false
-                    gamesMediaLoader.active = true
+                    // Force refresh of the games list (media stays loaded)
                     gamesListLoader.active = false
                     gamesListLoader.active = true
 
@@ -325,10 +321,12 @@ FocusScope {
                     }
                 }
 
-                // Same forced refresh as left/right so the list is rebuilt from the new filter
-                gamesMediaLoader.active = false
-                gamesMediaLoader.active = true
+                // Rebuild the list AND its filter proxy so no stale favorites filter survives.
+                // (list off first so it is destroyed while the proxy still exists;
+                //  gamesListModelLoader turns the list back on when the proxy is ready)
                 gamesListLoader.active = false
+                gamesListModelLoader.active = false
+                gamesListModelLoader.active = true
                 gamesListLoader.active = true
 
                 gamesListLoader.item.currentIndex = place
@@ -499,6 +497,7 @@ FocusScope {
             focus: true
             sourceComponent: gamesListView
             active: false
+            onLoaded: gamesMediaLoader.active = true
            
             anchors.top: collectionsMenuLoader.bottom
             anchors.topMargin: parent.height * (themeSettings.subMenuMargin / 100)
@@ -756,7 +755,7 @@ Timer {
             sourceComponent: gamesMedia
             asynchronous: true
             visible: gamesListLoader.item.model.count > 0
-            active: gamesListLoader.status == Loader.Ready
+            active: false   // switched on once by gamesListLoader.onLoaded, never turned off
             
             anchors.top: collectionsMenuLoader.bottom
             anchors.topMargin: parent.height * 0.02

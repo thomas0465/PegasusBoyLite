@@ -639,7 +639,7 @@ Item {
                 {
                     "name": "Enable RetroAchievements",
                     "id": "enableRA",
-                    "description": "Press 'Scroll page up' to load achievements. Configure system & game overrides in the assets/AchievementConfig file",
+                    "description": "Press 'Scroll page up' to load achievements. Configure system & game overrides in the assets/AchievementsConfig file",
                     "type": "bool",
                     "default": "Enable",
                 },  

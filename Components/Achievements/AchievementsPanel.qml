@@ -437,10 +437,13 @@ Rectangle{
     }
 
 
-    Image {
+    // Enlarged badge. Same no-flash logic as the games media: a new badge loads in a
+    // hidden second Image and is swapped in only once it has finished, so the previous
+    // badge stays on screen until then (Null/Error also count as finished).
+    Item {
         id: currentBadgeImage
 
-        visible: enlargeBadge && contentOpen ? 1 : 0
+        visible: enlargeBadge && contentOpen
 
         width: parent.height/3
         height: parent.height/3
@@ -452,13 +455,47 @@ Rectangle{
             ? fetcher.achievementsList[listView.currentIndex]
             : null
 
-        source: currentAchievement
+        property string source: currentAchievement
             ? "https://media.retroachievements.org/Badge/" + currentAchievement.BadgeName + ".png"
             : ""
 
-        fillMode: Image.PreserveAspectFit
-        asynchronous: true
-        smooth: true
+        property var shown: badgeA      // layer currently on screen
+        property var pending: null      // layer a new source is loading into
+
+        function settle() {
+            if (pending !== null && pending.status !== Image.Loading) {
+                var old = shown
+                shown = pending
+                pending = null
+                old.source = ""
+            }
+        }
+
+        onSourceChanged: {
+            pending = (shown === badgeA) ? badgeB : badgeA
+            pending.source = source
+            settle()
+        }
+
+        Image {
+            id: badgeA
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            asynchronous: true
+            smooth: true
+            visible: currentBadgeImage.shown === badgeA
+            onStatusChanged: currentBadgeImage.settle()
+        }
+
+        Image {
+            id: badgeB
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+            asynchronous: true
+            smooth: true
+            visible: currentBadgeImage.shown === badgeB
+            onStatusChanged: currentBadgeImage.settle()
+        }
     }
 
     Component {
