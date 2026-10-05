@@ -280,7 +280,7 @@ Press Enter to return"
 
                 text: textInput.activeFocus
                     ? "Input text, press Enter to save or Cancel to cancel"
-                    : "Press Enter to begin inputting text"
+                    : "Press Enter to input text"
                 font.family: themeSettings.font.customFont
                 font.pixelSize: parent.height * 0.08
                 color: themeData.colorTheme[theme].light

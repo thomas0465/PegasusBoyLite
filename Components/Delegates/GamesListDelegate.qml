@@ -66,7 +66,7 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: themeSettings.cacheIndicator ? parent.width * 0.02 : parent.width * 0.02
+                    leftMargin: themeSettings.cacheIndicator && themeSettings.enableRA ? parent.width * 0.02 : parent.width * 0.02
                 }
 
                 color: {
@@ -86,7 +86,7 @@ Item {
             //indicator for cached achievements
             Rectangle {
                 id: cachedAchievementsDot
-                visible: hasCachedAchievements && themeSettings.cacheIndicator
+                visible: hasCachedAchievements && themeSettings.cacheIndicator && themeSettings.enableRA
                 opacity: gamesListRect.ListView.isCurrentItem
                     ? 1 : (themeSettings.transparent? 0.5 : 1)
 
@@ -117,7 +117,7 @@ Item {
                 id: gamesListText
 
                 anchors.left: gamesListFavorite.right
-                anchors.leftMargin: themeSettings.cacheIndicator ? parent.width * 0.035 : parent.width * 0.025
+                anchors.leftMargin: themeSettings.cacheIndicator && themeSettings.enableRA ? parent.width * 0.035 : parent.width * 0.025
                 anchors.right: gamesListRect.right
                 anchors.rightMargin: parent.width * 0
                 

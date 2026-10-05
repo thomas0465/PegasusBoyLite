@@ -298,21 +298,20 @@ Item {
                    "description": "Wrap long game names in the Main List",
                    "type": "bool",
                    "default": "Enable",
-                },      
-                                
-                                {
+                },                      
+                {
                     "name": "Transparent Elements",
                     "id": "transparent",
                     "description": "Make the selected option and scroll bar on the Main List transparent",
                     "type": "bool",
-                    "default": "Disabled",
+                    "default": "Enable",
                 },
                  {
                     "name": "Image Borders",
                     "id": "imageBorder",
                     "description": "Show a border around game images",
                     "type": "bool",
-                    "default": "Disable",
+                    "default": "Enable",
                 },    
                 {
                     "name": "Favorites on Top",
@@ -640,9 +639,9 @@ Item {
                 {
                     "name": "Enable RetroAchievements",
                     "id": "enableRA",
-                    "description": "Press 'Scroll page up' to load achievements on a game. Configure system & game overrides in config file in assets folder",
+                    "description": "Press 'Scroll page up' to load achievements. Configure system & game overrides in the assets/AchievementConfig file",
                     "type": "bool",
-                    "default": "Disable",
+                    "default": "Enable",
                 },  
                 {
                     "name": "Username",
@@ -659,16 +658,23 @@ Item {
                     "default": "",
                 },
                 {
-                    "name": "Show cached games indicator",
+                    "name": "Show cached data indicator",
                     "id": "cacheIndicator",
                     "description": "Show an indicator on the Main List for games that have locally saved achievement data",
                     "type": "bool",
                     "default": "Enable",
                 },  
                 {
+                    "name": "Show missable indicator",
+                    "id": "missableIndicator",
+                    "description": "Show [m] for missable achievements",
+                    "type": "bool",
+                    "default": "Enable",
+                },  
+                {
                     "name": "Clear Achievement Cache",
                     "id": "clearRACache",
-                    "description": "Remove locally cached RetroAchievements data",
+                    "description": "Delete locally saved achievement data that is used when offline",
                     "type": "action",
                     "default": "",
                 },

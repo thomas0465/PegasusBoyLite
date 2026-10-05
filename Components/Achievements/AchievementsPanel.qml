@@ -547,7 +547,7 @@ Rectangle{
                     rightMargin: parent.width * 0.02
                 }
 
-                text: modelData.Points 
+                text:modelData.Points 
                 font.family: themeSettings.font.customFont
                 font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.31 + ( themeSettings.mainFontSize - 20)
                 font.bold: false
@@ -577,7 +577,7 @@ Rectangle{
                     rightMargin: parent.width * 0.02
                 }
 
-                text: modelData.Title
+                text: (themeSettings.missableIndicator && String(modelData.type || modelData.Type || "").toLowerCase().indexOf("missable") !== -1 ? "[m] " : "") + modelData.Title
                 wrapMode: Text.WordWrap
                 font.family: themeSettings.font.customFont
                 font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)

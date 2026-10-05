@@ -21,6 +21,7 @@ Item {
 	    "raApiKey",
         "enableRA",
         "cacheIndicator",
+        "missableIndicator",
 
         "lastPlayedDays",
         "itemListRows",
@@ -87,14 +88,13 @@ Item {
         "darkenbg"
     ]
 
-    property bool enableRA: false
+    property bool enableRA: true
     property string raUsername: ""
     property string raApiKey: ""
     property bool cacheIndicator: true
-
+    property bool missableIndicator: true
 
     property string theme: "Black"
-
     property int settingsVersion: 1
 
     // Application state
@@ -169,8 +169,8 @@ Item {
     property string backgroundColor: "transparent"
     property string backgroundGradientColor: "transparent"
     property bool backgroundGradientInvert: false
-    property bool transparent: false
-    property bool imageBorder: false
+    property bool transparent: true
+    property bool imageBorder: true
     property int darkenbg: 0
 
     FontLoader {
