@@ -230,7 +230,7 @@ FocusScope {
         anchors {
             right: parent.right
             leftMargin: parent.width * 0.04
-            rightMargin: parent.width * 0.045
+            rightMargin: parent.width * 0.06
             bottom: gameIcon.bottom
             bottomMargin: gameIcon.height * 0.15
         }
