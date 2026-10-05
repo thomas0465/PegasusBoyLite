@@ -38,7 +38,7 @@ Item {
 
         // Sit the frame *outside* the painted image so the border never
         // paints over the top/bottom rows of pixels.
-        width: Math.ceil(parent.paintedWidth) + bw * 2
+        width: Math.ceil(parent.paintedWidth) + bw * 2 - 3
         height: Math.ceil(parent.paintedHeight) + bw * 2 - 3
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
@@ -68,7 +68,7 @@ Item {
     Rectangle {
         property int bw: Math.max(Math.round(parent.width * 0.002), 2)
 
-        width: Math.ceil(parent.paintedWidth) + bw * 2
+        width: Math.ceil(parent.paintedWidth) + bw * 2 - 3
         height: Math.ceil(parent.paintedHeight) + bw * 2 - 3
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2 )

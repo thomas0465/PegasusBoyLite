@@ -397,7 +397,7 @@ FocusScope {
             width: parent.width * .96
             height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) : parent.height * (themeSettings.subMenuEmptyHeight / 100)
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.02
+            anchors.leftMargin: parent.width * 0
 
             onStatusChanged: {
                 if (collectionsMenuLoader.status == Loader.Ready) {
@@ -759,28 +759,21 @@ Timer {
             height: 2
             x: -100
             y: parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) - 2
-            color: themeData.colorTheme[theme].light
+            color: themeData.colorTheme[theme].primary
+            //opacity: themeSettings.transparent ? 0.5 : 1
         }
 
-        Rectangle {
-            width: (parent.width * (themeSettings.itemListWidth / 100)) + 13
-           height: 2
-            x: 0
-            y: parent.height
-            color: themeData.colorTheme[theme].light
-            opacity: 0
-        }
 
 
 	//for image big view, darken the background
         Rectangle {
-        id: mediabackground
-	    opacity:  (singleimageview2 == 0) ? 0 : 0.85
-        width: root.width
-	    height: root.height
-	    x: 0
-        y:0
-	    color: "#000000"
+            id: mediabackground
+            opacity:  (singleimageview2 == 0) ? 0 : 0.85
+            width: root.width
+            height: root.height
+            x: 0
+            y:0
+            color: "#000000"
         }
 
 
@@ -795,8 +788,9 @@ Timer {
             anchors.top: collectionsMenuLoader.bottom
             anchors.topMargin: parent.height * 0.02
             anchors.right: parent.right
+            anchors.rightMargin: parent.width * -0.01
             anchors.left: gamesListLoader.right
-            anchors.leftMargin: parent.width * 0.02
+            anchors.leftMargin: parent.width * 0.015
             anchors.bottom: parent.bottom
         }
 	    

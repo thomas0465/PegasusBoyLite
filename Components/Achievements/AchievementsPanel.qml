@@ -193,7 +193,7 @@ FocusScope {
 
         anchors {
             top: parent.top
-            topMargin: parent.height * 0.03
+            topMargin: parent.height * 0.01
             left: scrollbar.left
             //leftMargin: parent.width * 0.014
         }
@@ -206,6 +206,18 @@ FocusScope {
         fillMode: Image.PreserveAspectFit
         asynchronous: true
         smooth: true
+
+        //Rectangle {
+        //    property int bw: Math.max(Math.round(parent.width * 0.002), 2)
+        //    width: Math.ceil(parent.paintedWidth) + bw * 2 - 3
+        //    height: Math.ceil(parent.paintedHeight) + bw * 2 - 3
+        //    x: Math.round((parent.width - width) / 2)
+        //    y: Math.round((parent.height - height) / 2 )
+        //    color: "transparent"
+        //    border.color: themeData.colorTheme[theme].primary
+        //    border.width: bw
+        //    opacity: themeSettings.imageBorder 
+        //}
     }
 
 
@@ -220,13 +232,13 @@ FocusScope {
             leftMargin: parent.width * 0.04
             rightMargin: parent.width * 0.045
             bottom: gameIcon.bottom
-            bottomMargin: gameIcon.height * 0.08
+            bottomMargin: gameIcon.height * 0.15
         }
 
         text:fetcher.achievementsTotal
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.31 + 5 + ( themeSettings.mainFontSize - 20) 
         font.bold: false
         color: themeData.colorTheme[theme].light
     }
@@ -237,14 +249,14 @@ FocusScope {
 
         anchors {
             top: gameIcon.top
-            topMargin: gameIcon.height * 0.08
+            topMargin: gameIcon.height * 0.15
             horizontalCenter: panelTitleNumBottom.horizontalCenter
         }
 
         text: fetcher.achievementsUnlocked
         wrapMode: Text.WordWrap
         font.family: themeSettings.font.customFont
-        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + 5 + ( themeSettings.mainFontSize - 20) 
+        font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.31 + 5 + ( themeSettings.mainFontSize - 20) 
         font.bold: false
         color: themeData.colorTheme[theme].light
     }
@@ -255,7 +267,7 @@ FocusScope {
         visible: contentOpen
 
         width: panelTitleNumBottom.width
-        height: gameIcon.height/30
+        height: gameIcon.height/40
         anchors {
             verticalCenter: gameIcon.verticalCenter
             horizontalCenter: panelTitleNumBottom.horizontalCenter
@@ -275,7 +287,7 @@ FocusScope {
 
         anchors {
             bottom: panelTitleBox.bottom
-            bottomMargin: (panelTitle.overflows ? 0: - panelTitleBox.height * 0.1)
+            bottomMargin: (panelTitle.overflows ? -achievementsPanelRoot.height* 0.0015: - achievementsPanelRoot.height * 0.015)
             left: panelTitleBox.left
             leftMargin: gameIcon.height * 0.03
             //horizontalCenter: parent.horizontalCenter
@@ -311,7 +323,7 @@ Rectangle{
 
         property real dotsRowHeight: gameIcon.width * 0.1
         property real normalHeight: fetcher.subsetsList.length > 1 ? (gameIcon.height - dotsRowHeight) : gameIcon.height
-        height: Math.max(normalHeight, (fetcher.subsetsList.length > 1 ? panelTitle.contentHeight * 1.1 : panelTitle.contentHeight))
+        height: Math.max(normalHeight, (fetcher.subsetsList.length > 1 ? panelTitle.contentHeight * 1.1 : panelTitle.contentHeight *.95))
 
 
     Text {
@@ -372,18 +384,20 @@ Rectangle{
 
     }
 
-    Rectangle{
-        id: splitBar
-        visible: contentOpen
-        width: parent.width * .97
-        height: 2
-        color: themeData.colorTheme[theme].primary
-        z: 999
-        anchors{
-            left: parent.left
-            top:listView.top
-        }
-    }
+    //Rectangle{
+    //    id: splitBar
+    //    visible: contentOpen
+    //    width: parent.width * .955
+    //    height: 2
+    //    color: themeData.colorTheme[theme].primary
+    //    //opacity: themeSettings.transparent ? 0.5 : 1
+    //    z: 999
+    //    anchors{
+    //        left: parent.left
+    //        top:listView.top
+    //        //topMargin: -parent.height * 0.01
+    //    }
+    //}
 
 
 
@@ -396,7 +410,7 @@ Rectangle{
             left: parent.left
             right: parent.right
             leftMargin: parent.width * 0.04
-            rightMargin: parent.width * 0.04
+            rightMargin: parent.width * 0.045
         }
 
         y: achievementsPanelRoot.headerBottomY + parent.height * 0.02
@@ -454,7 +468,7 @@ Rectangle{
                 
                 achievementsPanelRoot.height/themeSettings.itemListRows + achievementsPanelRoot.height * 0.022, 
             
-                achTitle.implicitHeight + achDesc.implicitHeight + achievementsPanelRoot.height * 0.02
+                achTitle.implicitHeight + achDesc.implicitHeight + achievementsPanelRoot.height * 0.02 + 5
             )
 
             property bool unlocked: !!modelData.DateEarned
@@ -488,6 +502,7 @@ Rectangle{
                 anchors {
                     top: parent.top
                     topMargin:  achievementsPanelRoot.height/themeSettings.itemListRows * .1
+                    //verticalCenter: parent.verticalCenter
                     left: parent.left
                     leftMargin: parent.width * 0.01
                 }
@@ -502,6 +517,18 @@ Rectangle{
                 fillMode: Image.PreserveAspectFit
                 asynchronous: true
                 smooth: true
+
+                //    Rectangle {
+                //        property int bw: Math.max(Math.round(parent.width * 0.002), 2)
+                //        width: Math.ceil(parent.paintedWidth) + bw * 2 - 3
+                //        height: Math.ceil(parent.paintedHeight) + bw * 2 - 3
+                //        x: Math.round((parent.width - width) / 2)
+                //        y: Math.round((parent.height - height) / 2 )
+                //        color: "transparent"
+                //        border.color: themeData.colorTheme[theme].primary
+                //        border.width: bw
+                //        opacity: themeSettings.imageBorder 
+                //   }
             }
 
             Text {
@@ -509,14 +536,15 @@ Rectangle{
 
                 anchors {
                     top: parent.top
-                    topMargin: parent.width * 0.02
+                    topMargin: parent.width * 0.015
+		    //verticalCenter: badgeImage.verticalCenter
                     right: parent.right
                     rightMargin: parent.width * 0.02
                 }
 
                 text: modelData.Points 
                 font.family: themeSettings.font.customFont
-                font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.4 + ( themeSettings.mainFontSize - 20)
+                font.pixelSize: achievementsPanelRoot.height/themeSettings.itemListRows * 0.31 + ( themeSettings.mainFontSize - 20)
                 font.bold: false
 
                 color: unlocked ? 
@@ -572,7 +600,7 @@ Rectangle{
                     //bottomMargin: parent.height * 0.01
                     left: badgeImage.right
                     right: pointsText.left
-                    leftMargin: parent.width * 0.07
+                    leftMargin: parent.width * 0.05
                     rightMargin: parent.width * 0.02
                 }
 

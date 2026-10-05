@@ -19,6 +19,7 @@ Item {
     property var subsetsList: []          // [{id, title}], base game always first
     property int currentSubsetIndex: 0    // subset currently displayed
     property int pendingSubsetIndex: 0    // subset most recently requested (may be ahead of the display)
+    property string shownGameId: ""       // game ID on screen for the current fetch; "" until its first apply
 
     // Bumped on every fetchAchievementsForGame call. Responses to older calls
     // are cached but never applied, so fast switching can't show stale data.
@@ -117,6 +118,9 @@ Item {
         var serial = ++requestSerial
         var isSubset = !!subset
         var cachedShown = false     // cached data is on screen, so the panel is open
+
+        // New fetch: its first applyGameData opens the panel, later ones only refresh it
+        shownGameId = ""
 
         showStatus("stop")
         if (!isSubset) { currentGame = game }
@@ -333,11 +337,28 @@ Item {
         fetchAchievementsForGame(currentGame, subsetsList[newIndex])
     }
 
-    // Shared path to open achievements panel
+    // Shared path to open achievements panel. When the online data arrives for the
+    // game the cache already put on screen, it is a refresh: the panel isn't
+    // reopened, and the list is only replaced if something changed, so the user's
+    // scroll position survives.
     function applyGameData(gameId, data) {
+        var refresh = (shownGameId === String(gameId))
+        shownGameId = String(gameId)
+
+        var newList = buildAchievementsList(data)
+
         gameTitle = data.Title
         imageIcon = data.ImageIcon
-        achievementsList = buildAchievementsList(data)
+
+        if (refresh) {
+            if (JSON.stringify(newList) !== JSON.stringify(achievementsList)) {
+                achievementsList = newList
+            }
+            showStatus("stop")
+            return
+        }
+
+        achievementsList = newList
 
         // Subset list is persisted per game ID; fall back to just this game
         var list = [{ id: gameId, title: data.Title }]
