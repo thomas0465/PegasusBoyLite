@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtMultimedia 5.9
 
 import "../Scrollbar"
+import "Logger.js" as Logger
 
 // Right-side popup listing RetroAchievements for the currently open game.
 
@@ -24,6 +25,10 @@ FocusScope {
     property bool enlargeBadge: false
     property int lastRAIndex: 0
 
+    // true between a page key's press and its release (see Keys.onReleased)
+    property bool pageDownPressed: false   // used by prev page
+    property bool pageUpPressed: false     // used by next page
+
     property real headerBottomY: Math.max(gameIcon.y + gameIcon.height, panelTitleBox.y + panelTitleBox.height)
 
     Component.onCompleted: {
@@ -45,6 +50,29 @@ FocusScope {
     anchors.leftMargin: parent.width * 0.02
     anchors.top: collectionsMenuLoader.bottom
     anchors.bottom:parent.bottom
+
+    // Jump 10 achievements down (or up). The target is worked out first, scrolled to the
+    // middle of the list, and only then selected, so the list has nothing left to snap to.
+    // Already at the end (and list wrap enabled): wraps to the other end instead.
+    function pageJump(down, canWrap) {
+        var last = listView.count - 1
+        var wrap = themeSettings.listwrap && canWrap
+        var cur = listView.currentIndex
+        var target
+
+        if (down) {
+            target = (cur === last && wrap) ? 0 : Math.min(last, cur + 5)
+        } else {
+            target = (cur === 0 && wrap) ? last : Math.max(0, cur - 5)
+        }
+
+        listView.positionViewAtIndex(target, ListView.Center)
+        listView.currentIndex = target
+        lastRAIndex = target
+        if (themeSettings.soundslist) {
+            navSound.play()
+        }
+    }
 
     function open(game) {
         achloading = true
@@ -101,13 +129,23 @@ FocusScope {
     }
 
     Keys.onReleased: {
-        if (!contentOpen) { return }
-
-        if (api.keys.isPageUp(event)) {
+        // A trigger (e.g. L2) can lose its first press; if the release arrives without
+        // a matching press, run the jump now.
+        if (contentOpen && api.keys.isPrevPage(event)) {
             event.accepted = true
-            achievementsPanelRoot.close()
+            if (!pageDownPressed) { pageJump(false, false) }
+            pageDownPressed = false
             return
         }
+
+        if (contentOpen && api.keys.isNextPage(event)) {
+            event.accepted = true
+            if (!pageUpPressed) { pageJump(true, false) }
+            pageUpPressed = false
+            return
+        }
+
+        if (!contentOpen) { return }
     }
 
     Keys.onPressed: {
@@ -137,6 +175,14 @@ FocusScope {
             if(themeSettings.soundslist){
                 navSound.play();
             }
+            return
+        }
+         
+         
+        //close panel
+        if (api.keys.isPageUp(event)) {
+            event.accepted = true
+            achievementsPanelRoot.close()
             return
         }
 
@@ -177,12 +223,23 @@ FocusScope {
             return
         }
 
+        // previous page: down 10
         if (api.keys.isPrevPage(event)) {
-            event.accepted = true;
+            event.accepted = true
+            pageDownPressed = true
+            pageJump(false, !event.isAutoRepeat)
             return
         }
 
+        // scroll page down: up 10
         if (api.keys.isNextPage(event)) {
+            event.accepted = true
+            pageUpPressed = true
+            pageJump(true, !event.isAutoRepeat)
+            return
+        }
+
+        if (api.keys.isPageUp(event)) {
             //allow going to settings directly
             achievementsPanelRoot.close()
             return

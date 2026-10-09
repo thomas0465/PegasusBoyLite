@@ -51,6 +51,7 @@ Item {
 
     Keys.onPressed: {
 
+        //go to settings
         if (api.keys.isNextPage(event)) {
             event.accepted = true
             if(menuLoader.item.currentIndex == 0){
@@ -68,8 +69,9 @@ Item {
             return
         }
 
+        //from settings go back
         if (api.keys.isPrevPage(event)) {
-            event.accepted = true
+            //event.accepted = true
             if(menuLoader.item.currentIndex == 0){
                 //menuItem.menuListView.incrementCurrentIndex()
                 //if((themeSettings.soundsmenu)){

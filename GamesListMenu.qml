@@ -288,8 +288,8 @@ FocusScope {
             }
 
 
-            /////////////
-            if (api.keys.isPrevPage(event)) {
+            //switch to favs collection and back
+            if (api.keys.isPrevPage(event) && !achievementsPanel.contentOpen && !achievementsPanel.achloading) {
                 event.accepted = true;
 
                 viewcreated = false
@@ -341,21 +341,23 @@ FocusScope {
                 }
                 return
             }
+
+                        //load ach
+            if (api.keys.isPageUp(event) && singleimageview2 == 0 && themeSettings.enableRA) {
+                event.accepted = true
+                achievementsPanel.open(currentGame)
+                return
+            }
         }
 
- Keys.onReleased: {
-    if (api.keys.isPageUp(event) && singleimageview2 == 0 && themeSettings.enableRA) {
-        event.accepted = true
-        achievementsPanel.open(currentGame)
-        return
-    }
+        Keys.onReleased: {
 
             //prevent autorepeat
             if (api.keys.isCancel(event) || api.keys.isDetails(event) || api.keys.isFilters(event)){
                 keyup = true
                 return;
             }
-}
+        }
 
 
 
@@ -367,6 +369,7 @@ FocusScope {
 
             width: parent.width * .96
             height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) : parent.height * (themeSettings.subMenuEmptyHeight / 100)
+            //height: 0
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0
 
@@ -414,9 +417,9 @@ FocusScope {
                     themeSettings["menuIndex_subMenu"] = currentIndex; 
                 }
 
-                Component.onCompleted: {
-                    Logger.info("GamesListMenu:collectionsMenuListView:onCompleted")
-                }
+                //Component.onCompleted: {
+                //    Logger.info("GamesListMenu:collectionsMenuListView:onCompleted")
+                //}
             }
         }
 
@@ -519,7 +522,7 @@ FocusScope {
 
             Keys.onPressed: function(event) {
                 if (event.key === Qt.Key_Up || event.key === Qt.Key_Down || event.key === Qt.Key_Left || event.key === Qt.Key_Right) {
-                    event.accepted = true; // Block only Up and Down
+                    event.accepted = true; 
                 }
             }
             Keys.onReleased: function(event) {
@@ -726,6 +729,7 @@ Timer {
             
         }
 
+        //submenu line divider
         Rectangle {
             width: parent.width + 1000
             height: 2
