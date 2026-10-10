@@ -126,7 +126,7 @@ FocusScope {
             }
 
             //change collections
-            if (event.key == Qt.Key_Left && subMenuEnable) {
+            if (event.key == Qt.Key_Left && subMenuEnable && !themeSettings.favLock) {
                 event.accepted = true;
                 viewcreated = false
                 pagecreated = true
@@ -179,7 +179,7 @@ FocusScope {
                 return;
             }
 
-            if (event.key == Qt.Key_Right && subMenuEnable) {
+            if (event.key == Qt.Key_Right && subMenuEnable && !themeSettings.favLock) {
                 event.accepted = true;
                 viewcreated = false
                 pagecreated = true
@@ -266,7 +266,7 @@ FocusScope {
             
 
             //favorite game
-            if (api.keys.isFilters(event)) {
+            if (api.keys.isFilters(event) && !themeSettings.favLock) {
                 event.accepted = true;
                 if(keyup){
                     if(themeSettings.soundsmenu){
@@ -289,7 +289,7 @@ FocusScope {
 
 
             //switch to favs collection and back
-            if (api.keys.isPrevPage(event) && !achievementsPanel.contentOpen && !achievementsPanel.achloading) {
+            if (api.keys.isPrevPage(event) && !achievementsPanel.contentOpen && !achievementsPanel.achloading && !themeSettings.favLock) {
                 event.accepted = true;
 
                 viewcreated = false
@@ -368,15 +368,17 @@ FocusScope {
             active: subMenuEnable
 
             width: parent.width * .96
-            height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) : parent.height * (themeSettings.subMenuEmptyHeight / 100)
-            //height: 0
+            height: (themeSettings.favLock) ?  15: parent.height * (themeSettings.subMenuEmptyHeight / 100)
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0
+
+            opacity: themeSettings.favLock ? 0.00001 : 1
+
 
             onStatusChanged: {
                 if (collectionsMenuLoader.status == Loader.Ready) {
                     let index = 0
-                    if (item.model.get(themeSettings["menuIndex_subMenu"]).name === themeSettings["menuIndex_subMenu_name"]) {
+                    if (!themeSettings.favLock && item.model.get(themeSettings["menuIndex_subMenu"]).name === themeSettings["menuIndex_subMenu_name"]) {
                         index = themeSettings["menuIndex_subMenu"]
                     }
                     item.moveIndex(index)
@@ -696,7 +698,7 @@ Timer {
             }  
         }
 
-        	//collections scroll bar
+        //collections scroll bar
         Rectangle {
 
             width: gamesListLoader.width
@@ -712,7 +714,7 @@ Timer {
 
             
             color: "transparent"
-            opacity: themeSettings.transparent ? 0.5 : 1
+            opacity: themeSettings.favLock ? 0 : (themeSettings.transparent ? 0.5 : 1)
 
             Rectangle {
 
@@ -732,7 +734,7 @@ Timer {
         //submenu line divider
         Rectangle {
             width: parent.width + 1000
-            height: 2
+            height: themeSettings.favLock ? 0 : 2
             x: -100
             y: parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) - 2
             color: themeData.colorTheme[theme].primary
@@ -761,7 +763,7 @@ Timer {
             visible: gamesListLoader.item.model.count > 0
             active: false   // switched on once by gamesListLoader.onLoaded, never turned off
             
-            anchors.top: collectionsMenuLoader.bottom
+            anchors.top: themeSettings.favLock ? parent.top : collectionsMenuLoader.bottom
             anchors.topMargin: parent.height * 0.02
             anchors.right: parent.right
             anchors.rightMargin: parent.width * -0.01

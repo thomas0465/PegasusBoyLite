@@ -9,6 +9,8 @@ Item {
         {
              "name": "Style",
             "settings": [
+
+
                 {
                     "name": "Theme",
                     "id": "theme",
@@ -45,9 +47,10 @@ Item {
     { "label": "Gray", "value": "#838383" },
     { "label": "Dark Gray", "value": "#313131" },
     { "label": "Black", "value": "#000000" },
-    { "label": "Lavender", "value": "#8f71ff" },
+    { "label": "Lavender", "value": "#7b59f5" },
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
+    { "label": "Muted Purple", "value": "#282a36"},
     { "label": "Dark Blue", "value": "#09005b" },
     { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Light Blue", "value": "#098393" },
@@ -92,9 +95,10 @@ Item {
     { "label": "Gray", "value": "#838383" },
     { "label": "Dark Gray", "value": "#313131" },
     { "label": "Black", "value": "#000000" },
-    { "label": "Lavender", "value": "#8f71ff" },
+    { "label": "Lavender", "value": "#7b59f5" },
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
+    { "label": "Muted Purple", "value": "#282a36"},
     { "label": "Dark Blue", "value": "#09005b" },
     { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Light Blue", "value": "#098393" },
@@ -192,15 +196,16 @@ Item {
                     "default": "White",
                     "options": 
 [
-    { "label": "None", "value": "transparent" },
+    //{ "label": "None", "value": "transparent" },
     { "label": "White", "value": "#ffffff" },
     { "label": "Light Gray", "value": "#c1c1c1" },
     { "label": "Gray", "value": "#838383" },
     { "label": "Dark Gray", "value": "#313131" },
     { "label": "Black", "value": "#000000" },
-    { "label": "Lavender", "value": "#8f71ff" },
+    { "label": "Lavender", "value": "#7b59f5" },
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
+    { "label": "Muted Purple", "value": "#282a36"},
     { "label": "Dark Blue", "value": "#09005b" },
     { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Light Blue", "value": "#098393" },
@@ -227,6 +232,13 @@ Item {
         {
             "name": "General",
             "settings": [
+                {
+                    "name": "Favorites Lock",
+                    "id": "favLock",
+                    "description": "Distraction free interface that only shows your favorites",
+                    "type": "bool",
+                    "default": "Disable",
+                },
                 {
                     "name": "Sounds - Menu",
                     "id": "soundsmenu",

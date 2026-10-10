@@ -85,7 +85,9 @@ Item {
         "backgroundGradientInvert",
         "transparent",
         "imageBorder",
-        "darkenbg"
+        "darkenbg",
+
+        "favLock"
     ]
 
     property bool enableRA: true
@@ -172,6 +174,8 @@ Item {
     property bool transparent: true
     property bool imageBorder: true
     property int darkenbg: 0
+
+    property bool favLock: false
 
     FontLoader {
         id: customFont
