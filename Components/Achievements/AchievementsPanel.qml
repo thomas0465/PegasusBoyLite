@@ -209,12 +209,18 @@ FocusScope {
         if (event.key == Qt.Key_Left) {
             event.accepted = true
             fetcher.switchSubset(-1)
+            if (themeSettings.soundslist) {
+     	        navSound.play()
+            }
             return
         }
 
         if (event.key == Qt.Key_Right) {
             event.accepted = true
             fetcher.switchSubset(1)
+       	    if (themeSettings.soundslist) {
+            	navSound.play()
+            }
             return
         }
 

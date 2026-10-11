@@ -33,8 +33,8 @@ Timer {
     repeat: true
     onTriggered: {
         var t = rootItem.time + 0.2;
-        if (t >= 628.4)
-            t == 0;
+        if (t >= 628.318)
+            t = 0;
         rootItem.time = t;
     }
 }

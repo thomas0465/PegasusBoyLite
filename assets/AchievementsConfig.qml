@@ -103,9 +103,9 @@ HiddenDreamcast:	dreamcast
 //-----------------------------------------------------------------
 //Game Title Override
 //-----------------------------------------------------------------
-	//left value is the exact file name to match without file type extension, case sensitive
-	//right is the RetroAchievements game name to match
-	//replace periods in file names with spaces for example 'Mario (v2.1)' to 'Mario (v2 1)'
+	//The left value is the exact file name to match without file type extension, case sensitive
+	//The right is the RetroAchievements game name to match, as shown on the RA game page.
+	//Replace periods in file names with spaces for example 'Mario (v2.1)' to 'Mario (v2 1)'
 	
 	property string titleOverridesText: "
 
