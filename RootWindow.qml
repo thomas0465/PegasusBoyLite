@@ -29,19 +29,17 @@ Item {
             ? lightenColor(resolvedTopColorBase, themeSettings.shaderHillsLighten / 100)
             : resolvedTopColorBase
 
-        HillsShaderEffect {
+        Loader {
+            id: hillsLoader
             anchors.fill: parent
-            opacity: themeSettings.shaderHillsEnable? 1 : 0
+            active: themeSettings.shaderHillsEnable
             rotation: themeSettings.shaderHillsInvert ? 180 : 0
 
-            bottomColor: resolvedBottomColor
-            topColor: resolvedTopColor
-
-
-           
+            sourceComponent: HillsShaderEffect {
+                bottomColor: rootWindow.resolvedBottomColor
+                topColor: rootWindow.resolvedTopColor
+            }
         }
-
-
 
     SoundEffect {
         id: forSound;
@@ -103,7 +101,7 @@ Item {
         height: parent.height
         color: backgroundMainColor
         gradient: themeSettings.backgroundGradientColor == "transparent" ? null: backgroundGradient
-        opacity: themeSettings.shaderHillsEnable? 0 : 1
+        visible: !themeSettings.shaderHillsEnable
     }
 
       Rectangle{ anchors.fill: parent 

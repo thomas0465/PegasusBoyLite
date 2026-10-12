@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtMultimedia 5.9
 
 import "../Scrollbar"
-import "Logger.js" as Logger
 
 // Right-side popup listing RetroAchievements for the currently open game.
 

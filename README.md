@@ -6,7 +6,7 @@ Pegasus Boy Lite uses a minimal interface that prioritizes the game list and ima
 ![0|150](./assets/screenshots/photo.jpg)
 
 ## Installation
-Download the [latest release](https://github.com/tap0119/PegasusBoyLite/releases), extract and place in the resulting folder your Pegasus theme directory. In Pegasus, select the theme in the settings menu.
+Download the [latest release](https://github.com/thomas0465/PegasusBoyLite/releases), extract and place in the resulting folder your Pegasus theme directory. In Pegasus, select the theme in the settings menu.
 
 ## Features
 - Minimal interface
@@ -33,11 +33,11 @@ The theme will automatically cache loaded achievements for faster loading and vi
 ## Controls
 - Dpad              - Navigate
 - (R1) Next Page    - Navigate to Settings and back
-- - On the Retroachievements list, scroll down 10
+- - On the Retroachievements list, scroll down 5
 - (L1) Prev Page    - On the Main List, jump to favorites collection and back
 - - On the Settings page, go back to the Main List
-- - On the Retroachievements list, scroll up 10
-- (L2) Page Down    - Open/Close Retroachievements for the current game
+- - On the Retroachievements list, scroll up 5
+- (R2) Page Up      - Open/Close Retroachievements for the current game
 
 
 - (A) Accept        - Launch Game
