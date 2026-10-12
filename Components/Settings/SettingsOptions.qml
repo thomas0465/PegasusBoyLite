@@ -12,6 +12,11 @@ FocusScope {
     // property alias model: settingsListView.model
     property alias model: optionsRoot.settingModel
 
+    // lets SettingsMenu run an "action" setting with a single Enter
+    function runAction(id) {
+        optionsRoot.runAction(id)
+    }
+
     onActiveFocusChanged: {
         if (!activeFocus) { return }
 
@@ -77,6 +82,12 @@ FocusScope {
             if (api.keys.isAccept(event)) {
                 //event.accepted = true
                 actionFeedback = ""
+
+                // Save/Load Settings: the chosen option is a profile slot, not a value
+                if (optionsRoot.isProfileSetting()) {
+                    optionsRoot.runProfileAction()
+                    return
+                }
                 var valueToSave = settingsListView.model[settingsListView.currentIndex];
 
                 if (optionsRoot.settingModel.type === "list") {
@@ -92,6 +103,42 @@ FocusScope {
         function runAction(id) {
             if (id === "clearRACache") {
                 clearRACache()
+                return
+            }
+
+            // (profile save/load are list settings, see runProfileAction)
+        }
+
+        // "Save Settings" / "Load Settings" are list settings whose options are the
+        // profile slots; picking a slot runs the action instead of storing a value.
+        property string profileStatus: ""
+        property int profileRevision: 0   // bumped after a save so the "(empty)" labels refresh
+
+        function isProfileSetting() {
+            return settingModel.id === "profileSave" || settingModel.id === "profileLoad"
+        }
+
+        function runProfileAction() {
+            var value = settingModel.options.get(settingsListView.currentIndex).value
+
+            if (value === "delete") {
+                themeSettings.deleteAllProfiles()
+                profileRevision++
+                profileStatus = "All profiles deleted"
+                return
+            }
+
+            var n = parseInt(value)
+
+            if (settingModel.id === "profileSave") {
+                themeSettings.saveProfile(n)
+                profileRevision++
+                profileStatus = "Saved to Profile " + n
+            } else {
+                var count = themeSettings.loadProfile(n)
+                profileStatus = (count < 0)
+                    ? "Profile " + n + " is empty"
+                    : "Loaded Profile " + n
             }
         }
 
@@ -109,14 +156,14 @@ FocusScope {
             }
             api.memory.set("ra_cache_index", JSON.stringify([]))
 
-            optionsRoot.actionFeedback = "Cleared " + keys.length + " cached entries
-
-Press Enter to return"
+            optionsRoot.actionFeedback = "Cleared " + keys.length + " cached entries"
         }
 
         onSettingModelChanged: {
             // settingsListView.model = settingModel.options;
             // settingType = settingModel.type;
+            profileStatus = ""
+            actionFeedback = ""
             if (settingModel !== undefined) { 
                 state = settingModel.type
                 Logger.debug("SettingsOptions:onSettingModelChanged:state:" + state)
@@ -181,6 +228,24 @@ Press Enter to return"
             rows: settingsListView.rows
             textName: ""
             settingModel: optionsRoot.settingModel
+        }
+
+        // result of Save/Load Settings, shown just above the profile list
+        Text {
+            visible: optionsRoot.profileStatus !== "" && optionsRoot.isProfileSetting()
+            anchors {
+                bottom: parent.top
+                bottomMargin: parent.height * 0.03
+                left: parent.left
+                leftMargin: parent.width * -0.05
+                right: parent.right
+                rightMargin: parent.width * 0.02
+            }
+            wrapMode: Text.WordWrap
+            text: optionsRoot.profileStatus
+            font.family: themeSettings.font.customFont
+            font.pixelSize: parent.height * 0.08
+            color: themeData.colorTheme[theme].primary
         }
 
         //action box
@@ -299,7 +364,16 @@ Press Enter to return"
                         for(var i=0; i < optionsRoot.settingModel.options.count; ++i) {
                             var opt = optionsRoot.settingModel.options.get(i)
                             // Show "label" if the option defines one 
-                            list.push(opt.label !== undefined ? opt.label : opt.value)
+                            var label = opt.label !== undefined ? opt.label : opt.value
+
+                            // Save/Load Settings: mark empty profile slots
+                            // (profileRevision makes this refresh after a save)
+                            if (optionsRoot.profileRevision >= 0 && optionsRoot.isProfileSetting()
+                                    && opt.value !== "delete"
+                                    && !themeSettings.hasProfile(parseInt(opt.value))) {
+                                label += " (empty)"
+                            }
+                            list.push(label)
                         }
                         return list
                     }

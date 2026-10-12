@@ -231,6 +231,73 @@ property var font: ({
         }
     }
 
+    // ---------------------------------------------------------------
+    // Profiles: snapshots of the current settings, saved in api.memory
+    // as JSON under "profile_1" ... "profile_<profileCount>".
+    // ---------------------------------------------------------------
+    readonly property int profileCount: 3
+
+    // Not part of a profile: account details and where you are in the lists
+    readonly property var profileExcluded: [
+        "raUsername",
+        "raApiKey",
+        "menuIndex_main",
+        "menuIndex_subMenu",
+        "menuIndex_subMenu_name",
+        "menuIndex_gamesList",
+        "menuIndex_gamesList_name"
+    ]
+
+    function profileKey(n) {
+        return "profile_" + n
+    }
+
+    function hasProfile(n) {
+        var stored = api.memory.get(profileKey(n))
+        return stored !== undefined && stored !== null && stored !== ""
+    }
+
+    // Save the current settings into profile n
+    function saveProfile(n) {
+        var data = {}
+        for (var i = 0; i < settingsList.length; i++) {
+            var name = settingsList[i]
+            if (profileExcluded.indexOf(name) === -1) {
+                data[name] = themeSettings[name]
+            }
+        }
+        api.memory.set(profileKey(n), JSON.stringify(data))
+    }
+
+    // Empty every profile slot
+    function deleteAllProfiles() {
+        for (var n = 1; n <= profileCount; n++) {
+            api.memory.set(profileKey(n), "")
+        }
+    }
+
+    // Apply profile n. Returns how many settings were applied, or -1 if the
+    // profile is empty or unreadable.
+    function loadProfile(n) {
+        var stored = api.memory.get(profileKey(n))
+        if (!stored) { return -1 }
+
+        var data
+        try { data = JSON.parse(stored) } catch (e) { return -1 }
+
+        var applied = 0
+        for (var name in data) {
+            if (settingsList.indexOf(name) === -1) { continue }
+            if (profileExcluded.indexOf(name) !== -1) { continue }
+            // skip anything whose type no longer matches the setting
+            if (typeof themeSettings[name] !== typeof data[name]) { continue }
+
+            saveSetting(name, data[name])
+            applied++
+        }
+        return applied
+    }
+
     // Load settings
     Component.onCompleted: {
         loadAllSettings();

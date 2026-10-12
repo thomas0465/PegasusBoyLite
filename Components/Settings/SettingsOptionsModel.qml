@@ -10,7 +10,6 @@ Item {
              "name": "Style",
             "settings": [
 
-
                 {
                     "name": "Theme",
                     "id": "theme",
@@ -226,12 +225,67 @@ Item {
 ]
                     
                 },
+                                {
+                    "name": "Sounds - Main List",
+                    "id": "soundslist",
+                    "description": "Enable sounds when navigating the Main List",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                                {
+                    "name": "Sounds - Menu",
+                    "id": "soundsmenu",
+                    "description": "Enable sounds when navigating the Menu and favoriting games",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                                {
+                    "name": "Transparent Elements",
+                    "id": "transparent",
+                    "description": "Make the selected option and scroll bar on the Main List transparent",
+                    "type": "bool",
+                    "default": "Enable",
+                },
+                 {
+                    "name": "Image Borders",
+                    "id": "imageBorder",
+                    "description": "Show a border around game images",
+                    "type": "bool",
+                    "default": "Enable",
+                },  
             
             ],
         },
         {
             "name": "General",
             "settings": [
+
+                
+                {
+                    "name": "Save Settings",
+                    "id": "profileSave",
+                    "description": "Save the current settings to a profile",
+                    "type": "list",
+                    "default": "",
+                    "options": [
+                        { "label": "Save Profile 1", "value": "1" },
+                        { "label": "Save Profile 2", "value": "2" },
+                        { "label": "Save Profile 3", "value": "3" },
+                        { "label": "Delete All Profiles", "value": "delete" },
+                    ]
+                },
+                {
+                    "name": "Load Settings",
+                    "id": "profileLoad",
+                    "description": "Apply the settings saved in a profile",
+                    "type": "list",
+                    "default": "",
+                    "options": [
+                        { "label": "Load Profile 1", "value": "1" },
+                        { "label": "Load Profile 2", "value": "2" },
+                        { "label": "Load Profile 3", "value": "3" },
+                    ]
+                },
                 {
                     "name": "Favorites Lock",
                     "id": "favLock",
@@ -239,20 +293,7 @@ Item {
                     "type": "bool",
                     "default": "Disable",
                 },
-                {
-                    "name": "Sounds - Menu",
-                    "id": "soundsmenu",
-                    "description": "Enable sounds when navigating the Menu and favoriting games",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                {
-                    "name": "Sounds - Main List",
-                    "id": "soundslist",
-                    "description": "Enable sounds when navigating the Main List",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
+
                 {
                     "name": "Collections - All Games",
                     "id": "collectionAllGames",
@@ -310,21 +351,7 @@ Item {
                    "description": "Wrap long game names in the Main List",
                    "type": "bool",
                    "default": "Enable",
-                },                      
-                {
-                    "name": "Transparent Elements",
-                    "id": "transparent",
-                    "description": "Make the selected option and scroll bar on the Main List transparent",
-                    "type": "bool",
-                    "default": "Enable",
-                },
-                 {
-                    "name": "Image Borders",
-                    "id": "imageBorder",
-                    "description": "Show a border around game images",
-                    "type": "bool",
-                    "default": "Enable",
-                },    
+                },                        
                 {
                     "name": "Favorites on Top",
                     "id": "gamesFavoritesOnTop",
@@ -340,13 +367,13 @@ Item {
                     "type": "bool",
                     "default": "Enable",
                 },
-                {
-                    "name": "Remove Text in []",
-                    "id": "replaceBrac",
-                    "description": "Remove text in brackets when showing game names",
-                    "type": "bool",
-                    "default": "Disable",
-                },
+                //{
+                //    "name": "Remove Text in []",
+                //    "id": "replaceBrac",
+                //    "description": "Remove text in brackets when showing game names",
+                //    "type": "bool",
+                //    "default": "Disable",
+                //},
                 {
                     "name": "Primary Image",
                     "id": "primaryAsset",
@@ -467,6 +494,16 @@ Item {
                     "max": 12,
                     "step": 1,
                 },
+                {
+		            "name": "Sub-Menu - Top Margin",
+                    "id": "menuadjust",
+                    "description": "Adjust the Sub-Menu to be closer to the top of the screen",
+                    "type": "range",
+                    "default": "0",
+                    "min": -25,
+                    "max": 20,
+                    "step": 1,
+                },
                 //{
                 //    "name": "Sub-Menu - Margin",
                 //    "id": "subMenuMargin",
@@ -511,17 +548,7 @@ Item {
                     "max": 30,
                     "step": 1,
                 },
-                
-                {
-		    "name": "Top Margin",
-                    "id": "menuadjust",
-                    "description": "Adjust the screen to be closer to the top of the screen",
-                    "type": "range",
-                    "default": "0",
-                    "min": -25,
-                    "max": 20,
-                    "step": 1,
-                },
+            
 
             ]
         },

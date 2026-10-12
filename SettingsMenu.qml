@@ -129,7 +129,15 @@ FocusScope {
 
                 if (api.keys.isAccept(event)) {
 
-                    if(settingsListView.model.get(settingsListView.currentIndex).type !== "action")
+                    // Action settings (e.g. Clear Achievement Cache) run immediately on one Enter
+                    var selected = settingsListView.model.get(settingsListView.currentIndex)
+                    if (settingsOptionsActive == false && selected.type === "action") {
+                        event.accepted = true;
+                        settingsOptions.runAction(selected.id);
+                        return;
+                    }
+
+                    if(selected.type !== "action")
                     {
                         event.accepted = true;
                     }

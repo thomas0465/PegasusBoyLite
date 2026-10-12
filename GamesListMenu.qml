@@ -368,7 +368,7 @@ FocusScope {
             active: subMenuEnable
 
             width: parent.width * .96
-            height: (themeSettings.favLock) ?  15: parent.height * (themeSettings.subMenuEmptyHeight / 100)
+            height: (themeSettings.favLock) ?  15 : parent.height * ((subMenuEnable ? themeSettings.subMenuHeight : themeSettings.subMenuEmptyHeight) / 100)
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0
 
