@@ -744,15 +744,17 @@ Timer {
 
 
 	//for image big view, darken the background
-        Rectangle {
-            id: mediabackground
-            opacity:  (singleimageview2 == 0) ? 0 : 0.85
-            width: root.width
-            height: root.height
-            x: 0
-            y:0
-            color: "#000000"
-        }
+	Rectangle {
+    		opacity:  (singleimageview2 == 0) ? 0 : 0.85
+		color: "#000000"
+
+	    	// The list container's origin sits at the menu offset below the screen top,
+    		// so cancel that out. Nothing in the list (submenu height/margin) can move this.
+    		x: 0
+  	  	y: -themeSettings.menuadjust	
+	   	width: root.width
+    		height: root.height
+	}
 
 
 

@@ -261,6 +261,19 @@ Item {
             "settings": [
 
                 
+
+                {
+                    "name": "Load Settings",
+                    "id": "profileLoad",
+                    "description": "Apply the settings saved in a profile",
+                    "type": "list",
+                    "default": "",
+                    "options": [
+                        { "label": "Load Profile 1", "value": "1" },
+                        { "label": "Load Profile 2", "value": "2" },
+                        { "label": "Load Profile 3", "value": "3" },
+                    ]
+                },
                 {
                     "name": "Save Settings",
                     "id": "profileSave",
@@ -272,18 +285,6 @@ Item {
                         { "label": "Save Profile 2", "value": "2" },
                         { "label": "Save Profile 3", "value": "3" },
                         { "label": "Delete All Profiles", "value": "delete" },
-                    ]
-                },
-                {
-                    "name": "Load Settings",
-                    "id": "profileLoad",
-                    "description": "Apply the settings saved in a profile",
-                    "type": "list",
-                    "default": "",
-                    "options": [
-                        { "label": "Load Profile 1", "value": "1" },
-                        { "label": "Load Profile 2", "value": "2" },
-                        { "label": "Load Profile 3", "value": "3" },
                     ]
                 },
                 {
