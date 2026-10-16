@@ -265,7 +265,9 @@ FocusScope {
             //leftMargin: parent.width * 0.014
         }
 
-        source: "https://media.retroachievements.org" + fetcher.imageIcon
+            source: (contentOpen)
+            ? "https://media.retroachievements.org" + fetcher.imageIcon
+            : ""
         //onStatusChanged: {
         //        if (status === Image.Error)
         //        source =  "../../assets/images/2.png"
