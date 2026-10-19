@@ -377,9 +377,16 @@ FocusScope {
 
             onStatusChanged: {
                 if (collectionsMenuLoader.status == Loader.Ready) {
+                    // Restore the last collection by name: the list can change between visits
+                    // (e.g. Recent or All turned on/off), which shifts the indexes.
                     let index = 0
-                    if (!themeSettings.favLock && item.model.get(themeSettings["menuIndex_subMenu"]).name === themeSettings["menuIndex_subMenu_name"]) {
-                        index = themeSettings["menuIndex_subMenu"]
+                    if (!themeSettings.favLock) {
+                        for (var c = 0; c < item.model.count; ++c) {
+                            if (item.model.get(c).name === themeSettings["menuIndex_subMenu_name"]) {
+                                index = c
+                                break
+                            }
+                        }
                     }
                     item.moveIndex(index)
 
@@ -442,7 +449,28 @@ FocusScope {
         Component {
             id: gamesListProxyModel
             SortFilterProxyModel {
+                id: recentProxy
                 sourceModel: gamesListModel
+
+                // "Recent" shows the N most recently played games (N = lastPlayedDays setting,
+                // now a game count). This is the time of the Nth most recent play; games played
+                // at or after it are in. Only worked out when the recent list is being built.
+                property real recentCutoff: {
+                    if (!(collectionsMenuRoot.filterByDate || recentFilter)) { return 0 }
+
+                    var wanted = Math.max(1, parseInt(themeSettings.lastPlayedDays) || 0)
+                    var times = []
+                    for (var i = 0; i < gamesListModel.count; ++i) {
+                        var g = gamesListModel.get(i)
+                        if (g.playCount > 0 && g.lastPlayed) {
+                            times.push(g.lastPlayed.getTime())
+                        }
+                    }
+                    if (times.length === 0) { return 0 }
+
+                    times.sort(function(a, b) { return b - a })   // newest first
+                    return times[Math.min(wanted, times.length) - 1]
+                }
 
                 delayed: false
                 filters: [
@@ -458,12 +486,7 @@ FocusScope {
                     },
                     ExpressionFilter {
                         enabled: (collectionsMenuRoot.filterByDate || recentFilter) 
-                        expression: {
-                            var dateOffset = (24 * 60 * 60 * 1000) * themeSettings.lastPlayedDays;
-                            var myDate = new Date();
-                            myDate.setTime(myDate.getTime() - dateOffset);
-                            return (modelData.lastPlayed > myDate ? true : false);
-                        }
+                        expression: modelData.lastPlayed.getTime() >= recentProxy.recentCutoff
                     }
                 ]
                 proxyRoles: [
@@ -507,7 +530,7 @@ FocusScope {
             anchors.top: collectionsMenuLoader.bottom
             anchors.topMargin: parent.height * (themeSettings.subMenuMargin / 100)
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.02
+            anchors.leftMargin: parent.width * 0.015
             anchors.bottom:parent.bottom
             anchors.bottomMargin: themeSettings.footeroffset 
 
@@ -620,7 +643,7 @@ Timer {
             y:parent.height + 5 - themeSettings.footeroffset
 
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.02
+            anchors.leftMargin: parent.width * 0.025
             color: "transparent"
             opacity: 1
             Text {
@@ -700,6 +723,7 @@ Timer {
 
         //collections scroll bar
         Rectangle {
+            property real barWidth: ((gamesListLoader.height / gamesListLoader.item.rows) * 0.4 + (themeSettings.mainFontSize - 20)) * 0.25
 
             width: gamesListLoader.width
             height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) : 0
@@ -707,8 +731,8 @@ Timer {
             anchors {
             top: parent.top
             left: parent.left
-            rightMargin:5
-            leftMargin: parent.width * 0.02
+            rightMargin:10
+            //leftMargin: parent.width * 0.02
             }
 
 
@@ -717,8 +741,11 @@ Timer {
             opacity: themeSettings.favLock ? 0 : (themeSettings.transparent ? 0.5 : 1)
 
             Rectangle {
+                width: parent.barWidth
+                // right edge = right edge of the games list scrollbar slot
+                x: gamesListLoader.x + (gamesListLoader.width * 0.04 - 3) - width
 
-                width: (gamesListLoader.width * 0.04) - 3
+                
                 height: Math.round(parent.height * .5)
 
                 y: ((parent.height - (parent.height * .5)) * ((collectionsMenuLoader.item.currentIndex + 1) /  (collectionsMenuLoader.item.listView.count)));

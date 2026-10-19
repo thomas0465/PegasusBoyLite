@@ -298,23 +298,23 @@ Item {
                 {
                     "name": "Collections - All Games",
                     "id": "collectionAllGames",
-                    "description": "Show All games collection in the games list (may require restart)",
+                    "description": "Show All games collection in the games list",
                     "type": "bool",
                     "default": "Disable",
                 },
                 {
-                    "name": "Collections - Recent Date Range",
+                    "name": "Collections - Recent Games",
                     "id": "lastPlayedDays",
-                    "description": "How many days to show games on the recent list. Select 0 to disable (may require restart)",
+                    "description": "How many games to show on the Recent games list. Select 0 to disable",
                     "type": "list",
                     "default": "0",
                     "options": [
                         { "value": "0" },
-		                { "value": "1" },
-                        { "value": "3" },
-                        { "value": "7" },
-                        { "value": "14" },
- 			            { "value": "30" },
+		                { "value": "3" },
+                        { "value": "5" },
+                        { "value": "10" },
+                        { "value": "15" },
+ 			            { "value": "20" },
                     ]
                 },
                 {

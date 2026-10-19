@@ -11,9 +11,13 @@ Item {
 
     
     ListModel {
-        id: collectionsListModel 
+        id: collectionsListModel
 
-        Component.onCompleted: {
+        // Builds the list from the current settings. Called at startup and again whenever
+        // "Include All collection" or "Last played days" change, so no restart is needed.
+        function rebuild() {
+            collectionsListModel.clear()
+
             const collections = api.collections
             const allCollection = {
                 name: "All",
@@ -54,6 +58,16 @@ Item {
                 collectionsListModel.append(collection)
             }
         }
+
+        Component.onCompleted: rebuild()
+    }
+
+    // The games list is destroyed while the settings page is open and rebuilt from this model
+    // when you go back, so rebuilding here is enough.
+    Connections {
+        target: themeSettings
+        function onCollectionAllGamesChanged() { collectionsListModel.rebuild() }
+        function onLastPlayedDaysChanged() { collectionsListModel.rebuild() }
     }
 
     property var allGamesModel: {

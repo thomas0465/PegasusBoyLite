@@ -9,11 +9,14 @@ Item {
     Rectangle {
         id: scrollbar
 
-        width: parent.width
+        // half the width of the slot it sits in; stays on the slot's left edge
+        width: ((root.height / themeSettings.itemListRows) * 0.4 + (themeSettings.mainFontSize - 20)) * 0.25
+        anchors.right: parent.right 
 
         height: {
             var h = parent.height * visibleArea.heightRatio;
             if (h < parent.height * 0.1) { h = parent.height * 0.1 }
+            
             //Logger.debug("Scrollbar:height:" + h);
             return h;
         }

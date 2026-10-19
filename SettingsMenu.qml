@@ -294,7 +294,7 @@ Component.onCompleted: viewcreated = true;
             y:parent.height + 5
 
             anchors.left: parent.left
-            anchors.leftMargin: parent.width * 0.02
+            anchors.leftMargin: parent.width * 0.025
             color: "transparent"
             opacity: 1
             Text {

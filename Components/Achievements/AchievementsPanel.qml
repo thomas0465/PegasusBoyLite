@@ -46,7 +46,7 @@ FocusScope {
     height: parent.height
     
     anchors.left: parent.left
-    anchors.leftMargin: parent.width * 0.02
+    anchors.leftMargin: parent.width * 0.015
     anchors.top: collectionsMenuLoader.bottom
     anchors.bottom:parent.bottom
 
@@ -262,7 +262,7 @@ FocusScope {
             top: parent.top
             topMargin: parent.height * 0.01
             left: scrollbar.left
-            //leftMargin: parent.width * 0.014
+            leftMargin: parent.width * 0.014
         }
 
             source: (contentOpen)
