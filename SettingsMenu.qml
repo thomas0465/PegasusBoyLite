@@ -188,7 +188,7 @@ FocusScope {
                 rows: themeSettings.itemListRows
 
                 anchors.top: collectionsMenuListView.bottom
-                anchors.topMargin: parent.height * (themeSettings.subMenuMargin / 100)
+                anchors.topMargin: parent.height * (themeSettings.subMenuMargin / 200)
                 anchors.left: parent.left
                 anchors.leftMargin: parent.width * 0.02
                 anchors.bottom: parent.bottom
@@ -339,25 +339,17 @@ Component.onCompleted: viewcreated = true;
                 color: themeData.colorTheme[theme].light;
             }  
         }
-
-                Rectangle {
-            width: parent.width + 1000
-            height: 2
-            x: -100
-            y: parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) - 2
-            color: themeData.colorTheme[theme].light
-        }
-
+        
+        
+        //submenu divider
         Rectangle {
-            width: (parent.width * (themeSettings.itemListWidth / 100)) + 13
-            height: 2
-            x: 0
-            y: parent.height
+            width: parent.width + 1000
+            height: themeSettings.showDiv ? 2 : 0
+            x: -100
+            y: parent.height * (themeSettings.subMenuHeight / 100) - 2
             color: themeData.colorTheme[theme].light
-
-            opacity: 0
-            //opacity: (themeSettings.gamesListCounter || themeSettings.showClock || themeSettings.showBattery) ? 1 : 0
         }
+
 
             SettingsOptions {
                 id: settingsOptions

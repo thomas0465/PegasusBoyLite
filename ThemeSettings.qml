@@ -31,6 +31,7 @@ Item {
         "subMenuHeight",
         "subMenuMargin",
         "subMenuEmptyHeight",
+        "showDiv",
         "language",
         "collectionAllGames",
         "collectionShortNames",
@@ -119,6 +120,7 @@ Item {
     property int subMenuHeight: 6
     property int subMenuMargin:0
     property int subMenuEmptyHeight: 6
+    property bool showDiv: true
 
     property bool collectionAllGames: false
     property bool collectionShortNames: true

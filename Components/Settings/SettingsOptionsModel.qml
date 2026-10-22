@@ -424,7 +424,7 @@ Item {
                     "description": "The font size for the Main List",
                     "type": "range",
                     "default": "20",
-                    "min": 1,
+                    "min": -25,
                     "max": 25,
                     "step": 1,
                 },
@@ -496,7 +496,7 @@ Item {
                     "step": 1,
                 },
                 {
-		            "name": "Sub-Menu - Top Margin",
+		            "name": "Sub-Menu - Margin",
                     "id": "menuadjust",
                     "description": "Adjust the Sub-Menu to be closer to the top of the screen",
                     "type": "range",
@@ -506,15 +506,22 @@ Item {
                     "step": 1,
                 },
                 //{
-                //    "name": "Sub-Menu - Margin",
+                //    "name": "Sub-Menu - Bottom Margin",
                 //    "id": "subMenuMargin",
                 //    "description": "The margin between the Main List and Sub-Menu",
                 //    "type": "range",
                 //    "default": "0",
-                //    "min": -5,
-                //    "max": 10,
+                //    "min": -10,
+                //    "max": 20,
                 //    "step": 1,
                 //},
+                {
+                    "name": "Sub-Menu - Show Divider",
+                    "id": "showDiv",
+                    "description": "Display the divider between the Sub-Menu and Main List",
+                    "type": "bool",
+                    "default": "Enable",
+               },
 
                  {
                     "name": "Footer - Show Clock",

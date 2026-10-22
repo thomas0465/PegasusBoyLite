@@ -528,7 +528,7 @@ FocusScope {
             onLoaded: gamesMediaLoader.active = true
            
             anchors.top: collectionsMenuLoader.bottom
-            anchors.topMargin: parent.height * (themeSettings.subMenuMargin / 100)
+            anchors.topMargin: parent.height * (themeSettings.subMenuMargin / 200)
             anchors.left: parent.left
             anchors.leftMargin: parent.width * 0.015
             anchors.bottom:parent.bottom
@@ -685,7 +685,7 @@ Timer {
                 opacity: (themeSettings.showBattery) ? 1 : 0
                 font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
-                color: themeData.colorTheme[theme].light;
+                color: themeData.colorTheme[theme].light; 
             }  
         }
 
@@ -726,7 +726,7 @@ Timer {
             property real barWidth: ((gamesListLoader.height / gamesListLoader.item.rows) * 0.4 + (themeSettings.mainFontSize - 20)) * 0.25
 
             width: gamesListLoader.width
-            height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) : 0
+            height: (subMenuEnable) ? parent.height * (themeSettings.subMenuHeight / 100) - 2 : 0
 
             anchors {
             top: parent.top
@@ -761,9 +761,9 @@ Timer {
         //submenu line divider
         Rectangle {
             width: parent.width + 1000
-            height: themeSettings.favLock ? 0 : 2
+            height: (themeSettings.favLock ? 0 : (themeSettings.showDiv ? 2 : 0))
             x: -100
-            y: parent.height * (themeSettings.subMenuHeight / 100) + (parent.height * (themeSettings.subMenuMargin / 100)) - 2
+            y: parent.height * (themeSettings.subMenuHeight / 100) - 2
             color: themeData.colorTheme[theme].primary
             //opacity: themeSettings.transparent ? 0.5 : 1
         }
