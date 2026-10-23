@@ -52,12 +52,12 @@ Item {
 
         // CRT chromatic aberration: splits R/G/B apart radially from center,
         // strongest toward the edges.
-        property bool aberrationEnable: themeSettings.shaderAberrationEnable
+        property bool aberrationEnable: themeSettings.shaderAberrationAmount > 0
         property real aberrationAmount: themeSettings.shaderAberrationAmount/100000
         //0.0001
 
         // CRT glow: chromatic-aberration bloom + film grain.
-        property bool glowEnable: themeSettings.shaderGlowEnable
+        property bool glowEnable: themeSettings.shaderGlowAmount > 0
         property real glowAmount: themeSettings.shaderGlowAmount/10 //0.6
         property real glowRadius: 10.0
         property real glowAberration: 0.4
@@ -235,7 +235,7 @@ Item {
                 "
                 " +
 
-                (themeSettings.shaderScanlinesEnable ? "
+                (themeSettings.shaderScanlinesOpacity > 0 ? "
                 // Generate scanlines
                 float scale = imageSize;
 

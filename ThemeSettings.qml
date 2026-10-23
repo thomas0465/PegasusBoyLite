@@ -85,6 +85,7 @@ Item {
         "backgroundGradientColor",
         "backgroundGradientInvert",
         "transparent",
+        "transparentfooter",
         "imageBorder",
         "darkenbg",
 
@@ -158,9 +159,9 @@ Item {
     property bool wordwrap:true
     property bool listwrap:true
     property bool subMenuWrap: true
-    property bool collectionscroll: true
+    property bool collectionscroll: false
     property int footerfontsize: 20
-    property int footeroffset: 0
+    property int footeroffset: 5
 
     property int menusize: 16
     property string primaryAsset: "Title Screen"
@@ -174,6 +175,7 @@ Item {
     property string backgroundGradientColor: "transparent"
     property bool backgroundGradientInvert: false
     property bool transparent: true
+    property bool transparentfooter: true
     property bool imageBorder: true
     property int darkenbg: 0
 

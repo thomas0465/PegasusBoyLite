@@ -305,7 +305,7 @@ Component.onCompleted: viewcreated = true;
                 anchors.bottom:parent.bottom;
                 anchors.bottomMargin: 1.5 + themeSettings.footeroffset
 
-                opacity: (themeSettings.showClock) ?  ((themeData.colorTheme[theme].light == themeData.colorTheme[theme].primary && themeSettings.transparent) ? .5 : 1)  : 0
+                opacity: (themeSettings.showClock) ?  (themeSettings.transparentfooter ? .5 : 1)  : 0
                 font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;
@@ -333,7 +333,7 @@ Component.onCompleted: viewcreated = true;
                 anchors.bottom:parent.bottom;
                 anchors.bottomMargin: 1.5 + themeSettings.footeroffset
 
-                opacity: (themeSettings.showBattery) ?  ((themeData.colorTheme[theme].light == themeData.colorTheme[theme].primary && themeSettings.transparent) ? .5 : 1)  : 0
+                opacity: (themeSettings.showBattery) ?  (themeSettings.transparentfooter ? .5 : 1)  : 0
                 font.family: themeSettings.font.customFont
                 font.pointSize: themeSettings.footerfontsize
                 color: themeData.colorTheme[theme].light;

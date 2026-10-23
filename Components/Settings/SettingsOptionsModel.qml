@@ -225,34 +225,27 @@ Item {
 ]
                     
                 },
-                                {
-                    "name": "Sounds - Main List",
-                    "id": "soundslist",
-                    "description": "Enable sounds when navigating the Main List",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                                {
-                    "name": "Sounds - Menu",
-                    "id": "soundsmenu",
-                    "description": "Enable sounds when navigating the Menu and favoriting games",
-                    "type": "bool",
-                    "default": "Enabled",
-                },
-                                {
+                {
                     "name": "Transparent Elements",
                     "id": "transparent",
                     "description": "Make the selected option and scroll bar on the Main List transparent",
                     "type": "bool",
                     "default": "Enable",
                 },
-                 {
-                    "name": "Image Borders",
-                    "id": "imageBorder",
-                    "description": "Show a border around game images",
+                {
+                    "name": "Transparent Footer",
+                    "id": "transparentfooter",
+                    "description": "Make the footer transparent",
                     "type": "bool",
                     "default": "Enable",
-                },  
+                },
+                //{
+                //    "name": "Image Borders",
+                //    "id": "imageBorder",
+                //    "description": "Show a border around game images",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},  
             
             ],
         },
@@ -294,16 +287,30 @@ Item {
                     "type": "bool",
                     "default": "Disable",
                 },
+                                {
+                    "name": "Sounds - Main List",
+                    "id": "soundslist",
+                    "description": "Enable sounds when navigating the Main List",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
+                {
+                    "name": "Sounds - Menu",
+                    "id": "soundsmenu",
+                    "description": "Enable sounds when navigating the Menu and favoriting games",
+                    "type": "bool",
+                    "default": "Enabled",
+                },
 
                 {
-                    "name": "Collections - All Games",
+                    "name": "Collections - All",
                     "id": "collectionAllGames",
                     "description": "Show All games collection in the games list",
                     "type": "bool",
                     "default": "Disable",
                 },
                 {
-                    "name": "Collections - Recent Games",
+                    "name": "Collections - Recent",
                     "id": "lastPlayedDays",
                     "description": "How many games to show on the Recent games list. Select 0 to disable",
                     "type": "list",
@@ -317,50 +324,49 @@ Item {
  			            { "value": "20" },
                     ]
                 },
-                {
-                    "name": "Collections - Short Names",
-                    "id": "collectionShortNames",
-                    "description": "Use collection short names",
-                    "type": "bool",
-                    "default": "Enable",
-                },
+                //{
+                //    "name": "Collections - Short Names",
+                //    "id": "collectionShortNames",
+                //    "description": "Use collection short names",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},
 
-                {
-                    "name": "Collections - Scroll Bar",
-                    "id": "collectionscroll",
-                    "description": "Show the small scroll Bar next to the Sub-Menu for collections",
-                    "type": "bool",
-                    "default": "Enable",
-               },      
-                               {
+                //{
+                //    "name": "Collections - Scroll Bar",
+                //    "id": "collectionscroll",
+                //    "description": "Show the small scroll Bar next to the Sub-Menu for collections",
+                //    "type": "bool",
+                //    "default": "Disable",
+                //},      
+               {
                    "name": "Wrap - Main List",
                    "id": "listwrap",
                    "description": "Press up at the top of the Main List to go to the bottom, and vice versa",
                    "type": "bool",
                    "default": "Enable",
                 },
-                                {
+                {
                    "name": "Wrap - Sub-Menu",
                    "id": "subMenuWrap",
                    "description": "Press left on the left-most collection to go to the right-most, and vice versa",
                    "type": "bool",
                    "default": "Enable",
                 },
-               {
+                {
                    "name": "Word Wrap",
                    "id": "wordwrap",
                    "description": "Wrap long game names in the Main List",
                    "type": "bool",
                    "default": "Enable",
                 },                        
-                {
-                    "name": "Favorites on Top",
-                    "id": "gamesFavoritesOnTop",
-                    "description": "Show favorites at the top of the Main List",
-                    "type": "bool",
-                    "default": "Disable",
-                },
-
+                //{
+                //    "name": "Favorites on Top",
+                //    "id": "gamesFavoritesOnTop",
+                //    "description": "Show favorites at the top of the Main List",
+                //    "type": "bool",
+                //    "default": "Disable",
+                //},
                 {
                     "name": "Remove Text in ()",
                     "id": "replacePar",
@@ -368,24 +374,24 @@ Item {
                     "type": "bool",
                     "default": "Enable",
                 },
-                //{
-                //    "name": "Remove Text in []",
-                //    "id": "replaceBrac",
-                //    "description": "Remove text in brackets when showing game names",
-                //    "type": "bool",
-                //    "default": "Disable",
-                //},
                 {
-                    "name": "Primary Image",
-                    "id": "primaryAsset",
-                    "description": "Show Title Screen or Box Art first",
-                    "type": "list",
-                    "default": "Title Screen",
-                    "options": [
-			            { "value": "Title Screen" },
-                        { "value": "Box Art" },
-                    ]
+                    "name": "Remove Text in []",
+                    "id": "replaceBrac",
+                    "description": "Remove text in brackets when showing game names",
+                    "type": "bool",
+                    "default": "Disable",
                 },
+                //{
+                //    "name": "Primary Image",
+                //    "id": "primaryAsset",
+                //    "description": "Show Title Screen or Box Art first",
+                //    "type": "list",
+                //    "default": "Title Screen",
+                //    "options": [
+			    //        { "value": "Title Screen" },
+                //        { "value": "Box Art" },
+                //    ]
+                //},
 
             ]
         },
@@ -438,8 +444,8 @@ Item {
                     "max": 40,
                     "step": 1,
                 },
-                                {
-		    "name": "Font Size - Footer",
+                {
+		            "name": "Font Size - Footer",
                     "id": "footerfontsize",
                     "description": "The font size for the Footer",
                     "type": "range",
@@ -448,12 +454,7 @@ Item {
                     "max": 25,
                     "step": 1,
                 },
-
-
-                
-               
-
-                                {
+                {
                     "name": "Main List - Rows",
                     "id": "itemListRows",
                     "description": "The number of rows to show on the Main List",
@@ -473,8 +474,6 @@ Item {
                     "max": 65,
                     "step": 5,
                 },
-                                
-
                 {
                     "name": "Sub-Menu - Columns",
                     "id": "subMenuColumns",
@@ -495,28 +494,28 @@ Item {
                     "max": 12,
                     "step": 1,
                 },
-                {
-		            "name": "Sub-Menu - Margin",
-                    "id": "menuadjust",
-                    "description": "Adjust the Sub-Menu to be closer to the top of the screen",
-                    "type": "range",
-                    "default": "0",
-                    "min": -25,
-                    "max": 20,
-                    "step": 1,
-                },
                 //{
-                //    "name": "Sub-Menu - Bottom Margin",
-                //    "id": "subMenuMargin",
-                //    "description": "The margin between the Main List and Sub-Menu",
+		        //    "name": "Sub-Menu - Margin",
+                //    "id": "menuadjust",
+                //    "description": "Adjust the Sub-Menu to be closer to the top of the screen",
                 //    "type": "range",
                 //    "default": "0",
-                //    "min": -10,
+                //    "min": -25,
                 //    "max": 20,
                 //    "step": 1,
                 //},
                 {
-                    "name": "Sub-Menu - Show Divider",
+                    "name": "Sub-Menu - Margin",
+                    "id": "subMenuMargin",
+                    "description": "The margin between the Main List and Sub-Menu",
+                    "type": "range",
+                    "default": "0",
+                    "min": 0,
+                    "max": 20,
+                    "step": 1,
+                },
+                {
+                    "name": "Sub-Menu - Divider",
                     "id": "showDiv",
                     "description": "Display the divider between the Sub-Menu and Main List",
                     "type": "bool",
@@ -524,14 +523,14 @@ Item {
                },
 
                  {
-                    "name": "Footer - Show Clock",
+                    "name": "Footer - Clock",
                     "id": "showClock",
                     "description": "Display the time",
                     "type": "bool",
                     "default": "Enable",
                },
                 {
-                    "name": "Footer - Show Counter",
+                    "name": "Footer - Counter",
                     "id": "gamesListCounter",
                     "description": "Display a counter in the games list",
                     "type": "bool",
@@ -539,23 +538,24 @@ Item {
                },
 
                 {
-                    "name": "Footer - Show Battery",
+                    "name": "Footer - Battery",
                     "id": "showBattery",
                     "description": "Display the Battery Percentage",
                     "type": "bool",
                     "default": "Enable",
                },
 
-                {
-		            "name": "Footer - Offset",
-                    "id": "footeroffset",
-                    "description": "Offset of the footer from the bottom",
-                    "type": "range",
-                    "default": "0",
-                    "min": -5,
-                    "max": 30,
-                    "step": 1,
-                },
+                //{
+		        //    "name": "Footer - Offset",
+                //    "id": "footeroffset",
+                //    "description": "Offset of the footer from the bottom",
+                //    "type": "range",
+                //    "default": "5",
+                //    "min": -5,
+                //    "max": 30,
+                //    "step": 1,
+                //},
+                
             
 
             ]
@@ -575,29 +575,39 @@ Item {
                 
 
 
+                //{
+                //    "name": "Curvature",
+                //    "id": "shaderCurvatureEnable",
+                //    "description": "Enable the screen curvature shader",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},
                 {
-                    "name": "Curvature",
-                    "id": "shaderCurvatureEnable",
-                    "description": "Enable the screen curvature shader",
-                    "type": "bool",
-                    "default": "Enable",
-                },
-                {
-		            "name": "  • Curvature - Amount",
+		            "name": "Curvature",
                     "id": "shaderCurvatureAmount",
                     "description": "The intensity of the screen curvature",
                     "type": "range",
                     "default": "100",
-                    "min": 40,
+                    "min": 0,
                     "max": 300,
                     "step": 20,
                 },
+                //{
+                //    "name": "Scanlines",
+                //    "id": "shaderScanlinesEnable",
+                //    "description": "Enable the scanline shader",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},
                 {
                     "name": "Scanlines",
-                    "id": "shaderScanlinesEnable",
-                    "description": "Enable the scanline shader",
-                    "type": "bool",
-                    "default": "Enable",
+                    "id": "shaderScanlinesOpacity",
+                    "description": "The Opacity of the scanlines",
+                    "type": "range",
+                    "default": "51",
+                    "min": 0,
+                    "max": 98,
+                    "step": 3,
                 },
                 {
                     "name": "  • Scanlines - Grid",
@@ -618,16 +628,6 @@ Item {
 
                 },
                 {
-                    "name": "  • Scanlines - Opacity",
-                    "id": "shaderScanlinesOpacity",
-                    "description": "The Opacity of the scanlines",
-                    "type": "range",
-                    "default": "50",
-                    "min": 5,
-                    "max": 98,
-                    "step": 3,
-                },
-                {
                     "name": "  • Scanlines - Highlight",
                     "id": "shaderScanlinesGlow",
                     "description": "Add glow to make scanlines visible on dark colors",
@@ -637,44 +637,44 @@ Item {
                     "max": 50,
                     "step": 1,
                 },
-                                {
-                    "name": "  • Scanlines - Curve",
-                    "id": "shaderScanlinesCurve",
-                    "description": "Curve the scanlines with the curvature",
-                    "type": "bool",
-                    "default": "Disable",
-                },  
+                //{
+                //    "name": "  • Scanlines - Curve",
+                //    "id": "shaderScanlinesCurve",
+                //    "description": "Curve the scanlines with the curvature",
+                //    "type": "bool",
+                //    "default": "Disable",
+                //},  
+                //{
+                //    "name": "Aberration",
+                //    "id": "shaderAberrationEnable",
+                //    "description": "Enable the chromatic aberration shader",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},                
                 {
                     "name": "Aberration",
-                    "id": "shaderAberrationEnable",
-                    "description": "Enable the chromatic aberration shader",
-                    "type": "bool",
-                    "default": "Enable",
-                },                
-                {
-                    "name": "  • Aberration - Amount",
                     "id": "shaderAberrationAmount",
                     "description": "The amount of chromatic aberration",
                     "type": "range",
                     "default": "10",
-                    "min": 1,
+                    "min": 0,
                     "max": 50,
                     "step": 1,
                 },
+                //{
+                //    "name": "Glow",
+                //    "id": "shaderGlowEnable",
+                //    "description": "Enable the glow shader",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},                 
                 {
                     "name": "Glow",
-                    "id": "shaderGlowEnable",
-                    "description": "Enable the glow shader",
-                    "type": "bool",
-                    "default": "Enable",
-                },                 
-                {
-                    "name": "  • Glow - Amount",
                     "id": "shaderGlowAmount",
                     "description": "The amount of glow",
                     "type": "range",
                     "default": "6",
-                    "min": 1,
+                    "min": 0,
                     "max": 20,
                     "step": 1,
                 },          
@@ -711,13 +711,13 @@ Item {
                     "type": "bool",
                     "default": "Enable",
                 },  
-                {
-                    "name": "Show missable indicator",
-                    "id": "missableIndicator",
-                    "description": "Show [m] for missable achievements",
-                    "type": "bool",
-                    "default": "Enable",
-                },  
+                //{
+                //    "name": "Show missable indicator",
+                //    "id": "missableIndicator",
+                //    "description": "Show [m] for missable achievements",
+                //    "type": "bool",
+                //    "default": "Enable",
+                //},  
                 {
                     "name": "Clear Achievement Cache",
                     "id": "clearRACache",
