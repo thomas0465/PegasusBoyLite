@@ -35,6 +35,7 @@ FocusScope {
         if (saved !== undefined) {
             lastRAIndex = saved
         }
+
     }
 
     onLastRAIndexChanged: {
@@ -81,6 +82,9 @@ FocusScope {
     function close() {
         contentOpen = false
         achloading = false
+        if (themeSettings.soundslist) {
+            navSound.play()
+        }
         closed()
     }
 
@@ -117,6 +121,9 @@ FocusScope {
             achievementsPanelRoot.contentOpen = true
             achievementsPanelRoot.achloading = false
             achievementsPanelRoot.forceActiveFocus()
+                    if(themeSettings.soundslist){
+                        navSound.play();
+                    }
         }
         onAchievementsError: {
             achievementsPanelRoot.achloading = false
