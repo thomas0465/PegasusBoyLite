@@ -772,7 +772,7 @@ Timer {
 
 	//for image big view, darken the background
 	Rectangle {
-    		opacity:  (singleimageview2 == 0) ? 0 : 0.85
+    		opacity:  (singleimageview2 == 0) ? 0 : 1
 		color: "#000000"
 
 	    	// The list container's origin sits at the menu offset below the screen top,

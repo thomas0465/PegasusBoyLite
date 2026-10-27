@@ -5,6 +5,7 @@ import "../Settings"
 import "../Achievements"
 
 Item {
+    id: gm
 
     required property var currentGame
     required property bool imagetype
@@ -14,6 +15,30 @@ Item {
     required property bool contentOpen
 
     property int marginoffset: (themeSettings.gamesListCounter || themeSettings.showClock || themeSettings.showBattery) ? themeSettings.footerfontsize + 5 : 0
+
+    // Distance from the top of the screen to the top of this item, summed up the parent chain
+    // up to `root`. Reading each .y inside the binding keeps it updated when any layout shifts
+    // (submenu height/margin, menuadjust, screen size), so no fixed guess is needed.
+    property real topToScreen: {
+        var y = 0
+        var it = gm
+        while (it && it !== root) { y += it.y; it = it.parent }
+        return y
+    }
+
+    // Same for the left edge: distance from the left of the screen to this item's left
+    property real leftToScreen: {
+        var x = 0
+        var it = gm
+        while (it && it !== root) { x += it.x; it = it.parent }
+        return x
+    }
+
+    // Enlarged image: flush with the top of the screen, bottom edge where it always was
+    property real fullY: -topToScreen
+    property real fullX: -leftToScreen
+    property real fullWidth: width - 13 + leftToScreen   // right edge stays where it was
+    property real fullHeight: height + marginoffset + 29 + topToScreen
 
     property var primary: (themeSettings.primaryAsset == "Title Screen") ? currentGame.assets.titlescreen : currentGame.assets.boxFront 
     property var secondary: (themeSettings.primaryAsset == "Title Screen") ? currentGame.assets.boxFront : currentGame.assets.titlescreen
@@ -103,10 +128,10 @@ Item {
         id: gamesMediaScreenshot
         onActivity: swapTimer.restart()
 
-        width: (singleimageview == 2) ? root.width: parent.width/1.05;
-        height: (singleimageview == 2) ? root.height: (parent.height +marginoffset)/2
-        x: (singleimageview == 2) ? parent.width - (root.width): 0;
-        y: (singleimageview == 2) ? -(root.height - marginoffset - parent.height - 23): parent.height/2 + 5 + (marginoffset/2);
+        width: (singleimageview == 2) ? parent.fullWidth: parent.width/1.05;
+        height: (singleimageview == 2) ? parent.fullHeight: (parent.height +marginoffset)/2
+        x: (singleimageview == 2) ? parent.fullX: 0;
+        y: (singleimageview == 2) ? parent.fullY: parent.height/2 + 5 + (marginoffset/2);
 
 
         source: (imagetype) ? currentGame.assets.screenshot || currentGame.assets.background : currentGame.assets.background || currentGame.assets.screenshot
@@ -135,10 +160,10 @@ Item {
     StableImage {
         id: gamesMediaTitle
         onActivity: swapTimer.restart()
-        width: (singleimageview == 1) ? root.width: parent.width/1.05;
-        height: (singleimageview == 1) ? root.height: (parent.height +marginoffset)/2
-        x: (singleimageview == 1) ? parent.width - (root.width): 0;
-        y: (singleimageview == 1) ? -(root.height - marginoffset - parent.height - 23): -5
+        width: (singleimageview == 1) ? parent.fullWidth: parent.width/1.05;
+        height: (singleimageview == 1) ? parent.fullHeight: (parent.height +marginoffset)/2
+        x: (singleimageview == 1) ? parent.fullX: 0;
+        y: (singleimageview == 1) ? parent.fullY: -5
 
        	source: (imagetype) ? primary || secondary: secondary|| primary
         opacity: (singleimageview == 2) ? 0: 1;
