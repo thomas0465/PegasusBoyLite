@@ -41,6 +41,7 @@ Item {
                     "options": [
                         { "value": "White" },
                         { "value": "Black" },
+                        { "value": "Background Color" }
                         
                     ]
                 },
