@@ -31,6 +31,15 @@ Item {
                         return themeData.colorTheme[themeName].light
                     }
                 }
+                if (settingModel.id === "selectedTextColor") {
+                    // "background" option (matches either the stored value or the label)
+                    if (opt.value === "Background Color") {
+                        if (themeSettings.backgroundColor !== 'transparent')
+                            return themeSettings.backgroundColor
+                        return themeData.colorTheme[theme].background
+                    }
+                }
+                
 
                 return opt.value
             }
@@ -42,7 +51,8 @@ Item {
                 return settingModel.id === "backgroundColor" || 
                        settingModel.id === "backgroundGradientColor" || 
                        settingModel.id === "theme" ||
-                       settingModel.id === "shaderHillsFadeColor"
+                       settingModel.id === "shaderHillsFadeColor" ||
+                       settingModel.id === "selectedTextColor"
             }
 
             // Color Swatch Preview

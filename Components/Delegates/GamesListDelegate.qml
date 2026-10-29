@@ -19,6 +19,17 @@ Item {
 
             property int rows: 1
 
+            //color used for the game text, favorite and cache indicator on the selected row
+            property color selectedShapeColor: {
+                if (themeSettings.selectedTextColor === "White") return "#ffffff";
+                
+                if (themeSettings.selectedTextColor === "Black") return "#000000";
+                
+                if (themeSettings.selectedTextColor === "Background Color" && themeSettings.backgroundColor !== 'transparent') return themeSettings.backgroundColor;
+
+                if (themeSettings.selectedTextColor === "Background Color" && themeSettings.backgroundColor == 'transparent') return themeData.colorTheme[theme].background;
+            }
+
             //check if current game has cached achievements 
             property bool hasCachedAchievements: {
                 var searchTitle = titleOverrides[model[textName]] || model[textName]
@@ -57,7 +68,7 @@ Item {
             Rectangle {
                 id: gamesListFavorite
 
-                                opacity: gamesListRect.ListView.isCurrentItem
+                opacity: gamesListRect.ListView.isCurrentItem
                     ? 1 : (themeSettings.transparent? 0.5 : 1)
 
                 width: height
@@ -69,16 +80,12 @@ Item {
                     leftMargin: themeSettings.cacheIndicator && themeSettings.enableRA ? parent.width * 0.02 : parent.width * 0.02
                 }
 
-                color: {
-                    if (activeFocus) 
-                        { return gamesListRect.ListView.isCurrentItem ? 
-                            themeData.colorTheme[theme].background : 
-                            themeData.colorTheme[theme].primary };
+                color: gamesListRect.ListView.isCurrentItem
+                    ? gamesListRect.selectedShapeColor
+                    : (gamesListRect.activeFocus ?
+                        themeData.colorTheme[theme].primary :
+                        themeData.colorTheme[theme].light)
 
-                        gamesListRect.ListView.isCurrentItem ?  
-                            themeData.colorTheme[theme].background : 
-                            themeData.colorTheme[theme].light;
-                }
                 visible: model.favorite !== undefined && model.favorite
 
             }
@@ -102,15 +109,8 @@ Item {
                 }
 
                 color: gamesListRect.ListView.isCurrentItem
-                    ? 
-                        (model.favorite !== undefined && model.favorite ? 
-                            themeData.colorTheme[theme].background :
-                            themeData.colorTheme[theme].background
-                        )
-                    : (model.favorite !== undefined && model.favorite ? 
-                            themeData.colorTheme[theme].light :
-                            themeData.colorTheme[theme].light
-                        )
+                    ? gamesListRect.selectedShapeColor
+                    : themeData.colorTheme[theme].light
             }
 
             Text {
@@ -129,7 +129,7 @@ Item {
 
 		        wrapMode:(themeSettings.wordwrap) ? Text.WordWrap: Text.NoWrap
 
-                color: gamesListRect.ListView.isCurrentItem ? themeData.colorTheme[theme].background : themeData.colorTheme[theme].primary
+                color: gamesListRect.ListView.isCurrentItem ? gamesListRect.selectedShapeColor : themeData.colorTheme[theme].primary
 
 
                 text: (themeSettings.replacePar) ? 

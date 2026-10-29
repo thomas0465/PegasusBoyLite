@@ -16,6 +16,7 @@ Item {
     // Add settings here to auto load from Pegasus
     property var settingsList: [
         "theme",
+        "selectedTextColor", 
 	    
         "raUsername",
 	    "raApiKey",
@@ -99,6 +100,7 @@ Item {
     property bool missableIndicator: true
 
     property string theme: "Black"
+    property string selectedTextColor: "Black" 
     property int settingsVersion: 1
 
     // Application state

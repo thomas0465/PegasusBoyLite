@@ -210,6 +210,19 @@ FocusScope {
                 }
 
                 var value = currentValue;
+                
+                //fix for non-int values
+                if (optionsRoot.settingModel.type === "range") {
+                    var target = parseFloat(currentValue)
+                    var best = 0
+                    var bestDiff = Infinity
+                    for (var j = 0; j < model.length; ++j) {
+                        var diff = Math.abs(parseFloat(model[j]) - target)
+                        if (diff < bestDiff) { bestDiff = diff; best = j }
+                    }
+                    settingsListView.currentIndex = best
+                    return
+                }
                 if (optionsRoot.settingModel.type == "bool") {
                     value = (value) ? "Enable" : "Disable"
                 }

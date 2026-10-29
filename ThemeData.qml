@@ -138,11 +138,18 @@ Item {
         "light": "#000000",
         "dark": "#cbcdcb"
     },
-    "Gray": {
+    "Dark Gray": {
         "background": "#292929",
         "primary": "#949494",
         "secondary": "#bcbcbc",
         "light": "#949494",
+        "dark": "#292929"
+    },
+    "Light Gray": {
+        "background": "#c1c1c1",
+        "primary": "#484848",
+        "secondary": "#292929",
+        "light": "#595959",
         "dark": "#292929"
     },
     "Game Boy": {

@@ -18,7 +18,8 @@ Item {
                     "default": "Black",
                     "options": [
                         { "value": "White" },
-                        { "value": "Gray" },
+                        { "value": "Light Gray" },
+                        { "value": "Dark Gray" },
                         { "value": "Black" },
                         { "value": "Green" },
                         { "value": "Amber" },
@@ -28,6 +29,18 @@ Item {
                         { "value": "Purple" },
             			{ "value": "Vampire" },
                         { "value": "Sepia"},
+                        
+                    ]
+                },
+                {
+                    "name": "Selected Text Color",
+                    "id": "selectedTextColor",
+                    "description": "The text color of the currently selected option",
+                    "type": "list",
+                    "default": "Black",
+                    "options": [
+                        { "value": "White" },
+                        { "value": "Black" },
                         
                     ]
                 },
@@ -50,6 +63,7 @@ Item {
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
     { "label": "Muted Purple", "value": "#282a36"},
+    { "label": "Muted Blue", "value": "#3f4862"},
     { "label": "Dark Blue", "value": "#09005b" },
     { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Light Blue", "value": "#098393" },
@@ -98,6 +112,7 @@ Item {
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
     { "label": "Muted Purple", "value": "#282a36"},
+    { "label": "Muted Blue", "value": "#3f4862"},
     { "label": "Dark Blue", "value": "#09005b" },
     { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Light Blue", "value": "#098393" },
@@ -139,8 +154,6 @@ Item {
                     "max": 100,
                     "step": 5,
                 },
-                
-               
 
                 {
                     "name": "Hills",
@@ -205,6 +218,7 @@ Item {
     { "label": "Light Purple", "value": "#7b39b5" },
     { "label": "Dark Purple", "value": "#1e0534" },
     { "label": "Muted Purple", "value": "#282a36"},
+    { "label": "Muted Blue", "value": "#3f4862"},
     { "label": "Dark Blue", "value": "#09005b" },
     { "label": "Wave Blue", "value": "#0066cc" },
     { "label": "Light Blue", "value": "#098393" },
@@ -235,7 +249,7 @@ Item {
                 {
                     "name": "Transparent Footer",
                     "id": "transparentfooter",
-                    "description": "Make the footer transparent",
+                    "description": "Make the footer text transparent",
                     "type": "bool",
                     "default": "Enable",
                 },
@@ -472,7 +486,7 @@ Item {
                     "default": "40",
                     "min": 35,
                     "max": 65,
-                    "step": 5,
+                    "step": 2.5,
                 },
                 {
                     "name": "Sub-Menu - Columns",

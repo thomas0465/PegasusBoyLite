@@ -35,7 +35,7 @@ FocusScope {
         if (saved !== undefined) {
             lastRAIndex = saved
         }
-
+              
     }
 
     onLastRAIndexChanged: {
@@ -121,7 +121,7 @@ FocusScope {
             achievementsPanelRoot.contentOpen = true
             achievementsPanelRoot.achloading = false
             achievementsPanelRoot.forceActiveFocus()
-                    if(themeSettings.soundslist){
+                  if(themeSettings.soundslist){
                         navSound.play();
                     }
         }
